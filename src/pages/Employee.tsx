@@ -100,7 +100,7 @@ export default function Employee(): JSX.Element {
         */}
         <div className="hstack">
           <img
-            src={`assets/img/database/${data.firstName.toLowerCase()}.jpg`}
+            src={`/assets/img/database/${data.firstName.toLowerCase()}.jpg`}
             width="103px"
             className="m-2"
             alt=""

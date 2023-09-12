@@ -59,7 +59,7 @@ export default function Product(): JSX.Element {
         </div>
         {/*
         <img
-          src={`assets/img/database/${getCategoryNameById(
+          src={`/assets/img/database/${getCategoryNameById(
             dataCategories,
             data.categoryId
           )?.toLowerCase()}.gif`}

@@ -68,7 +68,7 @@ export default function Employees({
             </h4>
             <div className="hstack">
               <img
-                src={`assets/img/database/${item.firstName.toLowerCase()}.jpg`}
+                src={`/assets/img/database/${item.firstName.toLowerCase()}.jpg`}
                 width="70px"
                 className="m-2"
                 alt=""
