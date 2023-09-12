@@ -1,0 +1,12 @@
+// Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
+
+exports[`ErrorMessage 1`] = `
+<div
+  className="m-2 text-danger "
+>
+  <div>
+    Error: 
+    Test
+  </div>
+</div>
+`;

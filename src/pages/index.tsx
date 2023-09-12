@@ -1,0 +1,15 @@
+export { default as Charts } from './Charts';
+export { default as Customer } from './Customer';
+export { default as Customers } from './Customers';
+export { default as Employee } from './Employee';
+export { default as Employees } from './Employees';
+export { default as Home } from './Home';
+export { default as NotFound } from './NotFound';
+export { default as Order } from './Order';
+export { default as OrderDetails } from './OrderDetails';
+export { default as OrderEdit } from './OrderEdit';
+export { default as Orders } from './Orders';
+export { default as Product } from './Product';
+export { default as Products } from './Products';
+export { default as Supplier } from './Supplier';
+export { default as Suppliers } from './Suppliers';

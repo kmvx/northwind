@@ -1,0 +1,36 @@
+@mixin grid($width) {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax($width, 1fr));
+  grid-auto-rows: 1fr;
+  @media (max-width: 400px) {
+    & {
+      grid-template-columns: 1fr;
+      grid-auto-rows: auto;
+    }
+  }
+}
+.employees__list {
+  @include grid(17rem);
+}
+.suppliers__list {
+  @include grid(20rem);
+}
+.customers__list {
+  @include grid(17rem);
+}
+
+.app-sidebar {
+  overflow-x: hidden !important;
+  a {
+    --bs-link-color-rgb: 255, 255, 255;
+    --bs-link-hover-color-rgb: 255, 255, 255;
+    text-decoration: none;
+  }
+  a:hover,
+  a.active {
+    background-color: var(--bs-primary);
+  }
+}
+.pagination {
+  row-gap: 0.5rem;
+}

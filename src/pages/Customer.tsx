@@ -1,0 +1,84 @@
+import * as ReactQuery from '@tanstack/react-query';
+import { NavLink, useParams } from 'react-router-dom';
+import { ErrorMessage, PanelCentred, WaitSpinner } from '../ui';
+import {
+  API_URL,
+  joinFields,
+  setDocumentTitle,
+  getFlagImageURLByCountryName,
+} from '../utils';
+import type { ICustomer } from '../models';
+
+export default function Customer(): JSX.Element {
+  const { id } = useParams();
+  const { data, error, isLoading } = ReactQuery.useQuery<ICustomer>([
+    API_URL + '/Customers/' + id,
+  ]);
+  if (error) return <ErrorMessage error={error} />;
+  if (isLoading) return <WaitSpinner />;
+  if (!data) return <div>No data</div>;
+  setDocumentTitle(data.companyName, 'Customers');
+  return (
+    <PanelCentred className="w-75">
+      <h1 className="m-2 text-center">{data.companyName}</h1>
+      <h2 className="m-2 text-center fs-5">Customer</h2>
+      <div>
+        <div className="row">
+          <div className="col-md-8">
+            <div className="hstack" title="Address">
+              <i className="bi bi-geo-alt m-2" />
+              <img
+                className="ms-2"
+                src={getFlagImageURLByCountryName(data.country)}
+                height="20px"
+                alt=""
+              />
+              <b className="m-2">
+                {joinFields(
+                  data.country,
+                  data.region,
+                  data.city,
+                  data.address,
+                  data.postalCode,
+                )}
+              </b>
+            </div>
+            <div className="hstack flex-wrap">
+              <span className="hstack" title="Phone">
+                <i className="bi bi-telephone m-2" />
+                <b className="m-2">{data.phone}</b>
+              </span>
+              {data.fax && (
+                <span className="hstack" title="Fax">
+                  <i className="bi bi-printer m-2" />
+                  <b className="m-2">{data.fax}</b>
+                </span>
+              )}
+            </div>
+          </div>
+          <div className="col-md-4">
+            <div className="hstack" title="ID">
+              <i className="bi bi-hash m-2" />
+              <b className="m-2">{data.customerId}</b>
+            </div>
+            <div className="hstack align-items-start" title="Contact">
+              <i className="bi bi-person m-2" />
+              <span className="m-2 vstack">
+                <b>{data.contactName}</b>
+                <span>{data.contactTitle}</span>
+              </span>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div>
+        <NavLink
+          to={'/customers/' + id + '/orders'}
+          className="btn btn-outline-primary m-2"
+        >
+          Orders
+        </NavLink>
+      </div>
+    </PanelCentred>
+  );
+}

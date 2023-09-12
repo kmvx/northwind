@@ -1,0 +1,42 @@
+.home {
+  display: flex;
+  flex-direction: column;
+  @media (min-width: 1200px) {
+    flex-direction: row;
+  }
+  height: 100%;
+  background-color: navy;
+  &__image {
+    img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+    @media (min-width: 1200px) {
+      width: 60%;
+    }
+  }
+  &__details {
+    color: white;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    @media (min-width: 576px) {
+      padding: 2vw;
+    }
+    @media (min-width: 1200px) {
+      width: 40%;
+    }
+  }
+  font-size: max(1vw, 1.5rem);
+  h1 {
+    font-size: max(3vw, 3rem);
+    letter-spacing: 2px;
+  }
+  p {
+    color: #ccc;
+  }
+  a {
+    color: #88f;
+  }
+}
