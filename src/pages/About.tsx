@@ -1,17 +1,17 @@
 import { setDocumentTitle } from '../utils';
-import './Home.scss';
+import './About.scss';
 
-export default function Home(): JSX.Element {
+export default function About(): JSX.Element {
   setDocumentTitle();
   return (
-    <div className="home">
-      <div className="home__image">
+    <div className="about">
+      <div className="about__image">
         <img
           alt=""
           src="https://images.unsplash.com/photo-1508185066415-13f4acf9b564?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1959&q=80"
         />
       </div>
-      <div className="home__details">
+      <div className="about__details">
         <h1 className="m-2 my-5">North&shy;wind Traders</h1>
         <div className="m-2">
           <p>

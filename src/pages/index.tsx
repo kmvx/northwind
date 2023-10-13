@@ -1,9 +1,9 @@
+export { default as About } from './About';
 export { default as Charts } from './Charts';
 export { default as Customer } from './Customer';
 export { default as Customers } from './Customers';
 export { default as Employee } from './Employee';
 export { default as Employees } from './Employees';
-export { default as Home } from './Home';
 export { default as NotFound } from './NotFound';
 export { default as Order } from './Order';
 export { default as OrderDetails } from './OrderDetails';

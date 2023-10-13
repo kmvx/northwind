@@ -6,12 +6,12 @@ import { ErrorBoundary, type FallbackProps } from 'react-error-boundary';
 
 import axios from 'axios';
 import {
+  About,
   Charts,
   Customer,
   Customers,
   Employee,
   Employees,
-  Home,
   NotFound,
   Order,
   OrderDetails,
@@ -98,7 +98,7 @@ function Layout({ children }: { children: React.ReactNode }): JSX.Element {
     | undefined
   )[] = [
     undefined,
-    { title: 'Home', to: '/', imageClassName: 'bi bi-house-door' },
+    { title: 'About', to: '/', imageClassName: 'bi bi-info-circle' },
     undefined,
     { title: 'Employees', to: '/employees', imageClassName: 'bi bi-people' },
     { title: 'Suppliers', to: '/suppliers', imageClassName: 'bi bi-bucket' },
@@ -170,7 +170,7 @@ function App(): JSX.Element {
         <Layout>
           <ErrorBoundary FallbackComponent={ErrorFallback}>
             <Routes>
-              <Route path="/" element={<Home />} />
+              <Route path="/" element={<About />} />
               <Route path="/employees" element={<Employees />} />
               <Route path="/employees/:id" element={<Employee />} />
               <Route path="/employees/:id/orders" element={<Orders />} />
