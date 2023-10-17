@@ -107,7 +107,7 @@ function buildSVG(data: IOrders, ref: React.RefObject<SVGSVGElement>) {
 
   // x grid
   svg
-    .selectAll('.xgrid')
+    .selectAll('.whatever-grid')
     .data(y.ticks(6))
     .enter()
     .append('line')
@@ -119,7 +119,22 @@ function buildSVG(data: IOrders, ref: React.RefObject<SVGSVGElement>) {
     .style('stroke-dasharray', '2 3')
     .style('opacity', 0.3);
 
-  // Data
+  // Area
+  svg
+    .append('path')
+    .datum(ordersCountByMonth)
+    .attr('fill', 'var(--chart-line-color)')
+    .attr('fill-opacity', 0.1)
+    .attr(
+      'd',
+      d3
+        .area()
+        .x((_: any, index: number) => x(index))
+        .y0(height)
+        .y1((d: any) => y(d)) as any,
+    );
+
+  // Lines
   svg
     .append('path')
     .datum(ordersCountByMonth)
@@ -133,6 +148,19 @@ function buildSVG(data: IOrders, ref: React.RefObject<SVGSVGElement>) {
         .x((_: any, index: number) => x(index))
         .y((d: any) => y(d)) as any,
     );
+
+  // Circles
+  svg
+    .selectAll('.whatever-circle')
+    .data(ordersCountByMonth)
+    .enter()
+    .append('circle')
+    .attr('fill', 'transparent')
+    .attr('stroke', 'var(--chart-line-color)')
+    .attr('stroke-width', 2)
+    .attr('cx', (_: any, index: number) => x(index))
+    .attr('cy', (d: any) => y(d))
+    .attr('r', 10);
 }
 
 export default function Dashboard(): JSX.Element {
