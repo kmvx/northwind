@@ -22,6 +22,8 @@ const months = [
 ] as const;
 
 function buildSVG(data: IOrders, ref: React.RefObject<SVGSVGElement>) {
+  type Selection = d3.Selection<SVGGElement, unknown, null, undefined>;
+
   if (!ref.current) return;
 
   // Prepare data
@@ -64,10 +66,15 @@ function buildSVG(data: IOrders, ref: React.RefObject<SVGSVGElement>) {
   svg
     .append('g')
     .attr('transform', 'translate(0,' + height + ')')
-    .call(d3.axisBottom(x).tickFormat((d: any) => months[d]))
-    .call((g: any) => g.select('.domain').remove())
-    .call((g: any) => g.selectAll('line').remove())
-    .call((g: any) =>
+    .call(
+      d3.axisBottom(x).tickFormat((domainValue: d3.NumberValue) => {
+        const d = domainValue as number;
+        return months[d];
+      }),
+    )
+    .call((g: Selection) => g.select('.domain').remove())
+    .call((g: Selection) => g.selectAll('line').remove())
+    .call((g: Selection) =>
       g
         .selectAll('text')
         .attr('fill', 'var(--chart-text-color)')
@@ -84,11 +91,14 @@ function buildSVG(data: IOrders, ref: React.RefObject<SVGSVGElement>) {
       d3
         .axisLeft(y)
         .ticks(6)
-        .tickFormat((d: any) => (d >= 1e3 ? d / 1e3 + 'k' : d)),
+        .tickFormat((domainValue: d3.NumberValue) => {
+          const d = domainValue as number;
+          return d >= 1e3 ? d / 1e3 + 'k' : String(d);
+        }),
     )
-    .call((g: any) => g.select('.domain').remove())
-    .call((g: any) => g.selectAll('line').remove())
-    .call((g: any) =>
+    .call((g: Selection) => g.select('.domain').remove())
+    .call((g: Selection) => g.selectAll('line').remove())
+    .call((g: Selection) =>
       g
         .selectAll('text')
         .attr('fill', 'var(--chart-text-color)')
@@ -102,9 +112,9 @@ function buildSVG(data: IOrders, ref: React.RefObject<SVGSVGElement>) {
     .enter()
     .append('line')
     .attr('x1', -GRID_PADDING_X)
-    .attr('y1', (d: any) => Math.round(y(d)) + 0.5)
+    .attr('y1', (d: number) => Math.round(y(d)) + 0.5)
     .attr('x2', width + GRID_PADDING_X)
-    .attr('y2', (d: any) => Math.round(y(d)) + 0.5)
+    .attr('y2', (d: number) => Math.round(y(d)) + 0.5)
     .style('stroke', 'var(--chart-text-color)')
     .style('stroke-dasharray', '2 3')
     .style('opacity', 0.3);
