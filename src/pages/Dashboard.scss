@@ -1,0 +1,7 @@
+.dashboard {
+  --chart-text-color: #888;
+  --chart-line-color: var(--bs-primary);
+  &__chart-parent {
+    min-height: 300px;
+  }
+}

@@ -35,6 +35,7 @@
     "bootstrap": "*",
     "bootstrap-icons": "*",
     "chart.js": "*",
+    "d3": "*",
     "react": "*",
     "react-chartjs-2": "*",
     "react-dom": "*",
@@ -45,6 +46,7 @@
   "devDependencies": {
     "@playwright/test": "*",
     "@total-typescript/ts-reset": "*",
+    "@types/d3": "*",
     "@types/react": "*",
     "@types/react-dom": "*",
     "@types/react-test-renderer": "*",
