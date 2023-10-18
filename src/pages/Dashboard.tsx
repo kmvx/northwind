@@ -1,5 +1,6 @@
 import * as d3 from 'd3';
-import { useRef, useLayoutEffect } from 'react';
+import { useId, useRef, useLayoutEffect, useState } from 'react';
+import * as React from 'react';
 import { useQuery } from '@tanstack/react-query';
 import { ErrorMessage, PanelStretched, WaitSpinner } from '../ui';
 import { API_URL, setDocumentTitle } from '../utils';
@@ -21,7 +22,13 @@ const months = [
   'DEC',
 ] as const;
 
-function buildSVG(data: IOrders, ref: React.RefObject<SVGSVGElement>) {
+function buildSVG(
+  data: IOrders,
+  ref: React.RefObject<SVGSVGElement>,
+  setMinYear: (year: number) => void,
+  setMaxYear: (year: number) => void,
+  yearFilter?: number,
+) {
   type Selection = d3.Selection<SVGGElement, unknown, null, undefined>;
 
   if (!ref.current) return;
@@ -34,11 +41,14 @@ function buildSVG(data: IOrders, ref: React.RefObject<SVGSVGElement>) {
     const orderDate = item.orderDate;
     if (!orderDate) return;
     const date = new Date(item.orderDate);
-    ordersCountByMonth[date.getMonth()]++;
     const year = date.getFullYear();
+    if (yearFilter === undefined || year === yearFilter)
+      ordersCountByMonth[date.getMonth()]++;
     minYear = Math.min(minYear, year);
     maxYear = Math.max(maxYear, year);
   });
+  setMinYear(minYear);
+  setMaxYear(maxYear);
   const maxValue = ordersCountByMonth.reduce((p, v) => Math.max(p, v));
 
   // Build SVG
@@ -233,23 +243,75 @@ function buildSVG(data: IOrders, ref: React.RefObject<SVGSVGElement>) {
     });
 }
 
+const YearFilterButtons: React.FC<{
+  minYear?: number;
+  maxYear?: number;
+  yearFilter?: number;
+  setYearFilter: (year?: number) => void;
+}> = ({ minYear, maxYear, yearFilter, setYearFilter }) => {
+  const id = useId();
+  const yearsArray =
+    minYear === undefined || maxYear === undefined
+      ? []
+      : Array.from({ length: maxYear - minYear + 1 }).map(
+          (_, index) => minYear + index,
+        );
+  return (
+    <div className="btn-group flex-wrap align-items-center m-2">
+      <input
+        type="radio"
+        className="btn-check"
+        id={id}
+        name="YearFilterRadio"
+        autoComplete="off"
+        checked={yearFilter === undefined}
+        onChange={() => setYearFilter()}
+      />
+      <label className="btn btn-outline-primary py-2 px-3" htmlFor={id}>
+        All
+      </label>
+      {yearsArray.map((v) => (
+        <React.Fragment key={v}>
+          <input
+            type="radio"
+            className="btn-check"
+            id={id + v}
+            name={'YearFilterRadio' + v}
+            autoComplete="off"
+            checked={yearFilter === v}
+            onChange={() => setYearFilter(v)}
+          />
+          <label className="btn btn-outline-primary py-2 px-3" htmlFor={id + v}>
+            {v}
+          </label>
+        </React.Fragment>
+      ))}
+    </div>
+  );
+};
+
 function OrdersChart(): JSX.Element {
   // Load data
   const { data, error, isLoading } = useQuery<IOrders>([API_URL + '/Orders']);
+
+  // State
+  const [yearFilter, setYearFilter] = useState<number>();
+  const [minYear, setMinYear] = useState<number>();
+  const [maxYear, setMaxYear] = useState<number>();
 
   // Connect SVG element
   const ref = useRef<SVGSVGElement>(null);
   useLayoutEffect(() => {
     function update() {
       if (!data) return;
-      buildSVG(data, ref);
+      buildSVG(data, ref, setMinYear, setMaxYear, yearFilter);
     }
     update();
     window.addEventListener('resize', update);
     return () => {
       window.removeEventListener('resize', update);
     };
-  }, [data]);
+  }, [data, yearFilter]);
 
   // Handle errors and loading state
   if (error) return <ErrorMessage error={error} />;
@@ -260,6 +322,11 @@ function OrdersChart(): JSX.Element {
       <h3 className="mt-2 mb-4 text-center">
         Distribution of count of orders by month
       </h3>
+      <div className="d-flex justify-content-end">
+        <YearFilterButtons
+          {...{ minYear, maxYear, yearFilter, setYearFilter }}
+        />
+      </div>
       <div className="dashboard__chart-parent">
         <svg ref={ref} className="position-absolute" />
       </div>
