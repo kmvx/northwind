@@ -161,6 +161,42 @@ function buildSVG(data: IOrders, ref: React.RefObject<SVGSVGElement>) {
     .attr('cx', (_: any, index: number) => x(index))
     .attr('cy', (d: any) => y(d))
     .attr('r', 10);
+
+  // Tooltip
+  const svgParent = d3.select(svg.node()?.parentNode?.parentNode as Element);
+  svgParent.selectAll('.dashboard__tooltip').remove();
+  const tooltip = svgParent
+    .append('div')
+    .attr('class', 'dashboard__tooltip')
+    .style('visibility', 'hidden');
+
+  const xScaledArray = ordersCountByMonth.map((_, index) => {
+    return x(index);
+  });
+
+  // Mouse event handlers
+  svgParent
+    .on('mouseover', () => {
+      tooltip.style('visibility', 'visible');
+    })
+    .on('mousemove', (event: MouseEvent) => {
+      const index = d3.bisect(xScaledArray, event.offsetX) - 1;
+      const ordersCount = ordersCountByMonth[index];
+      tooltip
+        .style('left', margin.left + x(index) + 10 + 'px')
+        .style(
+          'top',
+          margin.top +
+            y(ordersCount) -
+            (tooltip.node()?.offsetHeight || 0) -
+            10 +
+            'px',
+        )
+        .html(`<b>${ordersCount}</b> orders in ${months[index]}`);
+    })
+    .on('mouseout', () => {
+      tooltip.style('visibility', 'hidden');
+    });
 }
 
 export default function Dashboard(): JSX.Element {
