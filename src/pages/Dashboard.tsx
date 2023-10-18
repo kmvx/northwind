@@ -46,7 +46,7 @@ function buildSVG(data: IOrders, ref: React.RefObject<SVGSVGElement>) {
   if (!parentNode) return;
   const parentWidth = parentNode.clientWidth;
   const parentHeight = parentNode.clientHeight;
-  const margin = { top: 30, right: 30, bottom: 50, left: 60 };
+  const margin = { left: 70, right: 30, top: 30, bottom: 50 };
   d3.select(ref.current).select('*').remove(); // Clear canvas
   const svg = d3
     .select(ref.current)
@@ -162,6 +162,22 @@ function buildSVG(data: IOrders, ref: React.RefObject<SVGSVGElement>) {
     .attr('cy', (d: any) => y(d))
     .attr('r', 10);
 
+  // Focus line
+  const focusElement = svg.append('g').style('visibility', 'hidden');
+  const focusLine = focusElement
+    .append('line')
+    .attr('x1', -GRID_PADDING_X)
+    .attr('x2', width + GRID_PADDING_X)
+    .attr('stroke', 'var(--chart-line-color)')
+    .style('stroke-dasharray', '2 3');
+  const focusText = focusElement
+    .append('text')
+    .attr('fill', 'var(--chart-line-color)')
+    .attr('font-size', '9pt')
+    .attr('font-weight', 'bold')
+    .attr('alignment-baseline', 'middle')
+    .attr('text-anchor', 'end');
+
   // Tooltip
   const svgParent = d3.select(svg.node()?.parentNode?.parentNode as Element);
   svgParent.selectAll('.dashboard__tooltip').remove();
@@ -177,24 +193,42 @@ function buildSVG(data: IOrders, ref: React.RefObject<SVGSVGElement>) {
   // Mouse event handlers
   svgParent
     .on('mouseover', () => {
+      focusElement.style('visibility', 'visible');
       tooltip.style('visibility', 'visible');
     })
     .on('mousemove', (event: MouseEvent) => {
       const index = d3.bisect(xScaledArray, event.offsetX) - 1;
       const ordersCount = ordersCountByMonth[index];
+
+      const focusLineY = event.offsetY - 0.5 - margin.top;
+      focusLine.attr('y1', focusLineY).attr('y2', focusLineY);
+      const focusValue = Math.round(y.invert(focusLineY));
+      focusText
+        .attr('x', -GRID_PADDING_X - 30)
+        .attr('y', focusLineY)
+        .text(focusValue);
+      focusElement.style('visibility', focusValue >= 0 ? 'visible' : 'hidden');
+
       tooltip
-        .style('left', margin.left + x(index) + 10 + 'px')
+        .style(
+          'left',
+          margin.left +
+            x(index) -
+            (tooltip.node()?.offsetWidth || 0) / 2 +
+            'px',
+        )
         .style(
           'top',
           margin.top +
             y(ordersCount) -
             (tooltip.node()?.offsetHeight || 0) -
-            10 +
+            15 +
             'px',
         )
         .html(`<b>${ordersCount}</b> orders in ${months[index]}`);
     })
     .on('mouseout', () => {
+      focusElement.style('visibility', 'hidden');
       tooltip.style('visibility', 'hidden');
     });
 }
