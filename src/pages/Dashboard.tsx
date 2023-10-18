@@ -233,9 +233,7 @@ function buildSVG(data: IOrders, ref: React.RefObject<SVGSVGElement>) {
     });
 }
 
-export default function Dashboard(): JSX.Element {
-  setDocumentTitle('Dashboard');
-
+function OrdersChart(): JSX.Element {
   // Load data
   const { data, error, isLoading } = useQuery<IOrders>([API_URL + '/Orders']);
 
@@ -258,15 +256,22 @@ export default function Dashboard(): JSX.Element {
   if (isLoading) return <WaitSpinner />;
 
   return (
+    <PanelStretched>
+      <h3 className="mt-2 mb-4 text-center">
+        Distribution of count of orders by month
+      </h3>
+      <div className="dashboard__chart-parent">
+        <svg ref={ref} className="position-absolute" />
+      </div>
+    </PanelStretched>
+  );
+}
+
+export default function Dashboard(): JSX.Element {
+  setDocumentTitle('Dashboard');
+  return (
     <section className="dashboard">
-      <PanelStretched>
-        <h3 className="mt-2 mb-4 text-center">
-          Distribution of count of orders by month
-        </h3>
-        <div className="dashboard__chart-parent">
-          <svg ref={ref} className="position-absolute" />
-        </div>
-      </PanelStretched>
+      <OrdersChart />
     </section>
   );
 }
