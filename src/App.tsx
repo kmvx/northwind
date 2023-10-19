@@ -1,6 +1,7 @@
 import * as React from 'react';
 import * as ReactRouterDOM from 'react-router-dom';
 import * as ReactQuery from '@tanstack/react-query';
+import clsx from 'clsx';
 import { ReactQueryDevtools } from '@tanstack/react-query-devtools';
 import { ErrorBoundary, type FallbackProps } from 'react-error-boundary';
 
@@ -79,9 +80,7 @@ function NavItem({
   const { NavLink } = ReactRouterDOM;
   return (
     <NavLink
-      className={({ isActive }) =>
-        (className || '') + (isActive ? ' active' : '')
-      }
+      className={({ isActive }) => clsx(className, { active: isActive })}
       key={key}
       {...props}
     >
@@ -133,7 +132,7 @@ function Layout({ children }: { children: React.ReactNode }): JSX.Element {
             <React.Fragment key={index}>
               {page ? (
                 <NavItem className="py-2 px-3 text-nowrap" to={page.to}>
-                  <i className={'m-2 ' + page.imageClassName}></i>
+                  <i className={clsx('m-2', page.imageClassName)}></i>
                   <span className="m-2">{page.title}</span>
                 </NavItem>
               ) : (

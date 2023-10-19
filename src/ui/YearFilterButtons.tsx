@@ -1,4 +1,5 @@
 import * as React from 'react';
+import clsx from 'clsx';
 
 const YearFilterButtons: React.FC<{
   className?: string;
@@ -9,9 +10,7 @@ const YearFilterButtons: React.FC<{
   if (yearsSet.size <= 1) return <></>;
   const id = React.useId();
   return (
-    <div
-      className={'btn-group flex-wrap align-items-center ' + (className || '')}
-    >
+    <div className={clsx('btn-group flex-wrap align-items-center', className)}>
       <input
         type="radio"
         className="btn-check"

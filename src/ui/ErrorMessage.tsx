@@ -1,4 +1,5 @@
 import axios from 'axios';
+import clsx from 'clsx';
 
 export default function ErrorMessage({
   error,
@@ -8,7 +9,7 @@ export default function ErrorMessage({
   className?: string;
 }): JSX.Element {
   return (
-    <div className={'m-2 text-danger ' + (className || '')}>
+    <div className={clsx('m-2 text-danger', className)}>
       <div>Error: {(error as Error).message}</div>
       {error instanceof axios.AxiosError && error?.response?.data && (
         <>

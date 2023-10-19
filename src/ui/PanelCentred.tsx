@@ -1,3 +1,5 @@
+import clsx from 'clsx';
+
 export default function PanelCentred({
   children,
   className,
@@ -8,9 +10,10 @@ export default function PanelCentred({
   return (
     <div className="container vstack align-items-center">
       <section
-        className={
-          'd-inline-block bg-light shadow rounded p-2 my-2 ' + className
-        }
+        className={clsx(
+          className,
+          'd-inline-block bg-light shadow rounded p-2 my-2',
+        )}
       >
         {children}
       </section>

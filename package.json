@@ -35,6 +35,7 @@
     "bootstrap": "*",
     "bootstrap-icons": "*",
     "chart.js": "*",
+    "clsx": "*",
     "d3": "*",
     "react": "*",
     "react-chartjs-2": "*",
