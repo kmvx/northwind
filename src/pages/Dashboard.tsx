@@ -190,10 +190,10 @@ function buildSVG(
 
   // Tooltip
   const svgParent = d3.select(svg.node()?.parentNode?.parentNode as Element);
-  svgParent.selectAll('.dashboard__tooltip').remove();
+  svgParent.selectAll('.orders-chart__tooltip').remove();
   const tooltip = svgParent
     .append('div')
-    .attr('class', 'dashboard__tooltip')
+    .attr('class', 'orders-chart__tooltip')
     .style('visibility', 'hidden');
 
   const xScaledArray = ordersCountByMonth.map((_, index) => {
@@ -319,16 +319,18 @@ function OrdersChart(): JSX.Element {
 
   return (
     <PanelStretched>
-      <h3 className="mt-2 mb-4 text-center">
-        Distribution of count of orders by month
-      </h3>
-      <div className="d-flex justify-content-end">
-        <YearFilterButtons
-          {...{ minYear, maxYear, yearFilter, setYearFilter }}
-        />
-      </div>
-      <div className="dashboard__chart-parent">
-        <svg ref={ref} className="position-absolute" />
+      <div className="orders-chart">
+        <h3 className="mt-2 mb-4 text-center">
+          Distribution of count of orders by month
+        </h3>
+        <div className="d-flex justify-content-end">
+          <YearFilterButtons
+            {...{ minYear, maxYear, yearFilter, setYearFilter }}
+          />
+        </div>
+        <div className="orders-chart__chart-parent">
+          <svg ref={ref} className="position-absolute" />
+        </div>
       </div>
     </PanelStretched>
   );
@@ -337,7 +339,7 @@ function OrdersChart(): JSX.Element {
 export default function Dashboard(): JSX.Element {
   setDocumentTitle('Dashboard');
   return (
-    <section className="dashboard">
+    <section>
       <OrdersChart />
     </section>
   );
