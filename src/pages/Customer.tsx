@@ -19,7 +19,7 @@ export default function Customer(): JSX.Element {
   if (!data) return <div>No data</div>;
   setDocumentTitle(data.companyName, 'Customers');
   return (
-    <PanelCentred className="w-75">
+    <PanelCentred className="customer">
       <h1 className="m-2 text-center">{data.companyName}</h1>
       <h2 className="m-2 text-center fs-5">Customer</h2>
       <div>

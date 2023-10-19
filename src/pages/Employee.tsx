@@ -53,7 +53,7 @@ export default function Employee(): JSX.Element {
   const name = getEmployeeNameByData(data);
   setDocumentTitle(name, 'Employee');
   return (
-    <PanelCentred className="w-75">
+    <PanelCentred className="employee">
       <h1 className="text-center m-2">{name}</h1>
       <div className="m-2">
         <div className="text-center m-2 fs-5">
