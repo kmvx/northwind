@@ -123,83 +123,93 @@ export default function Orders(): JSX.Element {
           className="m-2"
         />
       </div>
-      <div className="m-2">{pluralize(filteredData.length, 'order')}</div>
-      <Paginate paginateStore={paginateStore} />
-      <div className="d-flex">
-        <table className="table table-hover table-striped m-2">
-          <thead className="sticky-top bg-white">
-            <tr>
-              <th scope="col">#</th>
-              {!isCustomerPage && <th scope="col">Custo&shy;mer ID</th>}
-              {!isEmployeePage && <th scope="col">Emp&shy;loyee</th>}
-              <th scope="col" className="d-none d-sm-table-cell">
-                Order date
-              </th>
-              <th scope="col" className="d-none d-md-table-cell">
-                Shipped date
-              </th>
-              <th scope="col" className="d-none d-md-table-cell">
-                Required date
-              </th>
-              <th scope="col" className="d-none d-xl-table-cell">
-                Freight
-              </th>
-              <th scope="col" className="d-none d-xl-table-cell">
-                Ship name
-              </th>
-              <th scope="col" className="d-none d-sm-table-cell">
-                Ship address
-              </th>
-            </tr>
-          </thead>
-          <tbody className="table-group-divider">
-            {paginateData.map((item: any) => (
-              <tr key={item.orderId}>
-                <th scope="row">
-                  <NavLink to={'/orders/' + item.orderId}>
-                    {item.orderId}
-                  </NavLink>
-                </th>
-                {!isCustomerPage && (
-                  <td>
-                    <NavLink to={'/customers/' + item.customerId}>
-                      {item.customerId}
-                    </NavLink>
-                  </td>
-                )}
-                {!isEmployeePage && (
-                  <td>
-                    <NavLink
-                      to={'/employees/' + item.employeeId}
-                      title={'ID: ' + item.employeeId}
-                    >
-                      {item.employeeName}
-                    </NavLink>
-                  </td>
-                )}
-                <td className="d-none d-sm-table-cell">{item.orderDate}</td>
-                <td className="d-none d-md-table-cell">{item.shippedDate}</td>
-                <td className="d-none d-md-table-cell">{item.requiredDate}</td>
-                <td className="d-none d-xl-table-cell">{item.freight}</td>
-                <td className="d-none d-xl-table-cell">{item.shipName}</td>
-                <td className="d-none d-sm-table-cell">
-                  <div className="hstack">
-                    <img
-                      className="me-2"
-                      src={getFlagImageURLByCountryName(item.shipCountry)}
-                      height="20px"
-                      alt=""
-                    />
-                    {item.addressLine0},
-                  </div>
-                  <div>{item.addressLine1}</div>
-                </td>
-              </tr>
-            ))}
-          </tbody>
-        </table>
-      </div>
-      <Paginate paginateStore={paginateStore} />
+      {filteredData.length !== 0 ? (
+        <div>
+          <div className="m-2">{pluralize(filteredData.length, 'order')}</div>
+          <Paginate paginateStore={paginateStore} />
+          <div className="d-flex">
+            <table className="table table-hover table-striped m-2">
+              <thead className="sticky-top bg-white">
+                <tr>
+                  <th scope="col">#</th>
+                  {!isCustomerPage && <th scope="col">Custo&shy;mer ID</th>}
+                  {!isEmployeePage && <th scope="col">Emp&shy;loyee</th>}
+                  <th scope="col" className="d-none d-sm-table-cell">
+                    Order date
+                  </th>
+                  <th scope="col" className="d-none d-md-table-cell">
+                    Shipped date
+                  </th>
+                  <th scope="col" className="d-none d-md-table-cell">
+                    Required date
+                  </th>
+                  <th scope="col" className="d-none d-xl-table-cell">
+                    Freight
+                  </th>
+                  <th scope="col" className="d-none d-xl-table-cell">
+                    Ship name
+                  </th>
+                  <th scope="col" className="d-none d-sm-table-cell">
+                    Ship address
+                  </th>
+                </tr>
+              </thead>
+              <tbody className="table-group-divider">
+                {paginateData.map((item: any) => (
+                  <tr key={item.orderId}>
+                    <th scope="row">
+                      <NavLink to={'/orders/' + item.orderId}>
+                        {item.orderId}
+                      </NavLink>
+                    </th>
+                    {!isCustomerPage && (
+                      <td>
+                        <NavLink to={'/customers/' + item.customerId}>
+                          {item.customerId}
+                        </NavLink>
+                      </td>
+                    )}
+                    {!isEmployeePage && (
+                      <td>
+                        <NavLink
+                          to={'/employees/' + item.employeeId}
+                          title={'ID: ' + item.employeeId}
+                        >
+                          {item.employeeName}
+                        </NavLink>
+                      </td>
+                    )}
+                    <td className="d-none d-sm-table-cell">{item.orderDate}</td>
+                    <td className="d-none d-md-table-cell">
+                      {item.shippedDate}
+                    </td>
+                    <td className="d-none d-md-table-cell">
+                      {item.requiredDate}
+                    </td>
+                    <td className="d-none d-xl-table-cell">{item.freight}</td>
+                    <td className="d-none d-xl-table-cell">{item.shipName}</td>
+                    <td className="d-none d-sm-table-cell">
+                      <div className="hstack">
+                        <img
+                          className="me-2"
+                          src={getFlagImageURLByCountryName(item.shipCountry)}
+                          height="20px"
+                          alt=""
+                        />
+                        {item.addressLine0},
+                      </div>
+                      <div>{item.addressLine1}</div>
+                    </td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </div>
+          <Paginate paginateStore={paginateStore} />
+        </div>
+      ) : (
+        <div className="m-2">Orders not found</div>
+      )}
     </section>
   );
 }
