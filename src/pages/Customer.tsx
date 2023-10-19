@@ -71,7 +71,7 @@ export default function Customer(): JSX.Element {
           </div>
         </div>
       </div>
-      <div>
+      <div className="d-flex justify-content-center">
         <NavLink
           to={'/customers/' + id + '/orders'}
           className="btn btn-outline-primary m-2"
