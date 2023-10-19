@@ -1,5 +1,6 @@
 import * as ReactQuery from '@tanstack/react-query';
 import { NavLink, useParams } from 'react-router-dom';
+import { Orders } from '.';
 import { ErrorMessage, PanelCentred, WaitSpinner } from '../ui';
 import {
   API_URL,
@@ -79,6 +80,7 @@ export default function Customer(): JSX.Element {
           Orders
         </NavLink>
       </div>
+      <Orders />
     </PanelCentred>
   );
 }

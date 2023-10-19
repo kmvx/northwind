@@ -81,6 +81,10 @@ export default function Orders(): JSX.Element {
         <h1 className="m-2 text-center">No orders</h1>
       </div>
     );
+  const isCustomerPage =
+    pathname.startsWith('/customers/') && !pathname.endsWith('/orders');
+  const isEmployeePage =
+    pathname.startsWith('/employees/') && !pathname.endsWith('/orders');
   return (
     <section>
       <h1 className="m-2 text-center">Orders</h1>
@@ -103,8 +107,8 @@ export default function Orders(): JSX.Element {
           <thead className="sticky-top bg-white">
             <tr>
               <th scope="col">#</th>
-              <th scope="col">Custo&shy;mer ID</th>
-              <th scope="col">Emp&shy;loyee</th>
+              {!isCustomerPage && <th scope="col">Custo&shy;mer ID</th>}
+              {!isEmployeePage && <th scope="col">Emp&shy;loyee</th>}
               <th scope="col" className="d-none d-sm-table-cell">
                 Order date
               </th>
@@ -133,19 +137,23 @@ export default function Orders(): JSX.Element {
                     {item.orderId}
                   </NavLink>
                 </th>
-                <td>
-                  <NavLink to={'/customers/' + item.customerId}>
-                    {item.customerId}
-                  </NavLink>
-                </td>
-                <td>
-                  <NavLink
-                    to={'/employees/' + item.employeeId}
-                    title={'ID: ' + item.employeeId}
-                  >
-                    {item.employeeName}
-                  </NavLink>
-                </td>
+                {!isCustomerPage && (
+                  <td>
+                    <NavLink to={'/customers/' + item.customerId}>
+                      {item.customerId}
+                    </NavLink>
+                  </td>
+                )}
+                {!isEmployeePage && (
+                  <td>
+                    <NavLink
+                      to={'/employees/' + item.employeeId}
+                      title={'ID: ' + item.employeeId}
+                    >
+                      {item.employeeName}
+                    </NavLink>
+                  </td>
+                )}
                 <td className="d-none d-sm-table-cell">{item.orderDate}</td>
                 <td className="d-none d-md-table-cell">{item.shippedDate}</td>
                 <td className="d-none d-md-table-cell">{item.requiredDate}</td>

@@ -1,5 +1,6 @@
 import * as ReactQuery from '@tanstack/react-query';
 import { NavLink, useParams } from 'react-router-dom';
+import { Orders } from '.';
 import { OrdersChart } from '../components';
 import { ErrorMessage, PanelCentred, WaitSpinner } from '../ui';
 import {
@@ -119,17 +120,18 @@ export default function Employee(): JSX.Element {
             <EmployeeLink id={data.reportsTo} className="m-2" />
           </div>
         )}
-        <div className="d-flex justify-content-center">
-          <NavLink
-            to={'/employees/' + id + '/orders'}
-            className="btn btn-outline-primary m-2"
-          >
-            Orders
-          </NavLink>
-        </div>
       </div>
       <Employees reportsTo={id} />
       <OrdersChart employeeId={id} />
+      <div className="d-flex justify-content-center">
+        <NavLink
+          to={'/employees/' + id + '/orders'}
+          className="btn btn-outline-primary m-2"
+        >
+          Orders
+        </NavLink>
+      </div>
+      <Orders />
     </PanelCentred>
   );
 }
