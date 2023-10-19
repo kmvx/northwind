@@ -9,7 +9,7 @@ export default function Discontinued({
   return (
     <span
       className={clsx(
-        'px-2 py-1 rounded small',
+        'px-2 py-1 rounded small lh-lg',
         discontinued ? styles.discontinued : styles['not-discontinued'],
       )}
       title={`Product is ${discontinued ? '' : 'not '}discontinued`}
