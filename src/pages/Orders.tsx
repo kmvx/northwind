@@ -1,7 +1,7 @@
 import * as React from 'react';
 import * as ReactQuery from '@tanstack/react-query';
 import { NavLink, useLocation, useParams } from 'react-router-dom';
-import { ErrorMessage, Paginate, WaitSpinner } from '../ui';
+import { ErrorMessage, Paginate, WaitSpinner, YearFilterButtons } from '../ui';
 import { usePaginate } from '../hooks';
 import {
   API_URL,
@@ -23,6 +23,8 @@ function getEmployeeNameById(dataEmployees?: IEmployees, id?: any) {
 
 export default function Orders(): JSX.Element {
   const [filter, setFilter] = React.useState('');
+  const [yearFilter, setYearFilter] = React.useState<number>();
+  const [yearsSet, setYearsSet] = React.useState<Set<number>>(new Set());
   const { id } = useParams();
   const { pathname } = useLocation();
   const { data, error, isLoading } = ReactQuery.useQuery<IOrders>([
@@ -35,61 +37,77 @@ export default function Orders(): JSX.Element {
     API_URL + '/Employees',
   ]);
   const filteredData = React.useMemo(() => {
+    const yearsSetTemp = new Set<number>();
     const computedData = data
-      ? data.map((item) => ({
-          orderId: item.orderId,
-          customerId: item.customerId,
-          employeeId: item.employeeId,
-          employeeName: getEmployeeNameById(dataEmployees, item.employeeId),
-          orderDate: formatDateFromString(item.orderDate),
-          shippedDate: formatDateFromString(item.shippedDate),
-          requiredDate: formatDateFromString(item.requiredDate),
-          freight: item.freight,
-          shipName: item.shipName,
-          addressLine0: joinFields(
-            item.shipCountry,
-            item.shipRegion,
-            item.shipCity,
-          ),
-          addressLine1: joinFields(item.shipAddress, item.shipPostalCode),
-          shipCountry: item.shipCountry,
-        }))
+      ? data.map((item) => {
+          const orderDate = item.orderDate;
+          if (orderDate) {
+            const date = new Date(item.orderDate);
+            const year = date.getFullYear();
+            yearsSetTemp.add(year);
+          }
+          return {
+            orderId: item.orderId,
+            customerId: item.customerId,
+            employeeId: item.employeeId,
+            employeeName: getEmployeeNameById(dataEmployees, item.employeeId),
+            orderDate: formatDateFromString(item.orderDate),
+            shippedDate: formatDateFromString(item.shippedDate),
+            requiredDate: formatDateFromString(item.requiredDate),
+            freight: item.freight,
+            shipName: item.shipName,
+            addressLine0: joinFields(
+              item.shipCountry,
+              item.shipRegion,
+              item.shipCity,
+            ),
+            addressLine1: joinFields(item.shipAddress, item.shipPostalCode),
+            shipCountry: item.shipCountry,
+          };
+        })
       : data;
-    const filteredData =
+    setYearsSet(yearsSetTemp);
+    let filteredData =
       computedData && filter
-        ? computedData.filter((item) =>
-            Object.keys(item).some((name) => {
+        ? computedData.filter((item) => {
+            return Object.keys(item).some((name) => {
               if (name === 'employeeId') return false;
               return isStringIncludes(
                 (item as Record<string, any>)[name],
                 filter,
               );
-            }),
-          )
+            });
+          })
         : computedData;
+    if (yearFilter !== undefined) {
+      filteredData = filteredData?.filter((item) => {
+        return new Date(item.orderDate)?.getFullYear() === yearFilter;
+      });
+    }
     return filteredData;
-  }, [data, filter, dataEmployees]);
+  }, [data, filter, yearFilter, dataEmployees]);
 
   const { paginateData, paginateStore } = usePaginate(filteredData);
   if (error) return <ErrorMessage error={error} />;
   if (isLoading) return <WaitSpinner />;
   if (!filteredData) return <div>No data</div>;
-  setDocumentTitle('Orders');
-  if (filteredData.length === 0)
+  const isCustomerPage =
+    pathname.startsWith('/customers/') && !pathname.endsWith('/orders');
+  const isEmployeePage =
+    pathname.startsWith('/employees/') && !pathname.endsWith('/orders');
+  if (!isCustomerPage && !isEmployeePage) setDocumentTitle('Orders');
+  if (filteredData.length === 0 && filter === '' && yearFilter === undefined) {
     return (
       <div>
         <h1 className="m-2 text-center">No orders</h1>
       </div>
     );
-  const isCustomerPage =
-    pathname.startsWith('/customers/') && !pathname.endsWith('/orders');
-  const isEmployeePage =
-    pathname.startsWith('/employees/') && !pathname.endsWith('/orders');
+  }
   return (
     <section>
       <h1 className="m-2 text-center">Orders</h1>
-      <div className="d-flex">
-        <div className="input-group m-2">
+      <div className="d-flex flex-wrap">
+        <div className="input-group w-auto flex-grow-1 m-2">
           <span className="input-group-text">Filter</span>
           <input
             className="p-2 form-control"
@@ -97,8 +115,13 @@ export default function Orders(): JSX.Element {
             placeholder="Enter filter string here"
             value={filter}
             onChange={(event) => setFilter(event.target.value)}
+            style={{ minWidth: '200px' }}
           ></input>
         </div>
+        <YearFilterButtons
+          {...{ yearsSet, yearFilter, setYearFilter }}
+          className="m-2"
+        />
       </div>
       <div className="m-2">{pluralize(filteredData.length, 'order')}</div>
       <Paginate paginateStore={paginateStore} />

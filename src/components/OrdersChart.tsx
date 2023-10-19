@@ -45,9 +45,9 @@ function buildSVG(
     if (!orderDate) return;
     const date = new Date(item.orderDate);
     const year = date.getFullYear();
+    yearsSet.add(year);
     if (yearFilter === undefined || year === yearFilter)
       ordersCountByMonth[date.getMonth()]++;
-    yearsSet.add(year);
   });
   setYearsSet(yearsSet);
   const maxValue = ordersCountByMonth.reduce((p, v) => Math.max(p, v));

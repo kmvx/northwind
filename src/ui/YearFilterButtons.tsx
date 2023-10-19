@@ -1,19 +1,22 @@
 import * as React from 'react';
 
 const YearFilterButtons: React.FC<{
+  className?: string;
   yearsSet: Set<number>;
   yearFilter?: number;
   setYearFilter: (year?: number) => void;
-}> = ({ yearsSet, yearFilter, setYearFilter }) => {
-  if (yearsSet.size === 0) return <></>;
+}> = ({ className, yearsSet, yearFilter, setYearFilter }) => {
+  if (yearsSet.size <= 1) return <></>;
   const id = React.useId();
   return (
-    <div className="btn-group flex-wrap align-items-center m-2">
+    <div
+      className={'btn-group flex-wrap align-items-center ' + (className || '')}
+    >
       <input
         type="radio"
         className="btn-check"
         id={id}
-        name="YearFilterRadio"
+        name={'YearFilterRadio' + id}
         autoComplete="off"
         checked={yearFilter === undefined}
         onChange={() => setYearFilter()}
@@ -31,7 +34,7 @@ const YearFilterButtons: React.FC<{
             type="radio"
             className="btn-check"
             id={id + v}
-            name={'YearFilterRadio' + v}
+            name={'YearFilterRadio' + id + v}
             autoComplete="off"
             checked={yearFilter === v}
             onChange={() => setYearFilter(v)}
