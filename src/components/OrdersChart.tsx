@@ -268,11 +268,13 @@ export default function OrdersChart({
       buildSVG(data, ref, setYearsSet, yearFilter);
     }
     update();
-    window.addEventListener('resize', update);
+    const element = ref.current?.parentElement;
+    const resizeObserver = new ResizeObserver(update);
+    if (element) resizeObserver.observe(element);
     return () => {
-      window.removeEventListener('resize', update);
+      if (element) resizeObserver.unobserve(element);
     };
-  }, [data, yearFilter]);
+  }, [ref.current, data, yearFilter]);
 
   // Handle errors and loading state
   if (error) return <ErrorMessage error={error} />;
