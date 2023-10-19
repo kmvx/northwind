@@ -245,8 +245,10 @@ function buildSVG(
 }
 
 export default function OrdersChart({
+  className,
   employeeId,
 }: {
+  className?: string;
   employeeId?: string;
 }): JSX.Element {
   // Load data
@@ -277,7 +279,7 @@ export default function OrdersChart({
   if (isLoading) return <WaitSpinner />;
 
   return (
-    <PanelStretched>
+    <PanelStretched className={className}>
       <div className="orders-chart">
         <h3 className="mt-2 mb-4 text-center">
           Distribution of count of orders by month

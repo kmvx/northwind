@@ -13,8 +13,10 @@ import {
 import type { IEmployees } from '../models';
 
 export default function Employees({
+  className,
   reportsTo,
 }: {
+  className?: string;
   reportsTo?: string;
 }): JSX.Element {
   const [filter, setFilter] = React.useState('');
@@ -39,7 +41,7 @@ export default function Employees({
     : filteredData;
   if (filteredData.length === 0 && reportsTo && filter === '') return <></>;
   return (
-    <PanelStretched>
+    <PanelStretched className={className}>
       <h2 className="m-2 text-center">
         {reportsTo ? 'Direct subordinates' : 'Employees'}
       </h2>

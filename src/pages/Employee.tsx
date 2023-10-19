@@ -121,8 +121,12 @@ export default function Employee(): JSX.Element {
           </div>
         )}
       </div>
-      <Employees reportsTo={id} />
-      <OrdersChart employeeId={id} />
+      <div className="m-2">
+        <Employees reportsTo={id} />
+      </div>
+      <div className="m-2">
+        <OrdersChart employeeId={id} />
+      </div>
       <div className="d-flex justify-content-center">
         <NavLink
           to={'/employees/' + id + '/orders'}
