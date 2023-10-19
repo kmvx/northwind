@@ -5,7 +5,9 @@ export default function Dashboard(): JSX.Element {
   setDocumentTitle('Dashboard');
   return (
     <section>
-      <OrdersChart />
+      <div className="m-2">
+        <OrdersChart />
+      </div>
     </section>
   );
 }
