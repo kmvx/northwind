@@ -30,8 +30,7 @@ const months = [
 function buildSVG(
   data: IOrders,
   ref: React.RefObject<SVGSVGElement>,
-  setMinYear: (year: number) => void,
-  setMaxYear: (year: number) => void,
+  setYearsSet: (yearsArray: Set<number>) => void,
   yearFilter?: number,
 ) {
   type Selection = d3.Selection<SVGGElement, unknown, null, undefined>;
@@ -40,8 +39,7 @@ function buildSVG(
 
   // Prepare data
   const ordersCountByMonth: Array<number> = new Array(12).fill(0);
-  let minYear = Infinity;
-  let maxYear = -Infinity;
+  const yearsSet = new Set<number>();
   data.forEach((item) => {
     const orderDate = item.orderDate;
     if (!orderDate) return;
@@ -49,11 +47,9 @@ function buildSVG(
     const year = date.getFullYear();
     if (yearFilter === undefined || year === yearFilter)
       ordersCountByMonth[date.getMonth()]++;
-    minYear = Math.min(minYear, year);
-    maxYear = Math.max(maxYear, year);
+    yearsSet.add(year);
   });
-  setMinYear(minYear);
-  setMaxYear(maxYear);
+  setYearsSet(yearsSet);
   const maxValue = ordersCountByMonth.reduce((p, v) => Math.max(p, v));
 
   // Build SVG
@@ -260,15 +256,14 @@ export default function OrdersChart({
 
   // State
   const [yearFilter, setYearFilter] = useState<number>();
-  const [minYear, setMinYear] = useState<number>();
-  const [maxYear, setMaxYear] = useState<number>();
+  const [yearsSet, setYearsSet] = useState<Set<number>>(new Set());
 
   // Connect SVG element
   const ref = useRef<SVGSVGElement>(null);
   useLayoutEffect(() => {
     function update() {
       if (!data) return;
-      buildSVG(data, ref, setMinYear, setMaxYear, yearFilter);
+      buildSVG(data, ref, setYearsSet, yearFilter);
     }
     update();
     window.addEventListener('resize', update);
@@ -288,9 +283,7 @@ export default function OrdersChart({
           Distribution of count of orders by month
         </h3>
         <div className="d-flex justify-content-end">
-          <YearFilterButtons
-            {...{ minYear, maxYear, yearFilter, setYearFilter }}
-          />
+          <YearFilterButtons {...{ yearsSet, yearFilter, setYearFilter }} />
         </div>
         <div className="orders-chart__chart-parent">
           <svg ref={ref} className="position-absolute" />

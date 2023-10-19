@@ -1,18 +1,11 @@
 import * as React from 'react';
 
 const YearFilterButtons: React.FC<{
-  minYear?: number;
-  maxYear?: number;
+  yearsSet: Set<number>;
   yearFilter?: number;
   setYearFilter: (year?: number) => void;
-}> = ({ minYear, maxYear, yearFilter, setYearFilter }) => {
+}> = ({ yearsSet, yearFilter, setYearFilter }) => {
   const id = React.useId();
-  const yearsArray =
-    minYear === undefined || maxYear === undefined
-      ? []
-      : Array.from({ length: maxYear - minYear + 1 }).map(
-          (_, index) => minYear + index,
-        );
   return (
     <div className="btn-group flex-wrap align-items-center m-2">
       <input
@@ -31,7 +24,7 @@ const YearFilterButtons: React.FC<{
       >
         All
       </label>
-      {yearsArray.map((v) => (
+      {Array.from(yearsSet).map((v) => (
         <React.Fragment key={v}>
           <input
             type="radio"
