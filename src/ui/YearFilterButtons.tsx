@@ -5,6 +5,7 @@ const YearFilterButtons: React.FC<{
   yearFilter?: number;
   setYearFilter: (year?: number) => void;
 }> = ({ yearsSet, yearFilter, setYearFilter }) => {
+  if (yearsSet.size === 0) return <></>;
   const id = React.useId();
   return (
     <div className="btn-group flex-wrap align-items-center m-2">
