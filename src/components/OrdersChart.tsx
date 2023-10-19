@@ -267,7 +267,11 @@ const YearFilterButtons: React.FC<{
         checked={yearFilter === undefined}
         onChange={() => setYearFilter()}
       />
-      <label className="btn btn-outline-primary py-2 px-3" htmlFor={id}>
+      <label
+        className="btn btn-outline-primary py-2 px-3"
+        htmlFor={id}
+        title="All years"
+      >
         All
       </label>
       {yearsArray.map((v) => (
@@ -281,7 +285,11 @@ const YearFilterButtons: React.FC<{
             checked={yearFilter === v}
             onChange={() => setYearFilter(v)}
           />
-          <label className="btn btn-outline-primary py-2 px-3" htmlFor={id + v}>
+          <label
+            className="btn btn-outline-primary py-2 px-3"
+            htmlFor={id + v}
+            title={v + ' year'}
+          >
             {v}
           </label>
         </React.Fragment>
