@@ -1,5 +1,6 @@
 import * as ReactQuery from '@tanstack/react-query';
 import { NavLink, useParams } from 'react-router-dom';
+import { OrdersChart } from '../components';
 import { ErrorMessage, PanelCentred, WaitSpinner } from '../ui';
 import {
   API_URL,
@@ -128,6 +129,7 @@ export default function Employee(): JSX.Element {
         </div>
       </div>
       <Employees reportsTo={id} />
+      <OrdersChart employeeId={id} />
     </PanelCentred>
   );
 }

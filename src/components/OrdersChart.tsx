@@ -290,9 +290,15 @@ const YearFilterButtons: React.FC<{
   );
 };
 
-export default function OrdersChart(): JSX.Element {
+export default function OrdersChart({
+  employeeId,
+}: {
+  employeeId?: string;
+}): JSX.Element {
   // Load data
-  const { data, error, isLoading } = useQuery<IOrders>([API_URL + '/Orders']);
+  const { data, error, isLoading } = useQuery<IOrders>([
+    API_URL + (employeeId ? '/Employees/' + employeeId : '') + '/Orders',
+  ]);
 
   // State
   const [yearFilter, setYearFilter] = useState<number>();
