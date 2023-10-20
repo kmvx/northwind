@@ -197,8 +197,8 @@ function buildSVG(
     .attr('class', 'orders-chart__tooltip')
     .style('visibility', 'hidden');
 
-  const xScaledArray = ordersCountByMonth.map((_, index) => {
-    return x(index);
+  const scaledArray = ordersCountByMonth.map((d, index) => {
+    return { x: x(index) + margin.left, y: y(d) + margin.top };
   });
 
   // Mouse event handlers
@@ -208,9 +208,7 @@ function buildSVG(
       tooltip.style('visibility', 'visible');
     })
     .on('mousemove', (event: MouseEvent) => {
-      const index = d3.bisect(xScaledArray, event.offsetX) - 1;
-      const ordersCount = ordersCountByMonth[index];
-
+      // Move focus line
       const focusLineY = event.offsetY - 0.5 - margin.top;
       focusLine.attr('y1', focusLineY).attr('y2', focusLineY);
       const focusValue = Math.round(y.invert(focusLineY));
@@ -220,23 +218,43 @@ function buildSVG(
         .text(focusValue);
       focusElement.style('visibility', focusValue >= 0 ? 'visible' : 'hidden');
 
-      tooltip
-        .style(
-          'left',
-          margin.left +
-            x(index) -
-            (tooltip.node()?.offsetWidth || 0) / 2 +
-            'px',
-        )
-        .style(
-          'top',
-          margin.top +
-            y(ordersCount) -
-            (tooltip.node()?.offsetHeight || 0) -
-            15 +
-            'px',
-        )
-        .html(`<b>${ordersCount}</b> orders in ${months[index]}`);
+      // Find nearest value for tooltip
+      let nearestIndex;
+      let nearestDistance = Infinity;
+      scaledArray.forEach((value, index) => {
+        const distance = Math.sqrt(
+          (value.x - event.offsetX) ** 2 + (value.y - event.offsetY) ** 2,
+        );
+        if (distance < nearestDistance) {
+          nearestDistance = distance;
+          nearestIndex = index;
+        }
+      });
+      if (nearestIndex === undefined || nearestDistance > 100) {
+        tooltip.style('visibility', 'hidden');
+      } else {
+        const ordersCount = ordersCountByMonth[nearestIndex];
+
+        // Position tooltip
+        tooltip
+          .style(
+            'left',
+            margin.left +
+              x(nearestIndex) -
+              (tooltip.node()?.offsetWidth || 0) / 2 +
+              'px',
+          )
+          .style(
+            'top',
+            margin.top +
+              y(ordersCount) -
+              (tooltip.node()?.offsetHeight || 0) -
+              15 +
+              'px',
+          )
+          .html(`<b>${ordersCount}</b> orders in ${months[nearestIndex]}`)
+          .style('visibility', 'visible');
+      }
     })
     .on('mouseout', () => {
       focusElement.style('visibility', 'hidden');
