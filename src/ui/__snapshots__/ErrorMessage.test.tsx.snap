@@ -2,7 +2,7 @@
 
 exports[`ErrorMessage 1`] = `
 <div
-  className="m-2 text-danger "
+  className="m-2 text-danger"
 >
   <div>
     Error: 

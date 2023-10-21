@@ -7,8 +7,8 @@ const YearFilterButtons: React.FC<{
   yearFilter?: number;
   setYearFilter: (year?: number) => void;
 }> = ({ className, yearsSet, yearFilter, setYearFilter }) => {
-  if (yearsSet.size <= 1) return <></>;
   const id = React.useId();
+  if (yearsSet.size <= 1) return <></>;
   return (
     <div className={clsx('btn-group flex-wrap align-items-center', className)}>
       <input
