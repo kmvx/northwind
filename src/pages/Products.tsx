@@ -35,6 +35,7 @@ export default function Products({
     API_URL + '/Categories',
   ]);
 
+  // Sort data
   const { sortColumn, reverseSortingOrder, refTable } = useSortTable();
   const filteredData = React.useMemo(() => {
     if (!data) return undefined;
@@ -68,6 +69,7 @@ export default function Products({
         (item) => item.discontinued === discontinuedFilter,
       );
     }
+
     filteredData.sort((a, b) => {
       if (!(sortColumn >= 0)) return 0;
       const columns = [
@@ -92,11 +94,14 @@ export default function Products({
       if (typeof aValue === 'string' || typeof bValue === 'string')
         compareResult = aValue.localeCompare(bValue);
       else compareResult = bValue - aValue;
+      if (aValue instanceof Date || bValue instanceof Date)
+        compareResult = -compareResult;
       if (reverseSortingOrder) compareResult = -compareResult;
       if (sortColumn === 0) compareResult = -compareResult;
       return compareResult;
     });
     filteredData = [...filteredData]; // Toggle data change hooks
+
     return filteredData;
   }, [
     data,

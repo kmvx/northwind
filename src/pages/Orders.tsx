@@ -2,7 +2,7 @@ import * as React from 'react';
 import * as ReactQuery from '@tanstack/react-query';
 import { NavLink, useLocation, useParams } from 'react-router-dom';
 import { ErrorMessage, Paginate, WaitSpinner, YearFilterButtons } from '../ui';
-import { usePaginate } from '../hooks';
+import { usePaginate, useSortTable } from '../hooks';
 import {
   API_URL,
   joinFields,
@@ -36,6 +36,7 @@ export default function Orders(): JSX.Element {
   const { data: dataEmployees } = ReactQuery.useQuery<IEmployees>([
     API_URL + '/Employees',
   ]);
+  const { sortColumn, reverseSortingOrder, refTable } = useSortTable();
   const filteredData = React.useMemo(() => {
     const yearsSetTemp = new Set<number>();
     const computedData = data
@@ -54,6 +55,9 @@ export default function Orders(): JSX.Element {
             orderDate: formatDateFromString(item.orderDate),
             shippedDate: formatDateFromString(item.shippedDate),
             requiredDate: formatDateFromString(item.requiredDate),
+            orderDateObject: new Date(item.orderDate),
+            shippedDateObject: new Date(item.shippedDate),
+            requiredDateObject: new Date(item.requiredDate),
             freight: item.freight,
             shipName: item.shipName,
             addressLine0: joinFields(
@@ -84,8 +88,48 @@ export default function Orders(): JSX.Element {
         return new Date(item.orderDate)?.getFullYear() === yearFilter;
       });
     }
+
+    // Sort data
+    filteredData?.sort((a, b) => {
+      if (!(sortColumn >= 0)) return 0;
+      const columns = [
+        'orderId',
+        'customerId',
+        'employeeName',
+        'orderDateObject',
+        'shippedDateObject',
+        'requiredDateObject',
+        'freight',
+        'shipName',
+        'addressLine0',
+      ];
+      function getColumnValue(item: typeof a) {
+        const value = (item as any)[columns[sortColumn]];
+        return value;
+      }
+      const aValue = getColumnValue(a);
+      const bValue = getColumnValue(b);
+      let compareResult;
+      if (typeof aValue === 'string' || typeof bValue === 'string')
+        compareResult = aValue.localeCompare(bValue);
+      else compareResult = bValue - aValue;
+      if (aValue instanceof Date || bValue instanceof Date)
+        compareResult = -compareResult;
+      if (reverseSortingOrder) compareResult = -compareResult;
+      if (sortColumn === 0) compareResult = -compareResult;
+      return compareResult;
+    });
+    if (filteredData) filteredData = [...filteredData]; // Toggle data change hooks
+
     return filteredData;
-  }, [data, filter, yearFilter, dataEmployees]);
+  }, [
+    data,
+    filter,
+    yearFilter,
+    dataEmployees,
+    sortColumn,
+    reverseSortingOrder,
+  ]);
 
   const { paginateData, paginateStore } = usePaginate(filteredData);
   if (error) return <ErrorMessage error={error} />;
@@ -128,7 +172,10 @@ export default function Orders(): JSX.Element {
           <div className="m-2">{pluralize(filteredData.length, 'order')}</div>
           <Paginate paginateStore={paginateStore} />
           <div className="d-flex">
-            <table className="table table-hover table-striped m-2">
+            <table
+              ref={refTable}
+              className="table table-hover table-striped m-2"
+            >
               <thead className="sticky-top bg-white">
                 <tr>
                   <th scope="col">#</th>
