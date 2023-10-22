@@ -7,7 +7,7 @@ import {
   Paginate,
   WaitSpinner,
 } from '../ui';
-import { usePaginate } from '../hooks';
+import { usePaginate, useSortTable } from '../hooks';
 import {
   API_URL,
   isStringIncludes,
@@ -35,6 +35,7 @@ export default function Products({
     API_URL + '/Categories',
   ]);
 
+  const { sortColumn, reverseSortingOrder, refTable } = useSortTable();
   const filteredData = React.useMemo(() => {
     if (!data) return undefined;
     let filteredData =
@@ -67,6 +68,35 @@ export default function Products({
         (item) => item.discontinued === discontinuedFilter,
       );
     }
+    filteredData.sort((a, b) => {
+      if (!(sortColumn >= 0)) return 0;
+      const columns = [
+        'productId',
+        'productName',
+        'categoryId',
+        'quantityPerUnit',
+        'unitPrice',
+        'unitsInStock',
+        'unitsOnOrder',
+        'reorderLevel',
+        'discontinued',
+      ];
+      function getColumnValue(item: typeof a) {
+        const value = (item as any)[columns[sortColumn]];
+        if (sortColumn === 2) return getCategoryNameById(dataCategories, value);
+        else return value;
+      }
+      const aValue = getColumnValue(a);
+      const bValue = getColumnValue(b);
+      let compareResult;
+      if (typeof aValue === 'string' || typeof bValue === 'string')
+        compareResult = aValue.localeCompare(bValue);
+      else compareResult = bValue - aValue;
+      if (reverseSortingOrder) compareResult = -compareResult;
+      if (sortColumn === 0) compareResult = -compareResult;
+      return compareResult;
+    });
+    filteredData = [...filteredData]; // Toggle data change hooks
     return filteredData;
   }, [
     data,
@@ -76,6 +106,8 @@ export default function Products({
     supplierId,
     categoryId,
     categoryIdNumber,
+    sortColumn,
+    reverseSortingOrder,
   ]);
 
   const { paginateData, paginateStore } = usePaginate(filteredData, 15);
@@ -157,7 +189,10 @@ export default function Products({
           <div className="m-2">{pluralize(filteredData.length, 'product')}</div>
           <Paginate paginateStore={paginateStore} />
           <div className="d-flex">
-            <table className="table table-hover table-striped m-2">
+            <table
+              ref={refTable}
+              className="table table-hover table-striped m-2"
+            >
               <THead />
               <tbody className="table-group-divider">
                 {paginateData.map((item: any) => {
