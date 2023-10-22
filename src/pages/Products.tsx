@@ -124,9 +124,7 @@ export default function Products({
     return (
       <thead className="sticky-top bg-white">
         <tr>
-          <th scope="col" className="align-middle">
-            #
-          </th>
+          <th scope="col">#</th>
           <th scope="col">
             <div className="d-flex flex-wrap">
               <span className="flex-fill">Name</span>
