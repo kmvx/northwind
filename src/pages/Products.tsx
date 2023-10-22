@@ -28,12 +28,12 @@ export default function Products({
     categoryId == undefined ? undefined : parseInt(categoryId, 10);
   const [filter, setFilter] = React.useState('');
   const [discontinuedFilter, setDicontinuedFilter] = React.useState<boolean>();
-  const { data, error, isLoading } = ReactQuery.useQuery<IProducts>([
-    API_URL + '/Products',
-  ]);
-  const { data: dataCategories } = ReactQuery.useQuery<ICategories>([
-    API_URL + '/Categories',
-  ]);
+  const { data, error, isLoading } = ReactQuery.useQuery<IProducts>({
+    queryKey: [API_URL + '/Products'],
+  });
+  const { data: dataCategories } = ReactQuery.useQuery<ICategories>({
+    queryKey: [API_URL + '/Categories'],
+  });
 
   // Sort data
   const { sortColumn, reverseSortingOrder, refTable } = useSortTable();
@@ -70,6 +70,7 @@ export default function Products({
       );
     }
 
+    // Sort data
     filteredData.sort((a, b) => {
       if (!(sortColumn >= 0)) return 0;
       const columns = [

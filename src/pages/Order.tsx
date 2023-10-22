@@ -14,18 +14,18 @@ import type { ICustomer, IEmployee, IOrder, IShipper } from '../models';
 
 export default function Order(): JSX.Element {
   const { id } = useParams();
-  const { data: dataCustomer } = ReactQuery.useQuery<ICustomer>([
-    API_URL + '/Orders/' + id + '/Customer',
-  ]);
-  const { data: dataEmployee } = ReactQuery.useQuery<IEmployee>([
-    API_URL + '/Orders/' + id + '/Employee',
-  ]);
-  const { data: dataOrder } = ReactQuery.useQuery<IOrder>([
-    API_URL + '/Orders/' + id,
-  ]);
-  const { data: dataShipper } = ReactQuery.useQuery<IShipper>([
-    API_URL + '/Orders/' + id + '/Shipper',
-  ]);
+  const { data: dataCustomer } = ReactQuery.useQuery<ICustomer>({
+    queryKey: [API_URL + '/Orders/' + id + '/Customer'],
+  });
+  const { data: dataEmployee } = ReactQuery.useQuery<IEmployee>({
+    queryKey: [API_URL + '/Orders/' + id + '/Employee'],
+  });
+  const { data: dataOrder } = ReactQuery.useQuery<IOrder>({
+    queryKey: [API_URL + '/Orders/' + id],
+  });
+  const { data: dataShipper } = ReactQuery.useQuery<IShipper>({
+    queryKey: [API_URL + '/Orders/' + id + '/Shipper'],
+  });
   setDocumentTitle('Order #' + id);
   return (
     <PanelCentred>

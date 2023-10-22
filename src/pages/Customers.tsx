@@ -15,9 +15,9 @@ import type { ICustomers } from '../models';
 export default function Customers(): JSX.Element {
   setDocumentTitle('Customers');
   const [filter, setFilter] = React.useState('');
-  const { data, error, isLoading } = ReactQuery.useQuery<ICustomers>([
-    API_URL + '/Customers',
-  ]);
+  const { data, error, isLoading } = ReactQuery.useQuery<ICustomers>({
+    queryKey: [API_URL + '/Customers'],
+  });
   const filteredData = React.useMemo(() => {
     return data && filter
       ? data.filter((item) =>

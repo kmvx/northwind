@@ -20,9 +20,9 @@ export default function Employees({
   reportsTo?: string;
 }): JSX.Element {
   const [filter, setFilter] = React.useState('');
-  const { data, error, isLoading } = ReactQuery.useQuery<IEmployees>([
-    API_URL + '/Employees',
-  ]);
+  const { data, error, isLoading } = ReactQuery.useQuery<IEmployees>({
+    queryKey: [API_URL + '/Employees'],
+  });
   if (error) return <ErrorMessage error={error} />;
   if (isLoading) return <WaitSpinner />;
   if (!data) return <div>No data</div>;

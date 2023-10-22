@@ -271,9 +271,11 @@ export default function OrdersChart({
   employeeId?: string;
 }): JSX.Element {
   // Load data
-  const { data, error, isLoading } = useQuery<IOrders>([
-    API_URL + (employeeId ? '/Employees/' + employeeId : '') + '/Orders',
-  ]);
+  const { data, error, isLoading } = useQuery<IOrders>({
+    queryKey: [
+      API_URL + (employeeId ? '/Employees/' + employeeId : '') + '/Orders',
+    ],
+  });
 
   // State
   const [yearFilter, setYearFilter] = useState<number>();

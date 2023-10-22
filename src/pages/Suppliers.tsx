@@ -13,9 +13,9 @@ import type { ISuppliers } from '../models';
 
 export default function Suppliers(): JSX.Element {
   const [filter, setFilter] = React.useState('');
-  const { data, error, isLoading } = ReactQuery.useQuery<ISuppliers>([
-    API_URL + '/Suppliers',
-  ]);
+  const { data, error, isLoading } = ReactQuery.useQuery<ISuppliers>({
+    queryKey: [API_URL + '/Suppliers'],
+  });
   if (error) return <ErrorMessage error={error} />;
   if (isLoading) return <WaitSpinner />;
   if (!data) return <div>No data</div>;

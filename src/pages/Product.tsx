@@ -13,12 +13,10 @@ function SupplierLink({
   className?: string;
 }): JSX.Element {
   const hasId = Boolean(id);
-  const { data, error, isLoading } = ReactQuery.useQuery<ISupplier>(
-    [API_URL + '/Suppliers/' + id],
-    {
-      enabled: hasId,
-    },
-  );
+  const { data, error, isLoading } = ReactQuery.useQuery<ISupplier>({
+    queryKey: [API_URL + '/Suppliers/' + id],
+    enabled: hasId,
+  });
   if (error) return <ErrorMessage error={error} />;
   if (isLoading) {
     if (hasId) return <WaitSpinner />;
@@ -34,12 +32,12 @@ function SupplierLink({
 
 export default function Product(): JSX.Element {
   const { id } = useParams();
-  const { data, error, isLoading } = ReactQuery.useQuery<IProduct>([
-    API_URL + '/Products/' + id,
-  ]);
-  const { data: dataCategories } = ReactQuery.useQuery<ICategories>([
-    API_URL + '/Categories',
-  ]);
+  const { data, error, isLoading } = ReactQuery.useQuery<IProduct>({
+    queryKey: [API_URL + '/Products/' + id],
+  });
+  const { data: dataCategories } = ReactQuery.useQuery<ICategories>({
+    queryKey: [API_URL + '/Categories'],
+  });
   if (error) return <ErrorMessage error={error} />;
   if (isLoading) return <WaitSpinner />;
   if (!data) return <div>No data</div>;

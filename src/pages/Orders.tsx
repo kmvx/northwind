@@ -27,15 +27,17 @@ export default function Orders(): JSX.Element {
   const [yearsSet, setYearsSet] = React.useState<Set<number>>(new Set());
   const { id } = useParams();
   const { pathname } = useLocation();
-  const { data, error, isLoading } = ReactQuery.useQuery<IOrders>([
-    API_URL +
-      (pathname.startsWith('/employees/') ? '/Employees/' : '/Customers/') +
-      id +
-      '/Orders',
-  ]);
-  const { data: dataEmployees } = ReactQuery.useQuery<IEmployees>([
-    API_URL + '/Employees',
-  ]);
+  const { data, error, isLoading } = ReactQuery.useQuery<IOrders>({
+    queryKey: [
+      API_URL +
+        (pathname.startsWith('/employees/') ? '/Employees/' : '/Customers/') +
+        id +
+        '/Orders',
+    ],
+  });
+  const { data: dataEmployees } = ReactQuery.useQuery<IEmployees>({
+    queryKey: [API_URL + '/Employees'],
+  });
   const { sortColumn, reverseSortingOrder, refTable } = useSortTable();
   const filteredData = React.useMemo(() => {
     const yearsSetTemp = new Set<number>();

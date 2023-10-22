@@ -12,9 +12,9 @@ import type { ISupplier } from '../models';
 
 export default function Supplier(): JSX.Element {
   const { id } = useParams();
-  const { data, error, isLoading } = ReactQuery.useQuery<ISupplier>([
-    API_URL + '/Suppliers/' + id,
-  ]);
+  const { data, error, isLoading } = ReactQuery.useQuery<ISupplier>({
+    queryKey: [API_URL + '/Suppliers/' + id],
+  });
   if (error) return <ErrorMessage error={error} />;
   if (isLoading) return <WaitSpinner />;
   if (!data) return <div>No data</div>;

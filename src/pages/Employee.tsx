@@ -23,12 +23,10 @@ function EmployeeLink({
   className?: string;
 }): JSX.Element {
   const hasReportsTo = Boolean(id);
-  const { data, error, isLoading } = ReactQuery.useQuery<IEmployee>(
-    [API_URL + '/Employees/' + id],
-    {
-      enabled: hasReportsTo,
-    },
-  );
+  const { data, error, isLoading } = ReactQuery.useQuery<IEmployee>({
+    queryKey: [API_URL + '/Employees/' + id],
+    enabled: hasReportsTo,
+  });
   if (error) return <ErrorMessage error={error} />;
   if (isLoading) {
     if (hasReportsTo) return <WaitSpinner />;
@@ -45,9 +43,9 @@ function EmployeeLink({
 
 export default function Employee(): JSX.Element {
   const { id } = useParams();
-  const { data, error, isLoading } = ReactQuery.useQuery<IEmployee>([
-    API_URL + '/Employees/' + id,
-  ]);
+  const { data, error, isLoading } = ReactQuery.useQuery<IEmployee>({
+    queryKey: [API_URL + '/Employees/' + id],
+  });
   if (error) return <ErrorMessage error={error} />;
   if (isLoading) return <WaitSpinner />;
   if (!data) return <div>No data</div>;

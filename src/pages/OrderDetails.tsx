@@ -9,15 +9,15 @@ export default function OrderDetails(): JSX.Element {
   const { id } = useParams();
   const { pathname } = useLocation();
   const isOrders = pathname.startsWith('/orders/');
-  const { data, error, isLoading } = ReactQuery.useQuery<IOrderDetails>([
-    API_URL + (isOrders ? '/Orders/' : '/Products/') + id + '/OrderDetails',
-  ]);
-  const { data: dataProducts } = ReactQuery.useQuery<IProducts>(
-    [API_URL + '/Orders/' + id + '/Products'],
-    {
-      enabled: isOrders,
-    },
-  );
+  const { data, error, isLoading } = ReactQuery.useQuery<IOrderDetails>({
+    queryKey: [
+      API_URL + (isOrders ? '/Orders/' : '/Products/') + id + '/OrderDetails',
+    ],
+  });
+  const { data: dataProducts } = ReactQuery.useQuery<IProducts>({
+    queryKey: [API_URL + '/Orders/' + id + '/Products'],
+    enabled: isOrders,
+  });
 
   // Sort data
   const { sortColumn, reverseSortingOrder, refTable } = useSortTable();

@@ -12,9 +12,9 @@ import type { ICustomer } from '../models';
 
 export default function Customer(): JSX.Element {
   const { id } = useParams();
-  const { data, error, isLoading } = ReactQuery.useQuery<ICustomer>([
-    API_URL + '/Customers/' + id,
-  ]);
+  const { data, error, isLoading } = ReactQuery.useQuery<ICustomer>({
+    queryKey: [API_URL + '/Customers/' + id],
+  });
   if (error) return <ErrorMessage error={error} />;
   if (isLoading) return <WaitSpinner />;
   if (!data) return <div>No data</div>;
