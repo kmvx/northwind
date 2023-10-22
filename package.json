@@ -29,8 +29,8 @@
     "tsc:watch": "tsc --watch"
   },
   "dependencies": {
-    "@tanstack/react-query": "*",
-    "@tanstack/react-query-devtools": "*",
+    "@tanstack/react-query": "^4",
+    "@tanstack/react-query-devtools": "^4",
     "axios": "*",
     "bootstrap": "*",
     "bootstrap-icons": "*",
