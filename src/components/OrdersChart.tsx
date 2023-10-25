@@ -352,7 +352,7 @@ export default function OrdersChart({
     return () => {
       if (element) resizeObserver.unobserve(element);
     };
-  }, [data, yearFilter]);
+  }, [data, yearFilter, svgBuilder]);
 
   // Handle errors and loading state
   if (error) return <ErrorMessage error={error} />;
