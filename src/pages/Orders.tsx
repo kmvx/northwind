@@ -151,7 +151,24 @@ export default function Orders(): JSX.Element {
   }
   return (
     <section>
-      <h1 className="m-2 text-center">Orders</h1>
+      <h1 className="m-2 text-center">
+        <span>Orders</span>
+        {pathname.startsWith('/employees/') && !isEmployeePage && (
+          <span>
+            {' '}
+            of employee{' '}
+            <NavLink to={'/employees/' + id} title={'ID: ' + id}>
+              {getEmployeeNameById(dataEmployees, parseInt(id || ''))}
+            </NavLink>
+          </span>
+        )}
+        {pathname.startsWith('/customers/') && !isCustomerPage && (
+          <span>
+            {' '}
+            of customer <NavLink to={'/customers/' + id}>{id}</NavLink>
+          </span>
+        )}
+      </h1>
       <div className="d-flex flex-wrap">
         <div className="input-group w-auto flex-grow-1 m-2">
           <span className="input-group-text">Filter</span>
