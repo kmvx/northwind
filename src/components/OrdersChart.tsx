@@ -104,6 +104,7 @@ class SVGBuilder {
           'd',
           d3
             .area()
+            .curve(d3.curveNatural)
             .x((_: any, index: number) => x(index))
             .y0(height)
             .y1((d: any) => y(d)) as any,
@@ -118,6 +119,7 @@ class SVGBuilder {
           'd',
           d3
             .line()
+            .curve(d3.curveNatural)
             .x((_: any, index: number) => x(index))
             .y((d: any) => y(d)) as any,
         );
@@ -263,6 +265,7 @@ class SVGBuilder {
         'd',
         d3
           .area()
+          .curve(d3.curveNatural)
           .x((_: any, index: number) => x(index))
           .y0(height)
           .y1((d: any) => y(d)) as any,
@@ -274,6 +277,7 @@ class SVGBuilder {
         'd',
         d3
           .line()
+          .curve(d3.curveNatural)
           .x((_: any, index: number) => x(index))
           .y((d: any) => y(d)) as any,
       );
