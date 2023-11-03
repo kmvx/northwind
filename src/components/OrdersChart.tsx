@@ -217,7 +217,9 @@ class SVGBuilder {
                 15 +
                 'px',
             )
-            .html(`<b>${ordersCount}</b> orders in ${months[nearestIndex]}`)
+            .html(
+              `<b style="font-size: 10pt;">${ordersCount}</b> orders in ${months[nearestIndex]}`,
+            )
             .style('visibility', 'visible');
         }
       })
