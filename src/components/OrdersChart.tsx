@@ -42,7 +42,7 @@ class SVGBuilder {
     if (!parentNode) return;
     const parentWidth = parentNode.clientWidth;
     const parentHeight = parentNode.clientHeight;
-    const margin = { left: 70, right: 30, top: 30, bottom: 50 };
+    const margin = this.margin;
     d3.select(ref.current).select('*').remove(); // Clear canvas
     const svg = d3
       .select(ref.current)
@@ -179,10 +179,6 @@ class SVGBuilder {
       .attr('class', 'orders-chart__tooltip')
       .style('visibility', 'hidden');
 
-    const scaledArray = ordersCountByMonth.map((d, index) => {
-      return { x: x(index) + margin.left, y: y(d) + margin.top };
-    });
-
     // Mouse event handlers
     svgParent
       .on('mouseover', () => {
@@ -206,7 +202,7 @@ class SVGBuilder {
         // Find nearest value for tooltip
         let nearestIndex;
         let nearestDistance = Infinity;
-        scaledArray.forEach((value, index) => {
+        this.scaledArray.forEach((value, index) => {
           const distance = Math.sqrt(
             (value.x - event.offsetX) ** 2 + (value.y - event.offsetY) ** 2,
           );
@@ -269,6 +265,7 @@ class SVGBuilder {
     // Upate scales
     const width = this.width;
     const height = this.height;
+    const margin = this.margin;
     const x = d3
       .scaleLinear()
       .domain([0, ordersCountByMonth.length - 1])
@@ -303,6 +300,10 @@ class SVGBuilder {
       .duration(1e3)
       .attr('cx', (_: any, index: number) => x(index))
       .attr('cy', (d: any) => y(d));
+
+    this.scaledArray = ordersCountByMonth.map((d, index) => {
+      return { x: x(index) + margin.left, y: y(d) + margin.top };
+    });
   }
 
   private ordersCountByMonth: Array<number> = new Array(12).fill(0);
@@ -316,6 +317,8 @@ class SVGBuilder {
     SVGGElement,
     undefined
   >;
+  private scaledArray: { x: number; y: number }[] = [];
+  private margin = { left: 70, right: 30, top: 30, bottom: 50 } as const;
 }
 
 export default function OrdersChart({
