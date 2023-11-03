@@ -27,10 +27,11 @@ const months = [
   'DEC',
 ] as const;
 
+const GRID_PADDING_X = 20;
+type Selection = d3.Selection<SVGGElement, unknown, null, undefined>;
+
 class SVGBuilder {
   create(ref: React.RefObject<SVGSVGElement>) {
-    type Selection = d3.Selection<SVGGElement, unknown, null, undefined>;
-
     if (this.svgLines) return; // Already created
     if (!ref.current) return; // HTML Element not created yet
 
@@ -44,19 +45,20 @@ class SVGBuilder {
     const parentHeight = parentNode.clientHeight;
     const margin = this.margin;
     d3.select(ref.current).select('*').remove(); // Clear canvas
-    const svg = d3
+    const svg = (this.svg = d3
       .select(ref.current)
       .attr('width', parentWidth)
       .attr('height', parentHeight)
       .append('g')
-      .attr('transform', `translate(${margin.left},${margin.top})`);
+      .attr('transform', `translate(${margin.left},${margin.top})`));
     const width = (this.width = parentWidth - margin.left - margin.right);
     const height = (this.height = parentHeight - margin.top - margin.bottom);
     const x = d3
       .scaleLinear()
       .domain([0, ordersCountByMonth.length - 1])
       .range([0, width]);
-    const y = d3.scaleLinear().domain([0, maxValue]).range([height, 0]);
+    this.updateY(maxValue);
+    const y = this.y;
 
     // x axis
     svg
@@ -67,30 +69,6 @@ class SVGBuilder {
           const d = domainValue as number;
           return months[d];
         }),
-      )
-      .call((g: Selection) => g.select('.domain').remove())
-      .call((g: Selection) => g.selectAll('line').remove())
-      .call((g: Selection) =>
-        g
-          .selectAll('text')
-          .attr('fill', 'var(--chart-text-color)')
-          .attr('font-size', '9pt'),
-      );
-
-    const GRID_PADDING_X = 20;
-
-    // y axis
-    svg
-      .append('g')
-      .attr('transform', 'translate(-' + GRID_PADDING_X + ', 0)')
-      .call(
-        d3
-          .axisLeft(y)
-          .ticks(6)
-          .tickFormat((domainValue: d3.NumberValue) => {
-            const d = domainValue as number;
-            return d >= 1e3 ? d / 1e3 + 'k' : String(d);
-          }),
       )
       .call((g: Selection) => g.select('.domain').remove())
       .call((g: Selection) => g.selectAll('line').remove())
@@ -189,7 +167,7 @@ class SVGBuilder {
         // Move focus line
         const focusLineY = event.offsetY - 0.5 - margin.top;
         focusLine.attr('y1', focusLineY).attr('y2', focusLineY);
-        const focusValue = Math.round(y.invert(focusLineY));
+        const focusValue = Math.round(this.y.invert(focusLineY));
         focusText
           .attr('x', -GRID_PADDING_X - 30)
           .attr('y', focusLineY)
@@ -214,7 +192,7 @@ class SVGBuilder {
         if (nearestIndex === undefined || nearestDistance > 100) {
           tooltip.style('visibility', 'hidden');
         } else {
-          const ordersCount = ordersCountByMonth[nearestIndex];
+          const ordersCount = this.ordersCountByMonth[nearestIndex];
 
           // Position tooltip
           tooltip
@@ -228,7 +206,7 @@ class SVGBuilder {
             .style(
               'top',
               margin.top +
-                y(ordersCount) -
+                this.y(ordersCount) -
                 (tooltip.node()?.offsetHeight || 0) -
                 15 +
                 'px',
@@ -260,7 +238,7 @@ class SVGBuilder {
         ordersCountByMonth[date.getMonth()]++;
     });
     setYearsSet(yearsSet);
-    const maxValue = ordersCountByMonth.reduce((p, v) => Math.max(p, v));
+    const maxValue = this.ordersCountByMonth.reduce((p, v) => Math.max(p, v));
 
     // Upate scales
     const width = this.width;
@@ -270,7 +248,8 @@ class SVGBuilder {
       .scaleLinear()
       .domain([0, ordersCountByMonth.length - 1])
       .range([0, width]);
-    const y = d3.scaleLinear().domain([0, maxValue]).range([height, 0]);
+    this.updateY(maxValue);
+    const y = this.y;
 
     // Update data shapes
     this.svgArea
@@ -305,10 +284,39 @@ class SVGBuilder {
       return { x: x(index) + margin.left, y: y(d) + margin.top };
     });
   }
+  private updateY(maxValue: number) {
+    this.y = d3.scaleLinear().domain([0, maxValue]).range([this.height, 0]);
+
+    // y axis
+    this.svgYAxis?.remove();
+    this.svgYAxis = this.svg
+      ?.append('g')
+      .attr('transform', 'translate(-' + GRID_PADDING_X + ', 0)')
+      .call(
+        d3
+          .axisLeft(this.y)
+          .ticks(6)
+          .tickFormat((domainValue: d3.NumberValue) => {
+            const d = domainValue as number;
+            return d >= 1e3 ? d / 1e3 + 'k' : String(d);
+          }),
+      )
+      .call((g: Selection) => g.select('.domain').remove())
+      .call((g: Selection) => g.selectAll('line').remove())
+      .call((g: Selection) =>
+        g
+          .selectAll('text')
+          .attr('fill', 'var(--chart-text-color)')
+          .attr('font-size', '9pt'),
+      );
+  }
 
   private ordersCountByMonth: Array<number> = new Array(12).fill(0);
   private width: number = 0;
   private height: number = 0;
+  private y: d3.ScaleLinear<number, number, never> = d3.scaleLinear();
+  private svg?: d3.Selection<SVGGElement, unknown, null, undefined>;
+  private svgYAxis?: d3.Selection<SVGGElement, unknown, null, undefined>;
   private svgArea?: d3.Selection<SVGPathElement, number[], null, undefined>;
   private svgLines?: d3.Selection<SVGPathElement, number[], null, undefined>;
   private svgCircles?: d3.Selection<
