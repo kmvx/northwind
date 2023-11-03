@@ -35,110 +35,112 @@ class SVGBuilder {
     if (this.svgLines) return; // Already created
     if (!ref.current) return; // HTML Element not created yet
 
-    const maxValue = 200;
-    const ordersCountByMonth = this.ordersCountByMonth;
+    {
+      const maxValue = 200;
+      const ordersCountByMonth = this.ordersCountByMonth;
 
-    // Build SVG
-    const parentNode = ref.current.parentNode as HTMLElement;
-    if (!parentNode) return;
-    const parentWidth = parentNode.clientWidth;
-    const parentHeight = parentNode.clientHeight;
-    const margin = this.margin;
-    d3.select(ref.current).select('*').remove(); // Clear canvas
-    const svg = (this.svg = d3
-      .select(ref.current)
-      .attr('width', parentWidth)
-      .attr('height', parentHeight)
-      .append('g')
-      .attr('transform', `translate(${margin.left},${margin.top})`));
-    const width = (this.width = parentWidth - margin.left - margin.right);
-    const height = (this.height = parentHeight - margin.top - margin.bottom);
-    const x = d3
-      .scaleLinear()
-      .domain([0, ordersCountByMonth.length - 1])
-      .range([0, width]);
-    this.updateY(maxValue);
-    const y = this.y;
+      // Build SVG
+      const parentNode = ref.current.parentNode as HTMLElement;
+      if (!parentNode) return;
+      const parentWidth = parentNode.clientWidth;
+      const parentHeight = parentNode.clientHeight;
+      const margin = this.margin;
+      d3.select(ref.current).select('*').remove(); // Clear canvas
+      const svg = (this.svg = d3
+        .select(ref.current)
+        .attr('width', parentWidth)
+        .attr('height', parentHeight)
+        .append('g')
+        .attr('transform', `translate(${margin.left},${margin.top})`));
+      const width = (this.width = parentWidth - margin.left - margin.right);
+      const height = (this.height = parentHeight - margin.top - margin.bottom);
+      const x = (this.x = d3
+        .scaleLinear()
+        .domain([0, ordersCountByMonth.length - 1])
+        .range([0, width]));
+      this.updateY(maxValue);
+      const y = this.y;
 
-    // x axis
-    svg
-      .append('g')
-      .attr('transform', 'translate(0,' + height + ')')
-      .call(
-        d3.axisBottom(x).tickFormat((domainValue: d3.NumberValue) => {
-          const d = domainValue as number;
-          return months[d];
-        }),
-      )
-      .call((g: Selection) => g.select('.domain').remove())
-      .call((g: Selection) => g.selectAll('line').remove())
-      .call((g: Selection) =>
-        g
-          .selectAll('text')
-          .attr('fill', 'var(--chart-text-color)')
-          .attr('font-size', '9pt'),
-      );
+      // x axis
+      svg
+        .append('g')
+        .attr('transform', 'translate(0,' + height + ')')
+        .call(
+          d3.axisBottom(x).tickFormat((domainValue: d3.NumberValue) => {
+            const d = domainValue as number;
+            return months[d];
+          }),
+        )
+        .call((g: Selection) => g.select('.domain').remove())
+        .call((g: Selection) => g.selectAll('line').remove())
+        .call((g: Selection) =>
+          g
+            .selectAll('text')
+            .attr('fill', 'var(--chart-text-color)')
+            .attr('font-size', '9pt'),
+        );
 
-    // x grid
-    svg
-      .selectAll('.whatever-grid')
-      .data(y.ticks(6))
-      .enter()
-      .append('line')
-      .attr('x1', -GRID_PADDING_X)
-      .attr('y1', (d: number) => Math.round(y(d)) + 0.5)
-      .attr('x2', width + GRID_PADDING_X)
-      .attr('y2', (d: number) => Math.round(y(d)) + 0.5)
-      .style('stroke', 'var(--chart-text-color)')
-      .style('stroke-dasharray', '2 3')
-      .style('opacity', 0.3);
+      // x grid
+      svg
+        .selectAll('.whatever-grid')
+        .data(y.ticks(6))
+        .enter()
+        .append('line')
+        .attr('x1', -GRID_PADDING_X)
+        .attr('y1', (d: number) => Math.round(y(d)) + 0.5)
+        .attr('x2', width + GRID_PADDING_X)
+        .attr('y2', (d: number) => Math.round(y(d)) + 0.5)
+        .style('stroke', 'var(--chart-text-color)')
+        .style('stroke-dasharray', '2 3')
+        .style('opacity', 0.3);
 
-    // Create data shapes
-    this.svgArea = svg
-      .append('path')
-      .datum(ordersCountByMonth)
-      .attr('fill', 'var(--chart-line-color)')
-      .attr('fill-opacity', 0.1)
-      .attr(
-        'd',
-        d3
-          .area()
-          .x((_: any, index: number) => x(index))
-          .y0(height)
-          .y1((d: any) => y(d)) as any,
-      );
-    this.svgLines = svg
-      .append('path')
-      .datum(ordersCountByMonth)
-      .attr('fill', 'none')
-      .attr('stroke', 'var(--chart-line-color)')
-      .attr('stroke-width', 2)
-      .attr(
-        'd',
-        d3
-          .line()
-          .x((_: any, index: number) => x(index))
-          .y((d: any) => y(d)) as any,
-      );
-    this.svgCircles = svg
-      .selectAll('.whatever-circle')
-      .data(ordersCountByMonth)
-      .enter()
-      .append('circle')
-      .attr('fill', 'var(--fill-color)')
-      .attr('fill-opacity', 'var(--fill-opacity)')
-      .attr('stroke', 'var(--chart-line-color)')
-      .attr('stroke-width', 2)
-      .attr('r', 10)
-      .attr('cx', (_: any, index: number) => x(index))
-      .attr('cy', (d: any) => y(d));
+      // Create data shapes
+      this.svgArea = svg
+        .append('path')
+        .datum(ordersCountByMonth)
+        .attr('fill', 'var(--chart-line-color)')
+        .attr('fill-opacity', 0.1)
+        .attr(
+          'd',
+          d3
+            .area()
+            .x((_: any, index: number) => x(index))
+            .y0(height)
+            .y1((d: any) => y(d)) as any,
+        );
+      this.svgLines = svg
+        .append('path')
+        .datum(ordersCountByMonth)
+        .attr('fill', 'none')
+        .attr('stroke', 'var(--chart-line-color)')
+        .attr('stroke-width', 2)
+        .attr(
+          'd',
+          d3
+            .line()
+            .x((_: any, index: number) => x(index))
+            .y((d: any) => y(d)) as any,
+        );
+      this.svgCircles = svg
+        .selectAll('.whatever-circle')
+        .data(ordersCountByMonth)
+        .enter()
+        .append('circle')
+        .attr('fill', 'var(--fill-color)')
+        .attr('fill-opacity', 'var(--fill-opacity)')
+        .attr('stroke', 'var(--chart-line-color)')
+        .attr('stroke-width', 2)
+        .attr('r', 10)
+        .attr('cx', (_: any, index: number) => x(index))
+        .attr('cy', (d: any) => y(d));
+    }
 
     // Focus line
-    const focusElement = svg.append('g').style('visibility', 'hidden');
+    const focusElement = this.svg.append('g').style('visibility', 'hidden');
     const focusLine = focusElement
       .append('line')
       .attr('x1', -GRID_PADDING_X)
-      .attr('x2', width + GRID_PADDING_X)
+      .attr('x2', this.width + GRID_PADDING_X)
       .attr('stroke', 'var(--chart-line-color)')
       .style('stroke-dasharray', '2 3');
     const focusText = focusElement
@@ -150,7 +152,9 @@ class SVGBuilder {
       .attr('text-anchor', 'end');
 
     // Tooltip
-    const svgParent = d3.select(svg.node()?.parentNode?.parentNode as Element);
+    const svgParent = d3.select(
+      this.svg.node()?.parentNode?.parentNode as Element,
+    );
     svgParent.selectAll('.orders-chart__tooltip').remove();
     const tooltip = svgParent
       .append('div')
@@ -165,7 +169,7 @@ class SVGBuilder {
       })
       .on('mousemove', (event: MouseEvent) => {
         // Move focus line
-        const focusLineY = event.offsetY - 0.5 - margin.top;
+        const focusLineY = event.offsetY - 0.5 - this.margin.top;
         focusLine.attr('y1', focusLineY).attr('y2', focusLineY);
         const focusValue = Math.round(this.y.invert(focusLineY));
         focusText
@@ -198,14 +202,14 @@ class SVGBuilder {
           tooltip
             .style(
               'left',
-              margin.left +
-                x(nearestIndex) -
+              this.margin.left +
+                this.x(nearestIndex) -
                 (tooltip.node()?.offsetWidth || 0) / 2 +
                 'px',
             )
             .style(
               'top',
-              margin.top +
+              this.margin.top +
                 this.y(ordersCount) -
                 (tooltip.node()?.offsetHeight || 0) -
                 15 +
@@ -314,6 +318,7 @@ class SVGBuilder {
   private ordersCountByMonth: Array<number> = new Array(12).fill(0);
   private width: number = 0;
   private height: number = 0;
+  private x: d3.ScaleLinear<number, number, never> = d3.scaleLinear();
   private y: d3.ScaleLinear<number, number, never> = d3.scaleLinear();
   private svg?: d3.Selection<SVGGElement, unknown, null, undefined>;
   private svgYAxis?: d3.Selection<SVGGElement, unknown, null, undefined>;
