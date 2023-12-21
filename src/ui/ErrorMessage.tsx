@@ -5,12 +5,12 @@ export default function ErrorMessage({
   error,
   className,
 }: {
-  error: any;
+  error: Error;
   className?: string;
 }): JSX.Element {
   return (
     <div className={clsx('m-2 text-danger', className)}>
-      <div>Error: {(error as Error).message}</div>
+      <div>Error: {error.message}</div>
       {error instanceof axios.AxiosError && error?.response?.data && (
         <>
           <div>Data:</div>
