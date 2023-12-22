@@ -38,6 +38,10 @@
     background-color: var(--bs-primary);
   }
 }
+.app-mainbar {
+  overflow: auto;
+  scrollbar-gutter: stable;
+}
 .pagination {
   row-gap: 0.5rem;
 }

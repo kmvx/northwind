@@ -142,10 +142,7 @@ function Layout({ children }: { children: React.ReactNode }): JSX.Element {
           ))}
         </div>
       </nav>
-      <div
-        className="flex-grow-1 vstack"
-        style={{ overflowX: 'auto', overflowY: 'scroll' }}
-      >
+      <div className="app-mainbar flex-grow-1 vstack">
         <div className="app-sidebar-toggler collapse navbar p-0">
           <button
             className="navbar-toggler m-2"
