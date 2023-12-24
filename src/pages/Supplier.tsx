@@ -25,7 +25,7 @@ export default function Supplier(): JSX.Element {
         <h1 className="text-center">{data.companyName}</h1>
         <h2 className="text-center fs-5">Supplier</h2>
         <div className="row">
-          <div className="col-md-7">
+          <div className="col-md-8">
             <div className="hstack" title="Address">
               <i className="bi bi-geo-alt m-2" />
               <img
@@ -49,11 +49,12 @@ export default function Supplier(): JSX.Element {
               <b className="m-2">{data.phone}</b>
             </div>
           </div>
-          <div className="col-md-5">
-            <div className="hstack" title="Contact">
+          <div className="col-md-4">
+            <div className="hstack align-items-start" title="Contact">
               <i className="bi bi-person m-2" />
-              <span className="m-2">
-                <b>{data.contactName}</b> ({data.contactTitle})
+              <span className="m-2 vstack">
+                <b>{data.contactName}</b>
+                <span>{data.contactTitle}</span>
               </span>
             </div>
           </div>
