@@ -25,6 +25,7 @@ export default function Customers(): JSX.Element {
   const { data, error, isLoading } = ReactQuery.useQuery<ICustomers>({
     queryKey: [API_URL + '/Customers'],
   });
+  const countries = [...new Set(data?.map((item) => item.country))].sort();
   const filteredData = React.useMemo(() => {
     let result = data;
     if (result) {
@@ -66,6 +67,7 @@ export default function Customers(): JSX.Element {
             className="h-100"
             countryFilter={countryFilter}
             setCountryFilter={setCountryFilter}
+            countries={countries}
           />
         </div>
       </div>

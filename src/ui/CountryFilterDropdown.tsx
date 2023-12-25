@@ -5,12 +5,14 @@ export default function CountryFilterDropdown({
   className,
   countryFilter,
   setCountryFilter,
+  countries,
 }: {
   className?: string;
   countryFilter: string;
   setCountryFilter: (country: string) => void;
+  countries?: string[];
 }): JSX.Element {
-  const options = ['', ...getCountries()];
+  const options = ['', ...(countries || getCountries())];
   const onChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
     setCountryFilter(event.target.value);
   };

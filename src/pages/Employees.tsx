@@ -47,6 +47,9 @@ export default function Employees({
       }),
     );
   }
+  const countries = [
+    ...new Set(filteredData?.map((item) => item.country)),
+  ].sort();
   if (countryFilter) {
     filteredData = filteredData.filter(
       (item) => item.country === countryFilter,
@@ -83,6 +86,7 @@ export default function Employees({
             className="h-100"
             countryFilter={countryFilter}
             setCountryFilter={setCountryFilter}
+            countries={countries}
           />
         </div>
       </div>

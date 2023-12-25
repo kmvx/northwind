@@ -26,6 +26,7 @@ export default function Suppliers(): JSX.Element {
   if (isLoading) return <WaitSpinner />;
   if (!data) return <div>No data</div>;
   setDocumentTitle('Suppliers');
+  const countries = [...new Set(data?.map((item) => item.country))].sort();
   let filteredData = data;
   if (filter) {
     filteredData = filteredData.filter((item) =>
@@ -60,6 +61,7 @@ export default function Suppliers(): JSX.Element {
             className="h-100"
             countryFilter={countryFilter}
             setCountryFilter={setCountryFilter}
+            countries={countries}
           />
         </div>
       </div>
