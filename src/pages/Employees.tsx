@@ -110,7 +110,10 @@ export default function Employees({
                 title="Employee photo"
               />
               <div className="vstack">
-                <span className="card-text text-end" title="Employee title">
+                <span
+                  className="flex-grow-1 card-text text-end"
+                  title="Employee title"
+                >
                   {item.title}
                 </span>
                 <span

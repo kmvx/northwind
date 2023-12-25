@@ -70,7 +70,7 @@ export default function Suppliers(): JSX.Element {
         {filteredData.map((item) => (
           <NavLink
             to={'/suppliers/' + item.supplierId}
-            className="card m-2 p-2 shadow"
+            className="card m-2 p-3 shadow"
             key={item.supplierId}
           >
             <h5

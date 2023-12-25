@@ -77,7 +77,7 @@ export default function Customers(): JSX.Element {
         {paginateData.map((item: any) => (
           <NavLink
             to={'/customers/' + item.customerId}
-            className="card m-2 p-2 shadow"
+            className="card m-2 p-3 shadow"
             key={item.customerId}
           >
             <h5
