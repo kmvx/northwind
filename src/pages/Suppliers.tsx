@@ -4,6 +4,7 @@ import { NavLink } from 'react-router-dom';
 import {
   CountryFilterDropdown,
   ErrorMessage,
+  Flag,
   PanelStretched,
   WaitSpinner,
 } from '../ui';
@@ -12,7 +13,6 @@ import {
   isStringIncludes,
   pluralize,
   setDocumentTitle,
-  getFlagImageURLByCountryName,
 } from '../utils';
 import type { ISuppliers } from '../models';
 
@@ -84,15 +84,10 @@ export default function Suppliers(): JSX.Element {
               title="Supplier HQ location"
             >
               <i className="bi bi-geo-alt m-2" />
-              <img
-                className="me-2"
-                src={getFlagImageURLByCountryName(item.country)}
-                height="20px"
-                alt=""
-              />
               <span>
                 {item.country}, {item.city}
               </span>
+              <Flag className="ms-2" country={item.country} />
             </span>
           </NavLink>
         ))}

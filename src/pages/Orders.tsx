@@ -1,7 +1,13 @@
 import * as React from 'react';
 import * as ReactQuery from '@tanstack/react-query';
 import { NavLink, useLocation, useParams } from 'react-router-dom';
-import { ErrorMessage, Paginate, WaitSpinner, YearFilterButtons } from '../ui';
+import {
+  ErrorMessage,
+  Flag,
+  Paginate,
+  WaitSpinner,
+  YearFilterButtons,
+} from '../ui';
 import { usePaginate, useSortTable } from '../hooks';
 import {
   API_URL,
@@ -11,7 +17,6 @@ import {
   formatDateFromString,
   setDocumentTitle,
   getEmployeeNameByData,
-  getFlagImageURLByCountryName,
 } from '../utils';
 import type { IEmployees, IOrders } from '../models';
 
@@ -256,12 +261,7 @@ export default function Orders(): JSX.Element {
                     <td className="d-none d-xl-table-cell">{item.shipName}</td>
                     <td className="d-none d-sm-table-cell">
                       <div className="hstack">
-                        <img
-                          className="me-2"
-                          src={getFlagImageURLByCountryName(item.shipCountry)}
-                          height="20px"
-                          alt=""
-                        />
+                        <Flag className="me-2" country={item.shipCountry} />
                         {item.addressLine0},
                       </div>
                       <div>{item.addressLine1}</div>

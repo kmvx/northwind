@@ -2,7 +2,7 @@ import * as ReactQuery from '@tanstack/react-query';
 import { NavLink, useParams } from 'react-router-dom';
 import { Orders } from '.';
 import { OrdersChart } from '../components';
-import { ErrorMessage, PanelCentred, WaitSpinner } from '../ui';
+import { ErrorMessage, Flag, PanelCentred, WaitSpinner } from '../ui';
 import {
   API_URL,
   joinFields,
@@ -10,7 +10,6 @@ import {
   formatDateFromString,
   formatYearsOldFromDateString,
   setDocumentTitle,
-  getFlagImageURLByCountryName,
 } from '../utils';
 import { Employees } from '.';
 import type { IEmployee } from '../models';
@@ -62,12 +61,7 @@ export default function Employee(): JSX.Element {
           <div className="col-md-7">
             <div className="hstack" title="Address">
               <i className="bi bi-geo-alt m-2" />
-              <img
-                className="ms-2"
-                src={getFlagImageURLByCountryName(data.country)}
-                height="20px"
-                alt=""
-              />
+              <Flag className="ms-2" country={data.country} />
               <b className="m-2">
                 {joinFields(
                   data.country,

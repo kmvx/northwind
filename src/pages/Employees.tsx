@@ -4,6 +4,7 @@ import { NavLink } from 'react-router-dom';
 import {
   CountryFilterDropdown,
   ErrorMessage,
+  Flag,
   PanelStretched,
   WaitSpinner,
 } from '../ui';
@@ -13,7 +14,6 @@ import {
   getEmployeeNameByData,
   pluralize,
   setDocumentTitle,
-  getFlagImageURLByCountryName,
 } from '../utils';
 import type { IEmployees } from '../models';
 
@@ -118,15 +118,10 @@ export default function Employees({
                   title="Employee location"
                 >
                   <i className="bi bi-geo-alt m-2" />
-                  <img
-                    className="me-2"
-                    src={getFlagImageURLByCountryName(item.country)}
-                    height="20px"
-                    alt=""
-                  />
                   <span>
                     {item.country}, {item.city}
                   </span>
+                  <Flag className="ms-2" country={item.country} />
                 </span>
               </div>
             </div>

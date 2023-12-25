@@ -1,5 +1,5 @@
 import clsx from 'clsx';
-import { getCountries } from '../utils';
+import { getCountries, getFlagEmojiByCountryName } from '../utils';
 
 export default function CountryFilterDropdown({
   className,
@@ -25,7 +25,7 @@ export default function CountryFilterDropdown({
     >
       {options.map((option) => (
         <option key={option} value={option}>
-          {option || 'World'}
+          {getFlagEmojiByCountryName(option)} &nbsp; {option || 'World'}
         </option>
       ))}
     </select>

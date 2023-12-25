@@ -1,13 +1,12 @@
 import * as ReactQuery from '@tanstack/react-query';
 import { NavLink, useParams } from 'react-router-dom';
-import { PanelCentred } from '../ui';
+import { Flag, PanelCentred } from '../ui';
 import {
   API_URL,
   joinFields,
   setDocumentTitle,
   formatDateFromString,
   getEmployeeNameByData,
-  getFlagImageURLByCountryName,
 } from '../utils';
 import { OrderDetails } from '.';
 import type { ICustomer, IEmployee, IOrder, IShipper } from '../models';
@@ -37,12 +36,7 @@ export default function Order(): JSX.Element {
             <NavLink to={'/customers/' + dataCustomer.customerId}>
               <b>{dataCustomer.companyName}</b> ({dataCustomer.customerId})
             </NavLink>
-            <img
-              className="ms-2"
-              src={getFlagImageURLByCountryName(dataCustomer.country)}
-              height="20px"
-              alt=""
-            />
+            <Flag className="ms-2" country={dataCustomer.country} />
             <span>&nbsp;.</span>
           </div>
         )}
@@ -52,12 +46,7 @@ export default function Order(): JSX.Element {
             <NavLink to={'/employees/' + dataEmployee.employeeId}>
               <b>{getEmployeeNameByData(dataEmployee)}</b>
             </NavLink>
-            <img
-              className="ms-2"
-              src={getFlagImageURLByCountryName(dataEmployee.country)}
-              height="20px"
-              alt=""
-            />
+            <Flag className="ms-2" country={dataEmployee.country} />
             <span>&nbsp;.</span>
           </div>
         )}
@@ -82,12 +71,7 @@ export default function Order(): JSX.Element {
             </div>
             <div className="hstack">
               Ship address:{' '}
-              <img
-                className="mx-2"
-                src={getFlagImageURLByCountryName(dataOrder.shipCountry)}
-                height="20px"
-                alt=""
-              />
+              <Flag className="mx-2" country={dataOrder.shipCountry} />
               <b>
                 {joinFields(
                   dataOrder.shipCountry,

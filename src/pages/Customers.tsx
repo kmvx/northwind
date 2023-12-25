@@ -4,6 +4,7 @@ import { NavLink } from 'react-router-dom';
 import {
   CountryFilterDropdown,
   ErrorMessage,
+  Flag,
   Paginate,
   PanelStretched,
   WaitSpinner,
@@ -14,7 +15,6 @@ import {
   isStringIncludes,
   pluralize,
   setDocumentTitle,
-  getFlagImageURLByCountryName,
 } from '../utils';
 import type { ICustomers } from '../models';
 
@@ -94,15 +94,10 @@ export default function Customers(): JSX.Element {
               title="Customer HQ location"
             >
               <i className="bi bi-geo-alt m-2" />
-              <img
-                className="me-2"
-                src={getFlagImageURLByCountryName(item.country)}
-                height="20px"
-                alt=""
-              />
               <span>
                 {item.country}, {item.city}
               </span>
+              <Flag className="ms-2" country={item.country} />
             </div>
           </NavLink>
         ))}

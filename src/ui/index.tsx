@@ -2,6 +2,7 @@ export { default as CountryFilterDropdown } from './CountryFilterDropdown';
 export { default as Discontinued } from './Discontinued';
 export { default as DiscontinuedFilterButtons } from './DiscontinuedFilterButtons';
 export { default as ErrorMessage } from './ErrorMessage';
+export { default as Flag } from './Flag';
 export { default as Paginate } from './Paginate';
 export { default as PanelCentred } from './PanelCentred';
 export { default as PanelStretched } from './PanelStretched';

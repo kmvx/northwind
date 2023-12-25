@@ -58,43 +58,42 @@ export function getCategoryNameById(
   else return String(id);
 }
 
-const countryFlagSuffixByCountryName: Record<string, string> = {
-  Argentina: 'ar',
-  Australia: 'au',
-  Austria: 'at',
-  Belgium: 'be',
-  Brazil: 'br',
-  Canada: 'ca',
-  Denmark: 'dk',
-  Finland: 'fi',
-  France: 'fr',
-  Germany: 'de',
-  Ireland: 'ie',
-  Italy: 'it',
-  Japan: 'jp',
-  Mexico: 'mx',
-  Netherlands: 'nl',
-  Norway: 'no',
-  Poland: 'pl',
-  Portugal: 'pt',
-  Singapore: 'sg',
-  Spain: 'es',
-  Sweden: 'se',
-  Switzerland: 'ch',
-  UK: 'gb',
-  USA: 'us',
-  Venezuela: 've',
+const countryFlagEmojiByCountryName: Record<string, string> = {
+  Argentina: '🇦🇷',
+  Australia: '🇦🇺',
+  Austria: '🇦🇹',
+  Belgium: '🇧🇪',
+  Brazil: '🇧🇷',
+  Canada: '🇨🇦',
+  Denmark: '🇩🇰',
+  Finland: '🇫🇮',
+  France: '🇫🇷',
+  Germany: '🇩🇪',
+  Ireland: '🇮🇪',
+  Italy: '🇮🇹',
+  Japan: '🇯🇵',
+  Mexico: '🇲🇽',
+  Netherlands: '🇳🇱',
+  Norway: '🇳🇴',
+  Poland: '🇵🇱',
+  Portugal: '🇵🇹',
+  Singapore: '🇸🇬',
+  Spain: '🇪🇸',
+  Sweden: '🇸🇪',
+  Switzerland: '🇨🇭',
+  UK: '🇬🇧',
+  USA: '🇺🇸',
+  Venezuela: '🇻🇪',
 };
-export function getCountries() {
-  return Object.keys(countryFlagSuffixByCountryName);
-}
-export function getFlagImageURLByCountryName(
-  country: string,
-): string | undefined {
-  const suffix = countryFlagSuffixByCountryName[country];
-  if (!suffix) {
+export function getFlagEmojiByCountryName(country: string): string | undefined {
+  if (!country) return '🇺🇳';
+  const emoji = countryFlagEmojiByCountryName[country];
+  if (!emoji) {
     console.log('Unknown country', country);
-    return undefined;
+    return '🏴‍☠';
   }
-  return `https://cdnjs.cloudflare.com/ajax/libs/flag-icon-css/3.5.0/flags/4x3/${suffix}.svg`;
+  return emoji;
+}
+export function getCountries() {
+  return Object.keys(countryFlagEmojiByCountryName);
 }
