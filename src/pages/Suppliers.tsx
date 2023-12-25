@@ -83,7 +83,7 @@ export default function Suppliers(): JSX.Element {
               {item.companyName}
             </h5>
             <span
-              className="card-text hstack justify-content-end"
+              className="card-text hstack flex-wrap justify-content-end"
               title="Supplier HQ location"
             >
               <i className="bi bi-geo-alt m-2" />

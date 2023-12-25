@@ -104,7 +104,7 @@ export default function Employees({
             <h4 className="card-title flex-grow-1" title="Employee name">
               {getEmployeeNameByData(item)}
             </h4>
-            <div className="hstack">
+            <div className="hstack flex-wrap">
               <img
                 src={`/assets/img/database/${item.firstName.toLowerCase()}.jpg`}
                 width="70px"
@@ -120,7 +120,7 @@ export default function Employees({
                   {item.title}
                 </span>
                 <span
-                  className="card-text hstack justify-content-end"
+                  className="card-text hstack flex-wrap justify-content-end"
                   title="Employee location"
                 >
                   <i className="bi bi-geo-alt m-2" />

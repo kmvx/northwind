@@ -93,7 +93,7 @@ export default function Customers(): JSX.Element {
               {item.customerId}
             </div>
             <div
-              className="card-text hstack justify-content-end"
+              className="card-text hstack flex-wrap justify-content-end"
               title="Customer HQ location"
             >
               <i className="bi bi-geo-alt m-2" />
