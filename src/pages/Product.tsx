@@ -43,45 +43,37 @@ export default function Product(): JSX.Element {
   if (!data) return <div>No data</div>;
   setDocumentTitle(data.productName, 'Product');
   return (
-    <PanelCentred>
+    <PanelCentred className="product">
       <h1 className="m-2 text-center">{data.productName}</h1>
       <h2 className="m-2 text-center fs-5">Product</h2>
-      <div className="m-2">
-        <div>
-          Category:{' '}
-          <b>
-            <span title={String(data.categoryId)}>
-              {getCategoryNameById(dataCategories, data.categoryId)}
-            </span>
-          </b>
-        </div>
-        {/*
-        <img
-          src={`/assets/img/database/${getCategoryNameById(
-            dataCategories,
-            data.categoryId
-          )?.toLowerCase()}.gif`}
-          width="96px"
-          className=""
-          alt=""
-        />
-        */}
-        <div>
-          Quantity per unit: <b>{data.quantityPerUnit}</b>
-        </div>
-        <div>
-          Unit price: <b>${data.unitPrice}</b>
-        </div>
-        <div>
-          Units in stock: <b>{data.unitsInStock}</b>
-        </div>
-        <div>
-          Units on order: <b>{data.unitsOnOrder}</b>
-        </div>
-        <div>
-          Reorder level: <b>{data.reorderLevel}</b>
-        </div>
-        <div className="my-1">
+      <div className="product__grid m-2">
+        <span>Category:</span>
+        <b title={String(data.categoryId)}>
+          {getCategoryNameById(dataCategories, data.categoryId)}
+          {/*
+          {' '}
+          <img
+            src={`/assets/img/database/${getCategoryNameById(
+              dataCategories,
+              data.categoryId,
+            )?.toLowerCase()}.gif`}
+            height="32px"
+            className="product__grid-row_wide"
+            alt=""
+          />
+          */}
+        </b>
+        <span>Quantity per unit:</span>
+        <b>{data.quantityPerUnit}</b>
+        <span>Unit price:</span>
+        <b>${data.unitPrice}</b>
+        <span>Units in stock:</span>
+        <b>{data.unitsInStock}</b>
+        <span>Units on order:</span>
+        <b>{data.unitsOnOrder}</b>
+        <span>Reorder level:</span>
+        <b>{data.reorderLevel}</b>
+        <div className="product__grid-row_wide my-1">
           <Discontinued discontinued={data.discontinued} />
         </div>
       </div>

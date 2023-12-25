@@ -25,6 +25,15 @@
 .customers__list {
   @include grid(17rem);
 }
+.product {
+  &__grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    &-row_wide {
+      grid-column: span 2;
+    }
+  }
+}
 
 .app-sidebar {
   overflow-x: hidden !important;
