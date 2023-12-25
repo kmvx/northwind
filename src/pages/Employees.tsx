@@ -82,12 +82,15 @@ export default function Employees({
           </div>
         </div>
         <div className="m-2">
-          <CountryFilterDropdown
-            className="h-100"
-            countryFilter={countryFilter}
-            setCountryFilter={setCountryFilter}
-            countries={countries}
-          />
+          <div className="input-group">
+            <span className="input-group-text">Country</span>
+            <CountryFilterDropdown
+              className="h-100"
+              countryFilter={countryFilter}
+              setCountryFilter={setCountryFilter}
+              countries={countries}
+            />
+          </div>
         </div>
       </div>
       <div className="m-2">{pluralize(filteredData.length, 'employee')}</div>
