@@ -2,7 +2,7 @@ import * as React from 'react';
 import * as ReactQuery from '@tanstack/react-query';
 import { NavLink } from 'react-router-dom';
 import {
-  CountryFilterDropdown,
+  CountryFilter,
   ErrorMessage,
   Flag,
   PanelStretched,
@@ -59,7 +59,7 @@ export default function Suppliers(): JSX.Element {
         <div className="m-2">
           <div className="input-group">
             <span className="input-group-text">Country</span>
-            <CountryFilterDropdown
+            <CountryFilter
               className="h-100"
               countryFilter={countryFilter}
               setCountryFilter={setCountryFilter}

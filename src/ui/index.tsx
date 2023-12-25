@@ -1,4 +1,4 @@
-export { default as CountryFilterDropdown } from './CountryFilterDropdown';
+export { default as CountryFilter } from './CountryFilter';
 export { default as Discontinued } from './Discontinued';
 export { default as DiscontinuedFilterButtons } from './DiscontinuedFilterButtons';
 export { default as ErrorMessage } from './ErrorMessage';

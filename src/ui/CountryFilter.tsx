@@ -1,7 +1,7 @@
 import clsx from 'clsx';
 import { getCountries, getFlagEmojiByCountryName } from '../utils';
 
-export default function CountryFilterDropdown({
+export default function CountryFilter({
   className,
   countryFilter,
   setCountryFilter,
