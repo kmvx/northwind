@@ -1,7 +1,12 @@
 import * as React from 'react';
 import * as ReactQuery from '@tanstack/react-query';
 import { NavLink } from 'react-router-dom';
-import { ErrorMessage, PanelStretched, WaitSpinner } from '../ui';
+import {
+  CountryFilterDropdown,
+  ErrorMessage,
+  PanelStretched,
+  WaitSpinner,
+} from '../ui';
 import {
   API_URL,
   isStringIncludes,
@@ -13,6 +18,7 @@ import type { ISuppliers } from '../models';
 
 export default function Suppliers(): JSX.Element {
   const [filter, setFilter] = React.useState('');
+  const [countryFilter, setCountryFilter] = React.useState('');
   const { data, error, isLoading } = ReactQuery.useQuery<ISuppliers>({
     queryKey: [API_URL + '/Suppliers'],
   });
@@ -20,26 +26,41 @@ export default function Suppliers(): JSX.Element {
   if (isLoading) return <WaitSpinner />;
   if (!data) return <div>No data</div>;
   setDocumentTitle('Suppliers');
-  const filteredData = filter
-    ? data.filter((item) =>
-        ['companyName', 'country', 'city'].some((name) =>
-          isStringIncludes((item as Record<string, any>)[name], filter),
-        ),
-      )
-    : data;
+  let filteredData = data;
+  if (filter) {
+    filteredData = filteredData.filter((item) =>
+      ['companyName', 'country', 'city'].some((name) =>
+        isStringIncludes((item as Record<string, any>)[name], filter),
+      ),
+    );
+  }
+  if (countryFilter) {
+    filteredData = filteredData.filter(
+      (item) => item.country === countryFilter,
+    );
+  }
   return (
     <PanelStretched>
       <h2 className="m-2 text-center">Suppliers</h2>
-      <div className="d-flex">
-        <div className="input-group m-2">
-          <span className="input-group-text">Filter</span>
-          <input
-            className="p-2 form-control"
-            type="search"
-            placeholder="Enter filter string here"
-            value={filter}
-            onChange={(event) => setFilter(event.target.value)}
-          ></input>
+      <div className="d-flex flex-wrap">
+        <div className="flex-grow-1 m-2">
+          <div className="input-group">
+            <span className="input-group-text">Filter</span>
+            <input
+              className="p-2 form-control"
+              type="search"
+              placeholder="Enter filter string here"
+              value={filter}
+              onChange={(event) => setFilter(event.target.value)}
+            ></input>
+          </div>
+        </div>
+        <div className="m-2">
+          <CountryFilterDropdown
+            className="h-100"
+            countryFilter={countryFilter}
+            setCountryFilter={setCountryFilter}
+          />
         </div>
       </div>
       <div className="m-2">{pluralize(filteredData.length, 'supplier')}</div>

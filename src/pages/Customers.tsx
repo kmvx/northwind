@@ -1,7 +1,13 @@
 import * as React from 'react';
 import * as ReactQuery from '@tanstack/react-query';
 import { NavLink } from 'react-router-dom';
-import { ErrorMessage, Paginate, PanelStretched, WaitSpinner } from '../ui';
+import {
+  CountryFilterDropdown,
+  ErrorMessage,
+  Paginate,
+  PanelStretched,
+  WaitSpinner,
+} from '../ui';
 import { usePaginate } from '../hooks';
 import {
   API_URL,
@@ -15,18 +21,26 @@ import type { ICustomers } from '../models';
 export default function Customers(): JSX.Element {
   setDocumentTitle('Customers');
   const [filter, setFilter] = React.useState('');
+  const [countryFilter, setCountryFilter] = React.useState('');
   const { data, error, isLoading } = ReactQuery.useQuery<ICustomers>({
     queryKey: [API_URL + '/Customers'],
   });
   const filteredData = React.useMemo(() => {
-    return data && filter
-      ? data.filter((item) =>
+    let result = data;
+    if (result) {
+      if (filter) {
+        result = result.filter((item) =>
           ['companyName', 'customerId', 'country', 'city'].some((name) =>
             isStringIncludes((item as Record<string, any>)[name], filter),
           ),
-        )
-      : data;
-  }, [data, filter]);
+        );
+      }
+      if (countryFilter) {
+        result = result.filter((item) => item.country === countryFilter);
+      }
+    }
+    return result;
+  }, [data, filter, countryFilter]);
   const { paginateData, paginateStore } = usePaginate(filteredData, 20);
   if (error) return <ErrorMessage error={error} />;
   if (isLoading) return <WaitSpinner />;
@@ -34,16 +48,25 @@ export default function Customers(): JSX.Element {
   return (
     <PanelStretched>
       <h2 className="m-2 text-center">Customers</h2>
-      <div className="d-flex">
-        <div className="input-group m-2">
-          <span className="input-group-text">Filter</span>
-          <input
-            className="p-2 form-control"
-            type="search"
-            placeholder="Enter filter string here"
-            value={filter}
-            onChange={(event) => setFilter(event.target.value)}
-          ></input>
+      <div className="d-flex flex-wrap">
+        <div className="flex-grow-1 m-2">
+          <div className="input-group">
+            <span className="input-group-text">Filter</span>
+            <input
+              className="p-2 form-control"
+              type="search"
+              placeholder="Enter filter string here"
+              value={filter}
+              onChange={(event) => setFilter(event.target.value)}
+            ></input>
+          </div>
+        </div>
+        <div className="m-2">
+          <CountryFilterDropdown
+            className="h-100"
+            countryFilter={countryFilter}
+            setCountryFilter={setCountryFilter}
+          />
         </div>
       </div>
       <div className="m-2">{pluralize(filteredData.length, 'customer')}</div>

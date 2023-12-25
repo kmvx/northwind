@@ -85,6 +85,9 @@ const countryFlagSuffixByCountryName: Record<string, string> = {
   USA: 'us',
   Venezuela: 've',
 };
+export function getCountries() {
+  return Object.keys(countryFlagSuffixByCountryName);
+}
 export function getFlagImageURLByCountryName(
   country: string,
 ): string | undefined {
