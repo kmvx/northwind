@@ -17,17 +17,20 @@ export default function CountryFilter({
     setCountryFilter(event.target.value);
   };
   return (
-    <select
-      className={clsx('form-select', className)}
-      onChange={onChange}
-      defaultValue={countryFilter}
-      title="Country filter"
-    >
-      {options.map((option) => (
-        <option key={option} value={option}>
-          {getFlagEmojiByCountryName(option)} &nbsp; {option || 'World'}
-        </option>
-      ))}
-    </select>
+    <div className={clsx('input-group', className)}>
+      <span className="input-group-text">Country</span>
+      <select
+        className={clsx('form-select h-100')}
+        onChange={onChange}
+        defaultValue={countryFilter}
+        title="Country filter"
+      >
+        {options.map((option) => (
+          <option key={option} value={option}>
+            {getFlagEmojiByCountryName(option)} &nbsp; {option || 'World'}
+          </option>
+        ))}
+      </select>
+    </div>
   );
 }

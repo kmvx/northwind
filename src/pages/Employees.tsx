@@ -81,16 +81,13 @@ export default function Employees({
             ></input>
           </div>
         </div>
-        <div className="m-2">
-          <div className="input-group">
-            <span className="input-group-text">Country</span>
-            <CountryFilter
-              className="h-100"
-              countryFilter={countryFilter}
-              setCountryFilter={setCountryFilter}
-              countries={countries}
-            />
-          </div>
+        <div className="flex-lg-grow-0 flex-grow-1 m-2">
+          <CountryFilter
+            className="h-100"
+            countryFilter={countryFilter}
+            setCountryFilter={setCountryFilter}
+            countries={countries}
+          />
         </div>
       </div>
       <div className="m-2">{pluralize(filteredData.length, 'employee')}</div>
