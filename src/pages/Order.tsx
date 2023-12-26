@@ -30,42 +30,50 @@ export default function Order(): JSX.Element {
     <PanelCentred>
       <div className="m-2">
         <h1 className="text-center">Order #{id}</h1>
-        {dataCustomer && (
-          <div className="hstack">
-            <span>Customer:&nbsp;</span>
-            <NavLink to={'/customers/' + dataCustomer.customerId}>
-              <b>{dataCustomer.companyName}</b> ({dataCustomer.customerId})
-            </NavLink>
-            <Flag className="ms-2" country={dataCustomer.country} />
-            <span>&nbsp;.</span>
-          </div>
-        )}
-        {dataEmployee && (
-          <div className="hstack">
-            <span>Employee:&nbsp;</span>
-            <NavLink to={'/employees/' + dataEmployee.employeeId}>
-              <b>{getEmployeeNameByData(dataEmployee)}</b>
-            </NavLink>
-            <Flag className="ms-2" country={dataEmployee.country} />
-            <span>&nbsp;.</span>
+        <div className="u-prop-grid">
+          {dataCustomer && (
+            <>
+              <span>Customer:</span>
+              <span className="hstack text-end">
+                <NavLink to={'/customers/' + dataCustomer.customerId}>
+                  <b>{dataCustomer.companyName}</b> ({dataCustomer.customerId})
+                </NavLink>
+                <Flag className="ms-2" country={dataCustomer.country} />
+              </span>
+            </>
+          )}
+          {dataEmployee && (
+            <>
+              <span>Employee:</span>
+              <span className="hstack text-end">
+                <NavLink to={'/employees/' + dataEmployee.employeeId}>
+                  <b>{getEmployeeNameByData(dataEmployee)}</b>
+                </NavLink>
+                <Flag className="ms-2" country={dataEmployee.country} />
+              </span>
+            </>
+          )}
+        </div>
+        {dataOrder && (
+          <div className="u-prop-grid">
+            <span>Order date:</span>
+            <b className="text-end">
+              {formatDateFromString(dataOrder.orderDate)}
+            </b>
+            <span>Shipped date:</span>
+            <b className="text-end">
+              {formatDateFromString(dataOrder.shippedDate)}
+            </b>
+            <span>Required date:</span>
+            <b className="text-end">
+              {formatDateFromString(dataOrder.requiredDate)}
+            </b>
+            <span>Freight:</span>
+            <b className="text-end">{dataOrder.freight}</b>
           </div>
         )}
         {dataOrder && (
           <>
-            <div>
-              Order date: <b>{formatDateFromString(dataOrder.orderDate)}</b>.
-            </div>
-            <div>
-              Shipped date: <b>{formatDateFromString(dataOrder.shippedDate)}</b>
-              .
-            </div>
-            <div>
-              Required date:{' '}
-              <b>{formatDateFromString(dataOrder.requiredDate)}</b>.
-            </div>
-            <div>
-              Freight: <b>{dataOrder.freight}</b>.
-            </div>
             <div>
               Ship name: <b>{dataOrder.shipName}</b>.
             </div>

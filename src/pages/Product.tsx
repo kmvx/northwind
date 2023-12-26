@@ -43,12 +43,12 @@ export default function Product(): JSX.Element {
   if (!data) return <div>No data</div>;
   setDocumentTitle(data.productName, 'Product');
   return (
-    <PanelCentred className="product">
+    <PanelCentred>
       <h1 className="m-2 text-center">{data.productName}</h1>
       <h2 className="m-2 text-center fs-5">Product</h2>
-      <div className="product__grid m-2">
+      <div className="u-prop-grid m-2">
         <span>Category:</span>
-        <b title={String(data.categoryId)}>
+        <b className="text-end" title={String(data.categoryId)}>
           {getCategoryNameById(dataCategories, data.categoryId)}
           {/*
           {' '}
@@ -58,22 +58,22 @@ export default function Product(): JSX.Element {
               data.categoryId,
             )?.toLowerCase()}.gif`}
             height="32px"
-            className="product__grid-row_wide"
+            className="u-prop-grid__wide-row"
             alt=""
           />
           */}
         </b>
         <span>Quantity per unit:</span>
-        <b>{data.quantityPerUnit}</b>
+        <b className="text-end">{data.quantityPerUnit}</b>
         <span>Unit price:</span>
-        <b>${data.unitPrice}</b>
+        <b className="text-end">${data.unitPrice}</b>
         <span>Units in stock:</span>
-        <b>{data.unitsInStock}</b>
+        <b className="text-end">{data.unitsInStock}</b>
         <span>Units on order:</span>
-        <b>{data.unitsOnOrder}</b>
+        <b className="text-end">{data.unitsOnOrder}</b>
         <span>Reorder level:</span>
-        <b>{data.reorderLevel}</b>
-        <div className="product__grid-row_wide my-1">
+        <b className="text-end">{data.reorderLevel}</b>
+        <div className="u-prop-grid__wide-row my-1">
           <Discontinued discontinued={data.discontinued} />
         </div>
       </div>

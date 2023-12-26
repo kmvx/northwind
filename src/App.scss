@@ -1,3 +1,12 @@
+.u-prop-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  align-items: center;
+  &__wide-row {
+    grid-column: span 2;
+  }
+}
+
 .customer,
 .employee {
   @media (min-width: 992px) {
@@ -24,15 +33,6 @@
 }
 .customers__list {
   @include grid(17rem);
-}
-.product {
-  &__grid {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    &-row_wide {
-      grid-column: span 2;
-    }
-  }
 }
 
 .app-sidebar {
