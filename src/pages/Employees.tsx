@@ -98,10 +98,10 @@ export default function Employees({
             className="card m-2 p-3 shadow"
             key={item.employeeId}
           >
-            <h4 className="card-title flex-grow-1" title="Employee name">
+            <h4 className="card-title" title="Employee name">
               {getEmployeeNameByData(item)}
             </h4>
-            <div className="hstack flex-wrap">
+            <div className="hstack">
               <img
                 src={`/assets/img/database/${item.firstName.toLowerCase()}.jpg`}
                 width="70px"
