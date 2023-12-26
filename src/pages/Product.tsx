@@ -86,7 +86,7 @@ export default function Product(): JSX.Element {
         </NavLink>
       </div>
       <div className="hstack" title="Supplier">
-        <i className="bi bi-bucket m-2 "></i>
+        <i className="bi bi-hammer m-2 "></i>
         <SupplierLink id={data.supplierId} className="m-2" />
       </div>
     </PanelCentred>

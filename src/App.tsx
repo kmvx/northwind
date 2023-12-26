@@ -101,7 +101,7 @@ function Layout({ children }: { children: React.ReactNode }): JSX.Element {
     { title: 'About', to: '/', imageClassName: 'bi bi-info-circle' },
     undefined,
     { title: 'Employees', to: '/employees', imageClassName: 'bi bi-people' },
-    { title: 'Suppliers', to: '/suppliers', imageClassName: 'bi bi-bucket' },
+    { title: 'Suppliers', to: '/suppliers', imageClassName: 'bi bi-hammer' },
     {
       title: 'Customers',
       to: '/customers',

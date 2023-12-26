@@ -75,9 +75,9 @@ export default function Order(): JSX.Element {
         {dataOrder && (
           <>
             <hr />
-            <h4 className="text-center">Ship</h4>
+            <h4 className="text-center">Shipment</h4>
             <div title="Ship name">
-              <i className="bi bi-truck m-2" />
+              <i className="bi bi-building m-2" />
               <b>{dataOrder.shipName}</b>
             </div>
             <div className="hstack" title="Ship address">
@@ -98,7 +98,7 @@ export default function Order(): JSX.Element {
         {dataShipper && (
           <div className="hstack">
             <div title="Shipper name">
-              <i className="bi bi-bucket m-2" />
+              <i className="bi bi-truck m-2" />
               <b>{dataShipper.companyName}</b>
             </div>
             <div title="Shipper telephone">
