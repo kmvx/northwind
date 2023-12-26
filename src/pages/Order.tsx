@@ -34,7 +34,7 @@ export default function Order(): JSX.Element {
           {dataCustomer && (
             <>
               <span>Customer:</span>
-              <span className="hstack text-end">
+              <span className="hstack justify-content-end">
                 <NavLink to={'/customers/' + dataCustomer.customerId}>
                   <b>{dataCustomer.companyName}</b> ({dataCustomer.customerId})
                 </NavLink>
@@ -45,7 +45,7 @@ export default function Order(): JSX.Element {
           {dataEmployee && (
             <>
               <span>Employee:</span>
-              <span className="hstack text-end">
+              <span className="hstack justify-content-end">
                 <NavLink to={'/employees/' + dataEmployee.employeeId}>
                   <b>{getEmployeeNameByData(dataEmployee)}</b>
                 </NavLink>
