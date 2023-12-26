@@ -74,12 +74,15 @@ export default function Order(): JSX.Element {
         )}
         {dataOrder && (
           <>
-            <div>
-              Ship name: <b>{dataOrder.shipName}</b>.
+            <hr />
+            <h4 className="text-center">Ship</h4>
+            <div title="Ship name">
+              <i className="bi bi-truck m-2" />
+              <b>{dataOrder.shipName}</b>
             </div>
-            <div className="hstack">
-              Ship address:{' '}
-              <Flag className="mx-2" country={dataOrder.shipCountry} />
+            <div className="hstack" title="Ship address">
+              <i className="bi bi-geo-alt m-2" />
+              <Flag className="me-2" country={dataOrder.shipCountry} />
               <b>
                 {joinFields(
                   dataOrder.shipCountry,
@@ -89,14 +92,19 @@ export default function Order(): JSX.Element {
                   dataOrder.shipPostalCode,
                 )}
               </b>
-              .
             </div>
           </>
         )}
         {dataShipper && (
-          <div>
-            Shipper: <b>{dataShipper.companyName}</b>, phone:{' '}
-            <b>{dataShipper.phone}</b>.
+          <div className="hstack">
+            <div title="Shipper name">
+              <i className="bi bi-bucket m-2" />
+              <b>{dataShipper.companyName}</b>
+            </div>
+            <div title="Shipper telephone">
+              <i className="bi bi-telephone m-2" />
+              <b>{dataShipper.phone}</b>
+            </div>
           </div>
         )}
         <div>&nbsp;</div>
