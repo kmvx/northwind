@@ -2,6 +2,7 @@ import * as React from 'react';
 import * as ReactQuery from '@tanstack/react-query';
 import { NavLink, useLocation, useParams } from 'react-router-dom';
 import {
+  CountryFilter,
   ErrorMessage,
   Flag,
   Paginate,
@@ -28,14 +29,20 @@ function getEmployeeNameById(dataEmployees?: IEmployees, id?: any) {
 
 export default function Orders(): JSX.Element {
   const [filter, setFilter] = React.useState('');
+  const [countryFilter, setCountryFilter] = React.useState('');
   const [yearFilter, setYearFilter] = React.useState<number>();
   const [yearsSet, setYearsSet] = React.useState<Set<number>>(new Set());
   const { id } = useParams();
   const { pathname } = useLocation();
+  const isCustomersPage = pathname.startsWith('/customers/');
+  const isEmployeesPage = pathname.startsWith('/employees/');
+  const isOrdersEndPage = pathname.endsWith('/orders');
+
+  // Data
   const { data, error, isLoading } = ReactQuery.useQuery<IOrders>({
     queryKey: [
       API_URL +
-        (pathname.startsWith('/employees/') ? '/Employees/' : '/Customers/') +
+        (isEmployeesPage ? '/Employees/' : '/Customers/') +
         id +
         '/Orders',
     ],
@@ -44,7 +51,7 @@ export default function Orders(): JSX.Element {
     queryKey: [API_URL + '/Employees'],
   });
   const { sortColumn, reverseSortingOrder, refTable } = useSortTable();
-  const filteredData = React.useMemo(() => {
+  const { filteredData, countries } = React.useMemo(() => {
     const yearsSetTemp = new Set<number>();
     const computedData = data
       ? data.map((item) => {
@@ -78,6 +85,8 @@ export default function Orders(): JSX.Element {
         })
       : data;
     setYearsSet(yearsSetTemp);
+
+    // String filter
     let filteredData =
       computedData && filter
         ? computedData.filter((item) => {
@@ -90,6 +99,18 @@ export default function Orders(): JSX.Element {
             });
           })
         : computedData;
+
+    // Country filter
+    const countries = [
+      ...new Set(filteredData?.map((item) => item.shipCountry)),
+    ].sort();
+    if (countryFilter) {
+      filteredData = filteredData?.filter(
+        (item) => item.shipCountry === countryFilter,
+      );
+    }
+
+    // Year filter
     if (yearFilter !== undefined) {
       filteredData = filteredData?.filter((item) => {
         return new Date(item.orderDate)?.getFullYear() === yearFilter;
@@ -128,10 +149,11 @@ export default function Orders(): JSX.Element {
     });
     if (filteredData) filteredData = [...filteredData]; // Toggle data change hooks
 
-    return filteredData;
+    return { filteredData, countries };
   }, [
     data,
     filter,
+    countryFilter,
     yearFilter,
     dataEmployees,
     sortColumn,
@@ -142,11 +164,7 @@ export default function Orders(): JSX.Element {
   if (error) return <ErrorMessage error={error} />;
   if (isLoading) return <WaitSpinner />;
   if (!filteredData) return <div>No data</div>;
-  const isCustomerPage =
-    pathname.startsWith('/customers/') && !pathname.endsWith('/orders');
-  const isEmployeePage =
-    pathname.startsWith('/employees/') && !pathname.endsWith('/orders');
-  if (!isCustomerPage && !isEmployeePage) setDocumentTitle('Orders');
+  if (isOrdersEndPage) setDocumentTitle('Orders');
   if (filteredData.length === 0 && filter === '' && yearFilter === undefined) {
     return (
       <div>
@@ -158,7 +176,7 @@ export default function Orders(): JSX.Element {
     <section>
       <h1 className="m-2 text-center">
         <span>Orders</span>
-        {pathname.startsWith('/employees/') && !isEmployeePage && (
+        {isEmployeesPage && isOrdersEndPage && (
           <span>
             {' '}
             of employee{' '}
@@ -167,7 +185,7 @@ export default function Orders(): JSX.Element {
             </NavLink>
           </span>
         )}
-        {pathname.startsWith('/customers/') && !isCustomerPage && (
+        {isCustomersPage && isOrdersEndPage && (
           <span>
             {' '}
             of customer <NavLink to={'/customers/' + id}>{id}</NavLink>
@@ -186,6 +204,16 @@ export default function Orders(): JSX.Element {
             style={{ minWidth: '200px' }}
           ></input>
         </div>
+        {isEmployeesPage && (
+          <div className="m-2">
+            <CountryFilter
+              className="h-100"
+              countryFilter={countryFilter}
+              setCountryFilter={setCountryFilter}
+              countries={countries}
+            />
+          </div>
+        )}
         <YearFilterButtons
           {...{ yearsSet, yearFilter, setYearFilter }}
           className="m-2"
@@ -203,8 +231,8 @@ export default function Orders(): JSX.Element {
               <thead className="sticky-top bg-white">
                 <tr>
                   <th scope="col">#</th>
-                  {!isCustomerPage && <th scope="col">Custo&shy;mer ID</th>}
-                  {!isEmployeePage && <th scope="col">Emp&shy;loyee</th>}
+                  {!isCustomersPage && <th scope="col">Custo&shy;mer ID</th>}
+                  {!isEmployeesPage && <th scope="col">Emp&shy;loyee</th>}
                   <th scope="col" className="d-none d-sm-table-cell">
                     Order date
                   </th>
@@ -233,14 +261,14 @@ export default function Orders(): JSX.Element {
                         {item.orderId}
                       </NavLink>
                     </th>
-                    {!isCustomerPage && (
+                    {!isCustomersPage && (
                       <td>
                         <NavLink to={'/customers/' + item.customerId}>
                           {item.customerId}
                         </NavLink>
                       </td>
                     )}
-                    {!isEmployeePage && (
+                    {!isEmployeesPage && (
                       <td>
                         <NavLink
                           to={'/employees/' + item.employeeId}
