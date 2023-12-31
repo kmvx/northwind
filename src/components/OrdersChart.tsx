@@ -1,5 +1,4 @@
 import * as d3 from 'd3';
-import { useRef, useLayoutEffect, useState } from 'react';
 import * as React from 'react';
 import { useQuery } from '@tanstack/react-query';
 import {
@@ -372,13 +371,13 @@ export default function OrdersChart({
   });
 
   // State
-  const [yearFilter, setYearFilter] = useState<number>();
-  const [yearsSet, setYearsSet] = useState<Set<number>>(new Set());
-  const [svgBuilder] = useState(new SVGBuilder());
+  const [yearFilter, setYearFilter] = React.useState<number>();
+  const [yearsSet, setYearsSet] = React.useState<Set<number>>(new Set());
+  const [svgBuilder] = React.useState(new SVGBuilder());
 
   // Connect SVG element
-  const ref = useRef<SVGSVGElement>(null);
-  useLayoutEffect(() => {
+  const ref = React.useRef<SVGSVGElement>(null);
+  React.useLayoutEffect(() => {
     function update() {
       if (!data) return;
       svgBuilder.setData(data, ref, setYearsSet, yearFilter);
