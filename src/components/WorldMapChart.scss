@@ -1,0 +1,18 @@
+.world-map-chart {
+  --chart-color: var(--bs-primary);
+  --chart-hue: 216;
+  &__chart-parent {
+    position: relative;
+    @media (min-width: 576px) {
+      min-width: 300px;
+      min-height: 200px;
+    }
+    aspect-ratio: 15 / 10;
+  }
+  &__country {
+    stroke: white;
+    &:hover {
+      opacity: 0.5;
+    }
+  }
+}

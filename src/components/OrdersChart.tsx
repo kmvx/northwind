@@ -1,5 +1,6 @@
 import * as d3 from 'd3';
 import * as React from 'react';
+import clsx from 'clsx';
 import { useQuery } from '@tanstack/react-query';
 import {
   ErrorMessage,
@@ -396,15 +397,15 @@ export default function OrdersChart({
   if (isLoading) return <WaitSpinner />;
 
   return (
-    <PanelStretched className={className}>
-      <div className="orders-chart">
+    <PanelStretched className={clsx(className, 'hstack align-items-stretch')}>
+      <div className="orders-chart vstack">
         <h3 className="mt-2 mb-4 text-center">
           Distribution of count of orders by month
         </h3>
         <div className="d-flex justify-content-end">
           <YearFilterButtons {...{ yearsSet, yearFilter, setYearFilter }} />
         </div>
-        <div className="orders-chart__chart-parent">
+        <div className="orders-chart__chart-parent flex-grow-1">
           <svg ref={ref} className="position-absolute" />
         </div>
       </div>
