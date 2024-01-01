@@ -55,11 +55,11 @@ export default function Orders(): JSX.Element {
   const { data: dataEmployees } = ReactQuery.useQuery<IEmployees>({
     queryKey: [API_URL + '/Employees'],
   });
-  const { sortColumn, reverseSortingOrder, refTable } = useSortTable();
-  const { filteredData, countries } = React.useMemo(() => {
-    // Prepare data
+
+  // Prepare data
+  const preparedData = React.useMemo(() => {
     const yearsSetTemp = new Set<number>();
-    let filteredData = data?.map((item) => {
+    const preparedData = data?.map((item) => {
       const orderDate = item.orderDate;
       if (orderDate) {
         const date = new Date(item.orderDate);
@@ -89,6 +89,13 @@ export default function Orders(): JSX.Element {
       };
     });
     setYearsSet(yearsSetTemp);
+    return preparedData;
+  }, [data, dataEmployees]);
+
+  // Filter and sort data
+  const { sortColumn, reverseSortingOrder, refTable } = useSortTable();
+  const { filteredData, countries } = React.useMemo(() => {
+    let filteredData = preparedData;
 
     // String filter
     if (filter) {
@@ -151,11 +158,10 @@ export default function Orders(): JSX.Element {
 
     return { filteredData, countries };
   }, [
-    data,
+    preparedData,
     filter,
     countryFilter,
     yearFilter,
-    dataEmployees,
     sortColumn,
     reverseSortingOrder,
   ]);
