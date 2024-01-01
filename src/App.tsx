@@ -108,7 +108,7 @@ function Layout({ children }: { children: React.ReactNode }): JSX.Element {
       imageClassName: 'bi bi-currency-dollar',
     },
     { title: 'Products', to: '/products', imageClassName: 'bi bi-egg-fried' },
-    //{ title: 'Orders', to: '/orders', imageClassName: 'bi bi-credit-card' },
+    { title: 'Orders', to: '/orders', imageClassName: 'bi bi-credit-card' },
     //undefined,
     //{ title: 'Add order',  to: '/orderNew',  imageClassName: "bi bi-ticket-perforated" },
     undefined,
