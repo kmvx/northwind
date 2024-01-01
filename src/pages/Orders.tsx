@@ -57,53 +57,48 @@ export default function Orders(): JSX.Element {
   });
   const { sortColumn, reverseSortingOrder, refTable } = useSortTable();
   const { filteredData, countries } = React.useMemo(() => {
+    // Prepare data
     const yearsSetTemp = new Set<number>();
-    const computedData = data
-      ? data.map((item) => {
-          const orderDate = item.orderDate;
-          if (orderDate) {
-            const date = new Date(item.orderDate);
-            const year = date.getFullYear();
-            yearsSetTemp.add(year);
-          }
-          return {
-            orderId: item.orderId,
-            customerId: item.customerId,
-            employeeId: item.employeeId,
-            employeeName: getEmployeeNameById(dataEmployees, item.employeeId),
-            orderDate: formatDateFromString(item.orderDate),
-            shippedDate: formatDateFromString(item.shippedDate),
-            requiredDate: formatDateFromString(item.requiredDate),
-            orderDateObject: new Date(item.orderDate),
-            shippedDateObject: new Date(item.shippedDate),
-            requiredDateObject: new Date(item.requiredDate),
-            freight: item.freight,
-            shipName: item.shipName,
-            addressLine0: joinFields(
-              item.shipCountry,
-              item.shipRegion,
-              item.shipCity,
-            ),
-            addressLine1: joinFields(item.shipAddress, item.shipPostalCode),
-            shipCountry: item.shipCountry,
-          };
-        })
-      : data;
+    let filteredData = data?.map((item) => {
+      const orderDate = item.orderDate;
+      if (orderDate) {
+        const date = new Date(item.orderDate);
+        const year = date.getFullYear();
+        yearsSetTemp.add(year);
+      }
+      return {
+        orderId: item.orderId,
+        customerId: item.customerId,
+        employeeId: item.employeeId,
+        employeeName: getEmployeeNameById(dataEmployees, item.employeeId),
+        orderDate: formatDateFromString(item.orderDate),
+        shippedDate: formatDateFromString(item.shippedDate),
+        requiredDate: formatDateFromString(item.requiredDate),
+        orderDateObject: new Date(item.orderDate),
+        shippedDateObject: new Date(item.shippedDate),
+        requiredDateObject: new Date(item.requiredDate),
+        freight: item.freight,
+        shipName: item.shipName,
+        addressLine0: joinFields(
+          item.shipCountry,
+          item.shipRegion,
+          item.shipCity,
+        ),
+        addressLine1: joinFields(item.shipAddress, item.shipPostalCode),
+        shipCountry: item.shipCountry,
+      };
+    });
     setYearsSet(yearsSetTemp);
 
     // String filter
-    let filteredData =
-      computedData && filter
-        ? computedData.filter((item) => {
-            return Object.keys(item).some((name) => {
-              if (name === 'employeeId') return false;
-              return isStringIncludes(
-                (item as Record<string, any>)[name],
-                filter,
-              );
-            });
-          })
-        : computedData;
+    if (filter) {
+      filteredData = filteredData?.filter((item) => {
+        return Object.keys(item).some((name) => {
+          if (name === 'employeeId') return false;
+          return isStringIncludes((item as Record<string, any>)[name], filter);
+        });
+      });
+    }
 
     // Country filter
     const countries = [
