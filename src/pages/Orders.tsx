@@ -36,14 +36,19 @@ export default function Orders(): JSX.Element {
   const { pathname } = useLocation();
   const isCustomersPage = pathname.startsWith('/customers/');
   const isEmployeesPage = pathname.startsWith('/employees/');
-  const isOrdersEndPage = pathname.endsWith('/orders');
+  const isOrdersPage = pathname.startsWith('/orders');
+  const isOrdersEndPage = !isOrdersPage && pathname.endsWith('/orders');
 
   // Data
   const { data, error, isLoading } = ReactQuery.useQuery<IOrders>({
     queryKey: [
       API_URL +
-        (isEmployeesPage ? '/Employees/' : '/Customers/') +
-        id +
+        (isCustomersPage
+          ? '/Customers/'
+          : isEmployeesPage
+          ? '/Employees/'
+          : '') +
+        (id || '') +
         '/Orders',
     ],
   });
@@ -164,7 +169,7 @@ export default function Orders(): JSX.Element {
   if (error) return <ErrorMessage error={error} />;
   if (isLoading) return <WaitSpinner />;
   if (!filteredData) return <div>No data</div>;
-  if (isOrdersEndPage) setDocumentTitle('Orders');
+  if (isOrdersPage || isOrdersEndPage) setDocumentTitle('Orders');
   if (filteredData.length === 0 && filter === '' && yearFilter === undefined) {
     return (
       <div>
@@ -204,7 +209,7 @@ export default function Orders(): JSX.Element {
             style={{ minWidth: '200px' }}
           ></input>
         </div>
-        {isEmployeesPage && (
+        {!isCustomersPage && (
           <div className="m-2">
             <CountryFilter
               className="h-100"

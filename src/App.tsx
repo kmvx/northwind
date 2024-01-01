@@ -108,6 +108,7 @@ function Layout({ children }: { children: React.ReactNode }): JSX.Element {
       imageClassName: 'bi bi-currency-dollar',
     },
     { title: 'Products', to: '/products', imageClassName: 'bi bi-egg-fried' },
+    //{ title: 'Orders', to: '/orders', imageClassName: 'bi bi-credit-card' },
     //undefined,
     //{ title: 'Add order',  to: '/orderNew',  imageClassName: "bi bi-ticket-perforated" },
     undefined,
@@ -187,6 +188,7 @@ function App(): JSX.Element {
                 path="/products/:id/order-details"
                 element={<OrderDetails />}
               />
+              <Route path="/orders" element={<Orders />} />
               <Route path="/orders/:id" element={<Order />} />
               <Route path="/orderNew" element={<OrderEdit />} />
               <Route path="/charts" element={<Charts />} />
