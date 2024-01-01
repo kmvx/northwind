@@ -14,12 +14,14 @@ function updateChart({
   height,
   itemsPerCountryCount,
   maxItemsCountPerCountry,
+  hue,
 }: {
   current: SVGSVGElement;
   width: number;
   height: number;
   itemsPerCountryCount: Map<string, number>;
   maxItemsCountPerCountry: number;
+  hue: number;
 }) {
   d3.json(
     'https://raw.githubusercontent.com/holtzy/D3-graph-gallery/master/DATA/world.geojson',
@@ -40,7 +42,7 @@ function updateChart({
       .attr('y', 0)
       .attr('width', width)
       .attr('height', height)
-      .attr('fill', 'var(--chart-color)')
+      .attr('fill', `hsl(${hue} 100% 50%`)
       .attr('fill-opacity', 0.1);
 
     // Countries
@@ -58,7 +60,7 @@ function updateChart({
         if (countryName === 'England') countryName = 'UK';
         const count = itemsPerCountryCount.get(countryName);
         if (count) {
-          return `hsl(var(--chart-hue) 100% ${
+          return `hsl(${hue} 100% ${
             80 - Math.round((count / maxItemsCountPerCountry) * 60)
           }%)`;
         } else return 'hsl(0 0% 75%)';
@@ -67,14 +69,22 @@ function updateChart({
   });
 }
 
-export default function WorldMapChart({
+function WorldMapChart({
   className,
+  name,
+  urlPath,
+  countrySelector,
+  hue,
 }: {
   className?: string;
+  name: string;
+  urlPath: string;
+  countrySelector: (item: any) => string;
+  hue: number;
 }): JSX.Element {
   // Load data
   const { data, error, isLoading } = useQuery<IOrders>({
-    queryKey: [API_URL + '/Orders'],
+    queryKey: [API_URL + urlPath],
   });
 
   // Prepare data for the chart
@@ -83,13 +93,13 @@ export default function WorldMapChart({
       const itemsPerCountryCount = new Map<string, number>();
       let maxItemsCountPerCountry = 0;
       data?.forEach((order) => {
-        const country = order.shipCountry;
+        const country = countrySelector(order);
         const count = (itemsPerCountryCount.get(country) || 0) + 1;
         maxItemsCountPerCountry = Math.max(maxItemsCountPerCountry, count);
         itemsPerCountryCount.set(country, count);
       });
       return { itemsPerCountryCount, maxItemsCountPerCountry };
-    }, [data]);
+    }, [data, countrySelector]);
 
   // SVG chart
   const ref = React.useRef<SVGSVGElement>(null);
@@ -108,6 +118,7 @@ export default function WorldMapChart({
         height,
         itemsPerCountryCount,
         maxItemsCountPerCountry,
+        hue,
       });
     }
     update();
@@ -117,7 +128,7 @@ export default function WorldMapChart({
     return () => {
       if (element) resizeObserver.unobserve(element);
     };
-  }, [itemsPerCountryCount, maxItemsCountPerCountry]);
+  }, [itemsPerCountryCount, maxItemsCountPerCountry, hue]);
 
   // Handle errors and loading state
   if (error) return <ErrorMessage error={error} />;
@@ -125,11 +136,59 @@ export default function WorldMapChart({
   return (
     <PanelStretched className={clsx('world-map-chart', className, 'vstack')}>
       <h3 className="mt-2 mb-4 text-center">
-        Distribution of count of orders by countries
+        Distribution of count of <b>{name}</b> by countries
       </h3>
       <div className="world-map-chart__chart-parent flex-grow-1">
         <svg ref={ref} className="position-absolute" />
       </div>
     </PanelStretched>
+  );
+}
+
+export function CustomersWorldMapChart({
+  className,
+}: {
+  className?: string;
+}): JSX.Element {
+  return (
+    <WorldMapChart
+      className={className}
+      name="customers"
+      urlPath="/Customers"
+      countrySelector={(item) => item.country}
+      hue={30}
+    />
+  );
+}
+
+export function OrdersWorldMapChart({
+  className,
+}: {
+  className?: string;
+}): JSX.Element {
+  return (
+    <WorldMapChart
+      className={className}
+      name="orders"
+      urlPath="/Orders"
+      countrySelector={(item) => item.shipCountry}
+      hue={216}
+    />
+  );
+}
+
+export function SuppliersWorldMapChart({
+  className,
+}: {
+  className?: string;
+}): JSX.Element {
+  return (
+    <WorldMapChart
+      className={className}
+      name="suppliers"
+      urlPath="/Suppliers"
+      countrySelector={(item) => item.country}
+      hue={120}
+    />
   );
 }

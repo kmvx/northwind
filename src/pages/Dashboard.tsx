@@ -1,5 +1,10 @@
 import { setDocumentTitle } from '../utils';
-import { OrdersChart, WorldMapChart } from '../components';
+import { OrdersChart } from '../components';
+import {
+  CustomersWorldMapChart,
+  OrdersWorldMapChart,
+  SuppliersWorldMapChart,
+} from '../components/WorldMapChart';
 
 export default function Dashboard(): JSX.Element {
   setDocumentTitle('Dashboard');
@@ -9,7 +14,13 @@ export default function Dashboard(): JSX.Element {
         <OrdersChart />
       </div>
       <div className="m-2 flex-grow-1 hstack align-items-stretch">
-        <WorldMapChart />
+        <OrdersWorldMapChart />
+      </div>
+      <div className="m-2 flex-grow-1 hstack align-items-stretch">
+        <CustomersWorldMapChart />
+      </div>
+      <div className="m-2 flex-grow-1 hstack align-items-stretch">
+        <SuppliersWorldMapChart />
       </div>
     </section>
   );

@@ -1,6 +1,4 @@
 .world-map-chart {
-  --chart-color: var(--bs-primary);
-  --chart-hue: 216;
   &__chart-parent {
     position: relative;
     @media (min-width: 576px) {
