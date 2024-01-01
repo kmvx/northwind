@@ -79,12 +79,13 @@ export default function Orders(): JSX.Element {
         requiredDateObject: new Date(item.requiredDate),
         freight: item.freight,
         shipName: item.shipName,
-        addressLine0: joinFields(
+        addressLine: joinFields(
           item.shipCountry,
           item.shipRegion,
           item.shipCity,
+          item.shipAddress,
+          item.shipPostalCode,
         ),
-        addressLine1: joinFields(item.shipAddress, item.shipPostalCode),
         shipCountry: item.shipCountry,
       };
     });
@@ -136,7 +137,7 @@ export default function Orders(): JSX.Element {
         'requiredDateObject',
         'freight',
         'shipName',
-        'addressLine0',
+        'addressLine',
       ];
       function getColumnValue(item: typeof a) {
         const value = (item as any)[columns[sortColumn]];
@@ -296,9 +297,8 @@ export default function Orders(): JSX.Element {
                     <td className="d-none d-sm-table-cell">
                       <div className="hstack">
                         <Flag className="me-2" country={item.shipCountry} />
-                        {item.addressLine0},
+                        {item.addressLine}
                       </div>
-                      <div>{item.addressLine1}</div>
                     </td>
                   </tr>
                 ))}
