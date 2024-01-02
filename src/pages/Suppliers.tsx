@@ -17,11 +17,20 @@ import {
 import type { ISuppliers } from '../models';
 
 export default function Suppliers(): JSX.Element {
+  // Filters
   const [filter, setFilter] = React.useState('');
   const [countryFilter, setCountryFilter] = React.useState('');
+  const hasFilter = !!filter || !!countryFilter;
+  function onClearFilters() {
+    setFilter('');
+    setCountryFilter('');
+  }
+
+  // Network data
   const { data, error, isLoading } = ReactQuery.useQuery<ISuppliers>({
     queryKey: [API_URL + '/Suppliers'],
   });
+
   if (error) return <ErrorMessage error={error} />;
   if (isLoading) return <WaitSpinner />;
   if (!data) return <div>No data</div>;
@@ -64,6 +73,13 @@ export default function Suppliers(): JSX.Element {
             countries={countries}
           />
         </div>
+        <input
+          className="btn btn-primary m-2"
+          type="button"
+          value="Clear filters"
+          disabled={!hasFilter}
+          onClick={onClearFilters}
+        />
       </div>
       <div className="m-2">{pluralize(filteredData.length, 'supplier')}</div>
       <div className="suppliers__list">

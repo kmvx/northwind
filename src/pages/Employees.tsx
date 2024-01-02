@@ -24,8 +24,16 @@ export default function Employees({
   className?: string;
   reportsTo?: string;
 }): JSX.Element {
+  // Filters
   const [filter, setFilter] = React.useState('');
   const [countryFilter, setCountryFilter] = React.useState('');
+  const hasFilter = !!filter || !!countryFilter;
+  function onClearFilters() {
+    setFilter('');
+    setCountryFilter('');
+  }
+
+  // Network data
   const { data, error, isLoading } = ReactQuery.useQuery<IEmployees>({
     queryKey: [API_URL + '/Employees'],
   });
@@ -55,12 +63,7 @@ export default function Employees({
       (item) => item.country === countryFilter,
     );
   }
-  if (
-    filteredData.length === 0 &&
-    reportsTo &&
-    filter === '' &&
-    countryFilter === ''
-  ) {
+  if (filteredData.length === 0 && reportsTo && !hasFilter) {
     return <></>;
   }
   return (
@@ -89,6 +92,13 @@ export default function Employees({
             countries={countries}
           />
         </div>
+        <input
+          className="btn btn-primary m-2"
+          type="button"
+          value="Clear filters"
+          disabled={!hasFilter}
+          onClick={onClearFilters}
+        />
       </div>
       <div className="m-2">{pluralize(filteredData.length, 'employee')}</div>
       <div className="employees__list">

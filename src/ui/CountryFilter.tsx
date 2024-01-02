@@ -22,7 +22,7 @@ export default function CountryFilter({
       <select
         className={clsx('form-select h-100')}
         onChange={onChange}
-        defaultValue={countryFilter}
+        value={countryFilter}
         title="Country filter"
       >
         {options.map((option) => (

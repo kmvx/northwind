@@ -20,11 +20,21 @@ import type { ICustomers } from '../models';
 
 export default function Customers(): JSX.Element {
   setDocumentTitle('Customers');
+
+  // Filters
   const [filter, setFilter] = React.useState('');
   const [countryFilter, setCountryFilter] = React.useState('');
+  const hasFilter = !!filter || !!countryFilter;
+  function onClearFilters() {
+    setFilter('');
+    setCountryFilter('');
+  }
+
+  // Network data
   const { data, error, isLoading } = ReactQuery.useQuery<ICustomers>({
     queryKey: [API_URL + '/Customers'],
   });
+
   const countries = [...new Set(data?.map((item) => item.country))].sort();
   const filteredData = React.useMemo(() => {
     let result = data;
@@ -70,6 +80,13 @@ export default function Customers(): JSX.Element {
             countries={countries}
           />
         </div>
+        <input
+          className="btn btn-primary m-2"
+          type="button"
+          value="Clear filters"
+          disabled={!hasFilter}
+          onClick={onClearFilters}
+        />
       </div>
       <div className="m-2">{pluralize(filteredData.length, 'customer')}</div>
       <Paginate paginateStore={paginateStore} />

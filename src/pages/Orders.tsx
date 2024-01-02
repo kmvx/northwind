@@ -28,10 +28,18 @@ function getEmployeeNameById(dataEmployees?: IEmployees, id?: any) {
 }
 
 export default function Orders(): JSX.Element {
+  // Filters
   const [filter, setFilter] = React.useState('');
   const [countryFilter, setCountryFilter] = React.useState('');
   const [yearFilter, setYearFilter] = React.useState<number>();
-  const [yearsSet, setYearsSet] = React.useState<Set<number>>(new Set());
+  const hasFilter = !!filter || !!countryFilter || !!yearFilter;
+  function onClearFilters() {
+    setFilter('');
+    setCountryFilter('');
+    setYearFilter(undefined);
+  }
+
+  // Params
   const { id } = useParams();
   const { pathname } = useLocation();
   const isCustomersPage = pathname.startsWith('/customers/');
@@ -39,7 +47,7 @@ export default function Orders(): JSX.Element {
   const isOrdersPage = pathname.startsWith('/orders');
   const isOrdersEndPage = !isOrdersPage && pathname.endsWith('/orders');
 
-  // Data
+  // Network data
   const { data, error, isLoading } = ReactQuery.useQuery<IOrders>({
     queryKey: [
       API_URL +
@@ -57,6 +65,7 @@ export default function Orders(): JSX.Element {
   });
 
   // Prepare data
+  const [yearsSet, setYearsSet] = React.useState<Set<number>>(new Set());
   const preparedData = React.useMemo(() => {
     const yearsSetTemp = new Set<number>();
     const preparedData = data?.map((item) => {
@@ -172,7 +181,7 @@ export default function Orders(): JSX.Element {
   if (isLoading) return <WaitSpinner />;
   if (!filteredData) return <div>No data</div>;
   if (isOrdersPage || isOrdersEndPage) setDocumentTitle('Orders');
-  if (filteredData.length === 0 && filter === '' && yearFilter === undefined) {
+  if (filteredData.length === 0 && !hasFilter) {
     return (
       <div>
         <h1 className="m-2 text-center">No orders</h1>
@@ -224,6 +233,13 @@ export default function Orders(): JSX.Element {
         <YearFilterButtons
           {...{ yearsSet, yearFilter, setYearFilter }}
           className="m-2"
+        />
+        <input
+          className="btn btn-primary m-2"
+          type="button"
+          value="Clear filters"
+          disabled={!hasFilter}
+          onClick={onClearFilters}
         />
       </div>
       {filteredData.length !== 0 ? (

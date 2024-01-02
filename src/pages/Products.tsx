@@ -23,11 +23,21 @@ export default function Products({
 }: {
   supplierId?: string;
 }): JSX.Element {
+  // Params
   const { categoryId } = useParams();
   const categoryIdNumber =
     categoryId == undefined ? undefined : parseInt(categoryId, 10);
+
+  // Filters
   const [filter, setFilter] = React.useState('');
   const [discontinuedFilter, setDicontinuedFilter] = React.useState<boolean>();
+  const hasFilter = !!filter || !!discontinuedFilter;
+  function onClearFilters() {
+    setFilter('');
+    setDicontinuedFilter(undefined);
+  }
+
+  // Network data
   const { data, error, isLoading } = ReactQuery.useQuery<IProducts>({
     queryKey: [API_URL + '/Products'],
   });
@@ -186,6 +196,13 @@ export default function Products({
         </div>
         <DiscontinuedFilterButtons
           {...{ discontinuedFilter, setDicontinuedFilter }}
+        />
+        <input
+          className="btn btn-primary m-2"
+          type="button"
+          value="Clear filters"
+          disabled={!hasFilter}
+          onClick={onClearFilters}
         />
       </div>
       {filteredData.length !== 0 ? (
