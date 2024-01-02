@@ -32,16 +32,19 @@ function SupplierLink({
 
 export default function Product(): JSX.Element {
   const { id } = useParams();
+
+  // Network data
   const { data, error, isLoading } = ReactQuery.useQuery<IProduct>({
     queryKey: [API_URL + '/Products/' + id],
   });
   const { data: dataCategories } = ReactQuery.useQuery<ICategories>({
     queryKey: [API_URL + '/Categories'],
   });
+
+  setDocumentTitle(data?.productName, 'Product');
   if (error) return <ErrorMessage error={error} />;
   if (isLoading) return <WaitSpinner />;
   if (!data) return <div>No data</div>;
-  setDocumentTitle(data.productName, 'Product');
   return (
     <PanelCentred>
       <h1 className="m-2 text-center">{data.productName}</h1>

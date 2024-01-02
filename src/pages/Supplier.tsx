@@ -10,10 +10,10 @@ export default function Supplier(): JSX.Element {
   const { data, error, isLoading } = ReactQuery.useQuery<ISupplier>({
     queryKey: [API_URL + '/Suppliers/' + id],
   });
+  setDocumentTitle(data?.companyName, 'Supplier');
   if (error) return <ErrorMessage error={error} />;
   if (isLoading) return <WaitSpinner />;
   if (!data) return <div>No data</div>;
-  setDocumentTitle(data.companyName, 'Supplier');
   return (
     <PanelCentred>
       <div className="m-2">

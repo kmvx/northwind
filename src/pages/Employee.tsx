@@ -22,10 +22,13 @@ function EmployeeLink({
   className?: string;
 }): JSX.Element {
   const hasReportsTo = Boolean(id);
+
+  // Network data
   const { data, error, isLoading } = ReactQuery.useQuery<IEmployee>({
     queryKey: [API_URL + '/Employees/' + id],
     enabled: hasReportsTo,
   });
+
   if (error) return <ErrorMessage error={error} />;
   if (isLoading) {
     if (hasReportsTo) return <WaitSpinner />;
@@ -42,14 +45,17 @@ function EmployeeLink({
 
 export default function Employee(): JSX.Element {
   const { id } = useParams();
+
+  // Network data
   const { data, error, isLoading } = ReactQuery.useQuery<IEmployee>({
     queryKey: [API_URL + '/Employees/' + id],
   });
+
+  const name = data ? getEmployeeNameByData(data) : undefined;
+  setDocumentTitle(name, 'Employee');
   if (error) return <ErrorMessage error={error} />;
   if (isLoading) return <WaitSpinner />;
   if (!data) return <div>No data</div>;
-  const name = getEmployeeNameByData(data);
-  setDocumentTitle(name, 'Employee');
   return (
     <PanelCentred className="employee">
       <h1 className="text-center m-2">{name}</h1>

@@ -6,9 +6,12 @@ import { useSortTable } from '../hooks';
 import type { IOrderDetails, IProducts } from '../models';
 
 export default function OrderDetails(): JSX.Element {
+  // Params
   const { id } = useParams();
   const { pathname } = useLocation();
   const isOrders = pathname.startsWith('/orders/');
+
+  // Network data
   const { data, error, isLoading } = ReactQuery.useQuery<IOrderDetails>({
     queryKey: [
       API_URL + (isOrders ? '/Orders/' : '/Products/') + id + '/OrderDetails',

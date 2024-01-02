@@ -128,14 +128,15 @@ export default function Products({
 
   const { paginateData, paginateStore } = usePaginate(filteredData, 15);
 
-  if (error) return <ErrorMessage error={error} />;
-  if (isLoading) return <WaitSpinner />;
-  if (!filteredData) return <div>No data</div>;
   const categoryNameProducts = getCategoryNameById(
     dataCategories,
     categoryIdNumber,
   );
   if (!supplierId) setDocumentTitle(categoryNameProducts, 'Products');
+
+  if (error) return <ErrorMessage error={error} />;
+  if (isLoading) return <WaitSpinner />;
+  if (!filteredData) return <div>No data</div>;
   function THead() {
     return (
       <thead className="sticky-top bg-white">

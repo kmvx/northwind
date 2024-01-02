@@ -19,8 +19,6 @@ import {
 import type { ICustomers } from '../models';
 
 export default function Customers(): JSX.Element {
-  setDocumentTitle('Customers');
-
   // Filters
   const [filter, setFilter] = React.useState('');
   const [countryFilter, setCountryFilter] = React.useState('');
@@ -35,6 +33,7 @@ export default function Customers(): JSX.Element {
     queryKey: [API_URL + '/Customers'],
   });
 
+  // Filter data
   const countries = [...new Set(data?.map((item) => item.country))].sort();
   const filteredData = React.useMemo(() => {
     let result = data;
@@ -52,7 +51,10 @@ export default function Customers(): JSX.Element {
     }
     return result;
   }, [data, filter, countryFilter]);
+
   const { paginateData, paginateStore } = usePaginate(filteredData, 20);
+
+  setDocumentTitle('Customers');
   if (error) return <ErrorMessage error={error} />;
   if (isLoading) return <WaitSpinner />;
   if (!filteredData) return <div>No data</div>;

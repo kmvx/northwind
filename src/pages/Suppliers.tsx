@@ -17,6 +17,8 @@ import {
 import type { ISuppliers } from '../models';
 
 export default function Suppliers(): JSX.Element {
+  setDocumentTitle('Suppliers');
+
   // Filters
   const [filter, setFilter] = React.useState('');
   const [countryFilter, setCountryFilter] = React.useState('');
@@ -31,24 +33,25 @@ export default function Suppliers(): JSX.Element {
     queryKey: [API_URL + '/Suppliers'],
   });
 
-  if (error) return <ErrorMessage error={error} />;
-  if (isLoading) return <WaitSpinner />;
-  if (!data) return <div>No data</div>;
-  setDocumentTitle('Suppliers');
+  // Filtered data
   const countries = [...new Set(data?.map((item) => item.country))].sort();
   let filteredData = data;
   if (filter) {
-    filteredData = filteredData.filter((item) =>
+    filteredData = filteredData?.filter((item) =>
       ['companyName', 'country', 'city'].some((name) =>
         isStringIncludes((item as Record<string, any>)[name], filter),
       ),
     );
   }
   if (countryFilter) {
-    filteredData = filteredData.filter(
+    filteredData = filteredData?.filter(
       (item) => item.country === countryFilter,
     );
   }
+
+  if (error) return <ErrorMessage error={error} />;
+  if (isLoading) return <WaitSpinner />;
+  if (!filteredData) return <div>No data</div>;
   return (
     <PanelStretched>
       <h2 className="m-2 text-center">Suppliers</h2>

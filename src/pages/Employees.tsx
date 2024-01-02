@@ -37,18 +37,16 @@ export default function Employees({
   const { data, error, isLoading } = ReactQuery.useQuery<IEmployees>({
     queryKey: [API_URL + '/Employees'],
   });
-  if (error) return <ErrorMessage error={error} />;
-  if (isLoading) return <WaitSpinner />;
-  if (!data) return <div>No data</div>;
-  if (!reportsTo) setDocumentTitle('Employees');
+
+  // Filter data
   let filteredData = data;
   if (reportsTo) {
-    filteredData = filteredData.filter(
+    filteredData = filteredData?.filter(
       (item) => String(item.reportsTo) == reportsTo,
     );
   }
   if (filter) {
-    filteredData = filteredData.filter((item) =>
+    filteredData = filteredData?.filter((item) =>
       ['title', 'country', 'city'].some((name) => {
         if (isStringIncludes(getEmployeeNameByData(item), filter)) return true;
         return isStringIncludes((item as Record<string, any>)[name], filter);
@@ -59,10 +57,15 @@ export default function Employees({
     ...new Set(filteredData?.map((item) => item.country)),
   ].sort();
   if (countryFilter) {
-    filteredData = filteredData.filter(
+    filteredData = filteredData?.filter(
       (item) => item.country === countryFilter,
     );
   }
+
+  if (!reportsTo) setDocumentTitle('Employees');
+  if (error) return <ErrorMessage error={error} />;
+  if (isLoading) return <WaitSpinner />;
+  if (!filteredData) return <div>No data</div>;
   if (filteredData.length === 0 && reportsTo && !hasFilter) {
     return <></>;
   }
