@@ -9,7 +9,7 @@ import {
   WaitSpinner,
   YearFilterButtons,
 } from '../ui';
-import { usePaginate, useSortTable } from '../hooks';
+import { useMemoWaitCursor, usePaginate, useSortTable } from '../hooks';
 import {
   API_URL,
   joinFields,
@@ -66,7 +66,7 @@ export default function Orders(): JSX.Element {
 
   // Prepare data
   const [yearsSet, setYearsSet] = React.useState<Set<number>>(new Set());
-  const preparedData = React.useMemo(() => {
+  const preparedData = useMemoWaitCursor(() => {
     const yearsSetTemp = new Set<number>();
     const preparedData = data?.map((item) => {
       const orderDate = item.orderDate;
@@ -179,7 +179,8 @@ export default function Orders(): JSX.Element {
   const { paginateData, paginateStore } = usePaginate(filteredData);
   if (isOrdersPage || isOrdersEndPage) setDocumentTitle('Orders');
   if (error) return <ErrorMessage error={error} />;
-  if (isLoading) return <WaitSpinner />;
+  if (isLoading || (!preparedData && data && dataEmployees))
+    return <WaitSpinner />;
   if (!filteredData) return <div>No data</div>;
   if (filteredData.length === 0 && !hasFilter) {
     return (

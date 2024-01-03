@@ -1,3 +1,8 @@
+.u-wait,
+.u-wait * {
+  cursor: wait;
+}
+
 .u-prop-grid {
   display: grid;
   grid-template-columns: 1fr 1fr;
