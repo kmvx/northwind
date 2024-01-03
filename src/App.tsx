@@ -8,7 +8,7 @@ import { ErrorBoundary, type FallbackProps } from 'react-error-boundary';
 import axios from 'axios';
 import {
   About,
-  Charts,
+  ChartJS,
   Customer,
   Customers,
   Dashboard,
@@ -191,7 +191,7 @@ function App(): JSX.Element {
               <Route path="/orders" element={<Orders />} />
               <Route path="/orders/:id" element={<Order />} />
               <Route path="/orderNew" element={<OrderEdit />} />
-              <Route path="/charts" element={<Charts />} />
+              <Route path="/charts" element={<ChartJS />} />
               <Route path="/dashboard" element={<Dashboard />} />
               <Route path="*" element={<NotFound />} />
             </Routes>

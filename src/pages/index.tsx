@@ -1,5 +1,5 @@
 export { default as About } from './About';
-export { default as Charts } from './Charts';
+export { default as ChartJS } from './ChartJS';
 export { default as Customer } from './Customer';
 export { default as Customers } from './Customers';
 export { default as Dashboard } from './Dashboard';
