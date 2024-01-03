@@ -9,17 +9,20 @@ export default function OrderDetails(): JSX.Element {
   // Params
   const { id } = useParams();
   const { pathname } = useLocation();
-  const isOrders = pathname.startsWith('/orders/');
+  const isOrdersPage = pathname.startsWith('/orders/');
 
   // Network data
   const { data, error, isLoading } = ReactQuery.useQuery<IOrderDetails>({
     queryKey: [
-      API_URL + (isOrders ? '/Orders/' : '/Products/') + id + '/OrderDetails',
+      API_URL +
+        (isOrdersPage ? '/Orders/' : '/Products/') +
+        id +
+        '/OrderDetails',
     ],
   });
   const { data: dataProducts } = ReactQuery.useQuery<IProducts>({
     queryKey: [API_URL + '/Orders/' + id + '/Products'],
-    enabled: isOrders,
+    enabled: isOrdersPage,
   });
 
   // Sort data
@@ -46,7 +49,7 @@ export default function OrderDetails(): JSX.Element {
   });
   if (filteredData) filteredData = [...filteredData]; // Toggle data change hooks
 
-  if (!isOrders) setDocumentTitle('Order details');
+  if (!isOrdersPage) setDocumentTitle('Order details');
   if (error) return <ErrorMessage error={error} />;
   if (isLoading) return <WaitSpinner />;
   if (!filteredData) return <div>No data</div>;
@@ -62,7 +65,7 @@ export default function OrderDetails(): JSX.Element {
       >
         <thead className="sticky-top bg-white">
           <tr>
-            <th scope="col">{isOrders ? 'Product' : 'Order ID'}</th>
+            <th scope="col">{isOrdersPage ? 'Product' : 'Order ID'}</th>
             <th scope="col">Unit price</th>
             <th scope="col">Qu&shy;an&shy;tity</th>
             <th scope="col">Dis&shy;cou&shy;nt</th>
@@ -71,7 +74,7 @@ export default function OrderDetails(): JSX.Element {
         <tbody className="table-group-divider">
           {filteredData.map((item, index) => (
             <tr key={index}>
-              {isOrders ? (
+              {isOrdersPage ? (
                 <td title={'ID: ' + item.productId}>
                   <NavLink to={'/products/' + item.productId}>
                     {dataProducts
