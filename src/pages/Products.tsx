@@ -31,7 +31,7 @@ export default function Products({
   // Filters
   const [filter, setFilter] = React.useState('');
   const [discontinuedFilter, setDicontinuedFilter] = React.useState<boolean>();
-  const hasFilter = !!filter || !!discontinuedFilter;
+  const hasFilter = !!filter || discontinuedFilter !== undefined;
   function onClearFilters() {
     setFilter('');
     setDicontinuedFilter(undefined);
