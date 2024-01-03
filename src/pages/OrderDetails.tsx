@@ -91,7 +91,7 @@ export default function OrderDetails(): JSX.Element {
               )}
               <td>{item.unitPrice}</td>
               <td>{item.quantity}</td>
-              <td>{item.discount * 100}%</td>
+              <td>{item.discount ? item.discount * 100 + '%' : '-'}</td>
             </tr>
           ))}
         </tbody>
