@@ -2,7 +2,7 @@ import * as React from 'react';
 
 export default function useMemoWaitCursor<T>(
   factory: () => T,
-  deps: React.DependencyList,
+  deps: React.DependencyList | undefined,
 ): T | undefined {
   //return React.useMemo(factory, deps);
 
@@ -24,6 +24,7 @@ export default function useMemoWaitCursor<T>(
         setIsWaiting(false);
       }
     }, 50);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, deps);
   return value;
 }
