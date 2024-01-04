@@ -15,6 +15,7 @@ function updateChart({
   itemsPerCountryCount,
   maxItemsCountPerCountry,
   hue,
+  name,
 }: {
   current: SVGSVGElement;
   width: number;
@@ -22,6 +23,7 @@ function updateChart({
   itemsPerCountryCount: Map<string, number>;
   maxItemsCountPerCountry: number;
   hue: number;
+  name: string;
 }) {
   d3.json(
     'https://raw.githubusercontent.com/holtzy/D3-graph-gallery/master/DATA/world.geojson',
@@ -55,10 +57,13 @@ function updateChart({
         'class',
         (d: any) => 'world-map-chart__country x-' + d.properties.name,
       )
+      .attr('data-country', (d: any) => d.properties.name)
+      .attr(
+        'data-count',
+        (d: any) => itemsPerCountryCount.get(d.properties.name) || 'no',
+      )
       .attr('fill', function (d: any) {
-        let countryName = d.properties.name;
-        if (countryName === 'England') countryName = 'UK';
-        const count = itemsPerCountryCount.get(countryName);
+        const count = itemsPerCountryCount.get(d.properties.name);
         if (count) {
           return `hsl(${hue} 100% ${
             80 - Math.round((count / maxItemsCountPerCountry) * 60)
@@ -66,6 +71,38 @@ function updateChart({
         } else return 'hsl(0 0% 75%)';
       })
       .attr('d', d3.geoPath().projection(projection) as any);
+
+    const svgParent = d3.select(svg.node()?.parentNode as Element);
+    svgParent.selectAll('.world-map-chart__tooltip').remove();
+    const tooltip = svgParent
+      .append('div')
+      .attr('class', 'world-map-chart__tooltip')
+      .style('border-color', `hsl(${hue} 100% 50%`)
+      .style('visibility', 'hidden');
+    svgParent
+      .on('mousemove', (event: MouseEvent) => {
+        tooltip
+          .style(
+            'left',
+            event.offsetX - (tooltip.node()?.clientWidth || 0) - 20 + 'px',
+          )
+          .style('top', event.offsetY + 20 + 'px')
+          .style('visibility', 'visible');
+        const target = d3.select(event.target as Element);
+        const country = target.attr('data-country');
+        if (country) {
+          tooltip
+            .html(
+              `<b>${country}</b>: <b>${target.attr('data-count')}</b> ${name}`,
+            )
+            .style('visibility', 'visible');
+        } else {
+          tooltip.html('').style('visibility', 'hidden');
+        }
+      })
+      .on('mouseout', () => {
+        tooltip.html('').style('visibility', 'hidden');
+      });
   });
 }
 
@@ -93,7 +130,8 @@ function WorldMapChart({
       const itemsPerCountryCount = new Map<string, number>();
       let maxItemsCountPerCountry = 0;
       data?.forEach((order) => {
-        const country = countrySelector(order);
+        let country = countrySelector(order);
+        if (country === 'UK') country = 'England';
         const count = (itemsPerCountryCount.get(country) || 0) + 1;
         maxItemsCountPerCountry = Math.max(maxItemsCountPerCountry, count);
         itemsPerCountryCount.set(country, count);
@@ -119,6 +157,7 @@ function WorldMapChart({
         itemsPerCountryCount,
         maxItemsCountPerCountry,
         hue,
+        name,
       });
     }
     update();
@@ -128,7 +167,7 @@ function WorldMapChart({
     return () => {
       if (element) resizeObserver.unobserve(element);
     };
-  }, [itemsPerCountryCount, maxItemsCountPerCountry, hue]);
+  }, [itemsPerCountryCount, maxItemsCountPerCountry, hue, name]);
 
   // Handle errors and loading state
   if (error) return <ErrorMessage error={error} />;
