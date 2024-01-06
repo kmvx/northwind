@@ -109,10 +109,11 @@ class SVGBuilder {
 
     // Tooltip
     const svgParent = d3.select(svg.node()?.parentNode?.parentNode as Element);
-    svgParent.selectAll('.orders-chart__tooltip').remove();
+    svgParent.selectAll('.chart-tooltip').remove();
     const tooltip = svgParent
       .append('div')
-      .attr('class', 'orders-chart__tooltip')
+      .attr('class', 'chart-tooltip')
+      .style('border-color', 'var(--chart-line-color)')
       .style('visibility', 'hidden');
 
     // Mouse event handlers

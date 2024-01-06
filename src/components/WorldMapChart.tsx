@@ -73,10 +73,10 @@ function updateChart({
       .attr('d', d3.geoPath().projection(projection) as any);
 
     const svgParent = d3.select(svg.node()?.parentNode as Element);
-    svgParent.selectAll('.world-map-chart__tooltip').remove();
+    svgParent.selectAll('.chart-tooltip').remove();
     const tooltip = svgParent
       .append('div')
-      .attr('class', 'world-map-chart__tooltip')
+      .attr('class', 'chart-tooltip')
       .style('border-color', `hsl(${hue} 100% 50%`)
       .style('visibility', 'hidden');
     svgParent
