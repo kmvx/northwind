@@ -1,6 +1,11 @@
 import { setDocumentTitle } from '../utils';
 import { OrdersChart } from '../components';
 import {
+  CustomersBarChart,
+  OrdersBarChart,
+  SuppliersBarChart,
+} from '../components/BarChart';
+import {
   CustomersWorldMapChart,
   OrdersWorldMapChart,
   SuppliersWorldMapChart,
@@ -9,18 +14,29 @@ import {
 export default function Dashboard(): JSX.Element {
   setDocumentTitle('Dashboard');
   return (
-    <section className="hstack align-items-stretch flex-wrap">
-      <div className="m-2 flex-grow-1 hstack align-items-stretch">
+    <section>
+      <div>
         <OrdersChart />
       </div>
-      <div className="m-2 flex-grow-1 hstack align-items-stretch">
-        <OrdersWorldMapChart />
-      </div>
-      <div className="m-2 flex-grow-1 hstack align-items-stretch">
-        <CustomersWorldMapChart />
-      </div>
-      <div className="m-2 flex-grow-1 hstack align-items-stretch">
-        <SuppliersWorldMapChart />
+      <div className="hstack align-items-stretch flex-wrap">
+        <div className="m-2 flex-grow-1 hstack align-items-stretch">
+          <OrdersWorldMapChart />
+        </div>
+        <div className="m-2 flex-grow-1 hstack align-items-stretch">
+          <OrdersBarChart />
+        </div>
+        <div className="m-2 flex-grow-1 hstack align-items-stretch">
+          <CustomersWorldMapChart />
+        </div>
+        <div className="m-2 flex-grow-1 hstack align-items-stretch">
+          <CustomersBarChart />
+        </div>
+        <div className="m-2 flex-grow-1 hstack align-items-stretch">
+          <SuppliersWorldMapChart />
+        </div>
+        <div className="m-2 flex-grow-1 hstack align-items-stretch">
+          <SuppliersBarChart />
+        </div>
       </div>
     </section>
   );

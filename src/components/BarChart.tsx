@@ -6,7 +6,7 @@ import { useQuery } from '@tanstack/react-query';
 import { API_URL } from '../utils';
 import { ErrorMessage, PanelStretched, WaitSpinner } from '../ui';
 import { addTooltip } from './Chart';
-import './WorldMapChart.scss';
+import './BarChart.scss';
 
 function updateChart({
   current,
@@ -25,58 +25,84 @@ function updateChart({
   hue: number;
   name: string;
 }) {
-  d3.json(
-    'https://raw.githubusercontent.com/holtzy/D3-graph-gallery/master/DATA/world.geojson',
-  ).then(function (data: any) {
-    const projection = d3
-      .geoNaturalEarth1()
-      .scale(width / 1.5 / Math.PI)
-      .translate([width / 2.2, height / 2]);
+  // Prepare data
+  const itemsPerCountryCountArray = [...itemsPerCountryCount]
+    .map(([country, count]) => ({
+      country,
+      count,
+    }))
+    .sort((a, b) => b.count - a.count);
 
-    // Draw the map
-    const svg = d3.select(current);
-    svg.selectAll('*').remove();
+  // Draw the map
+  const svgBase = d3.select(current);
+  svgBase.selectAll('*').remove();
 
-    // Background
-    svg
-      .append('rect')
-      .attr('x', 0)
-      .attr('y', 0)
-      .attr('width', width)
-      .attr('height', height)
-      .attr('fill', `hsl(${hue} 100% 50%`)
-      .attr('fill-opacity', 0.1);
+  const margin = { top: 30, right: 30, bottom: 100, left: 60 };
+  const widthChart = width - margin.left - margin.right;
+  const heightChart = height - margin.top - margin.bottom;
+  const svg = svgBase
+    .append('svg')
+    .attr('width', width + margin.left + margin.right)
+    .attr('height', height + margin.top + margin.bottom)
+    .append('g')
+    .attr('transform', `translate(${margin.left},${margin.top})`);
 
-    // Countries
-    svg
-      .append('g')
-      .selectAll('path')
-      .data(data.features)
-      .join('path')
-      .attr(
-        'class',
-        (d: any) => 'world-map-chart__country x-' + d.properties.name,
-      )
-      .attr('data-country', (d: any) => d.properties.name)
-      .attr(
-        'data-count',
-        (d: any) => itemsPerCountryCount.get(d.properties.name) || 'no',
-      )
-      .attr('fill', function (d: any) {
-        const count = itemsPerCountryCount.get(d.properties.name);
-        if (count) {
-          return `hsl(${hue} 100% ${
-            80 - Math.round((count / maxItemsCountPerCountry) * 60)
-          }%)`;
-        } else return 'hsl(0 0% 75%)';
-      })
-      .attr('d', d3.geoPath().projection(projection) as any);
+  // X axis
+  const x = d3
+    .scaleBand()
+    .range([0, widthChart])
+    .domain(
+      itemsPerCountryCountArray.map(function (d) {
+        return d.country;
+      }),
+    )
+    .padding(0.2);
+  svg
+    .append('g')
+    .attr('transform', 'translate(0,' + (5 + heightChart) + ')')
+    .call(d3.axisBottom(x))
+    .selectAll('text')
+    .attr('transform', 'translate(-10, 0) rotate(-45)')
+    .style('font-size', '1rem')
+    .style('text-anchor', 'end');
 
-    addTooltip({ svg, hue, name });
-  });
+  // Y axis
+  const y = d3
+    .scaleLinear()
+    .domain([0, maxItemsCountPerCountry])
+    .range([heightChart, 0]);
+  svg
+    .append('g')
+    .call(d3.axisLeft(y))
+    .selectAll('text')
+    .style('font-size', '0.8rem');
+
+  // Bars
+  svg
+    .selectAll('.whatever')
+    .data(itemsPerCountryCountArray)
+    .join('rect')
+    .attr('class', 'bar-chart__country')
+    .attr('data-country', (d) => d.country)
+    .attr('data-count', (d) => d.count)
+    .attr('x', function (d) {
+      return x(d.country) as any;
+    })
+    .attr('y', function (d) {
+      return y(d.count);
+    })
+    .attr('width', x.bandwidth())
+    .attr('height', function (d) {
+      return heightChart - y(d.count);
+    })
+    .attr('fill', `hsl(${hue} 100% 90%`)
+    .attr('stroke', `hsl(${hue} 100% 50%`)
+    .attr('stroke-width', 2);
+
+  addTooltip({ svg: svgBase, hue, name });
 }
 
-function WorldMapChart({
+function BarChart({
   className,
   name,
   urlPath,
@@ -154,13 +180,13 @@ function WorldMapChart({
   );
 }
 
-export function CustomersWorldMapChart({
+export function CustomersBarChart({
   className,
 }: {
   className?: string;
 }): JSX.Element {
   return (
-    <WorldMapChart
+    <BarChart
       className={className}
       name="customers"
       urlPath="/Customers"
@@ -170,13 +196,13 @@ export function CustomersWorldMapChart({
   );
 }
 
-export function OrdersWorldMapChart({
+export function OrdersBarChart({
   className,
 }: {
   className?: string;
 }): JSX.Element {
   return (
-    <WorldMapChart
+    <BarChart
       className={className}
       name="orders"
       urlPath="/Orders"
@@ -186,13 +212,13 @@ export function OrdersWorldMapChart({
   );
 }
 
-export function SuppliersWorldMapChart({
+export function SuppliersBarChart({
   className,
 }: {
   className?: string;
 }): JSX.Element {
   return (
-    <WorldMapChart
+    <BarChart
       className={className}
       name="suppliers"
       urlPath="/Suppliers"

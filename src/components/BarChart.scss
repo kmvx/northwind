@@ -1,0 +1,7 @@
+.bar-chart {
+  &__country {
+    &:hover {
+      opacity: 0.5;
+    }
+  }
+}
