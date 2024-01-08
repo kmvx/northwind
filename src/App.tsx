@@ -8,10 +8,10 @@ import { ErrorBoundary, type FallbackProps } from 'react-error-boundary';
 import axios from 'axios';
 import {
   About,
+  ChartD3,
   ChartJS,
   Customer,
   Customers,
-  Dashboard,
   Employee,
   Employees,
   NotFound,
@@ -113,7 +113,7 @@ function Layout({ children }: { children: React.ReactNode }): JSX.Element {
     //{ title: 'Add order',  to: '/orderNew',  imageClassName: "bi bi-ticket-perforated" },
     undefined,
     { title: 'Charts', to: '/charts', imageClassName: 'bi bi-graph-up' },
-    //{ title: 'Dashboard', to: '/dashboard', imageClassName: 'bi bi-graph-up' },
+    //{ title: 'Charts', to: '/chartjs', imageClassName: 'bi bi-graph-up' },
   ];
   return (
     <div className="hstack align-items-stretch vh-100">
@@ -191,8 +191,8 @@ function App(): JSX.Element {
               <Route path="/orders" element={<Orders />} />
               <Route path="/orders/:id" element={<Order />} />
               <Route path="/orderNew" element={<OrderEdit />} />
-              <Route path="/charts" element={<ChartJS />} />
-              <Route path="/dashboard" element={<Dashboard />} />
+              <Route path="/chartjs" element={<ChartJS />} />
+              <Route path="/charts" element={<ChartD3 />} />
               <Route path="*" element={<NotFound />} />
             </Routes>
           </ErrorBoundary>

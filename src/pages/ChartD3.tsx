@@ -11,8 +11,8 @@ import {
   SuppliersWorldMapChart,
 } from '../components/WorldMapChart';
 
-export default function Dashboard(): JSX.Element {
-  setDocumentTitle('Dashboard');
+export default function ChartD3(): JSX.Element {
+  setDocumentTitle('Charts');
   return (
     <section>
       <div>
