@@ -60,6 +60,7 @@ function updateChart({
   svg
     .append('g')
     .attr('transform', 'translate(0,' + (5 + heightChart) + ')')
+    .style('color', 'var(--chart-text-color)')
     .call(d3.axisBottom(x))
     .selectAll('text')
     .attr('transform', 'translate(-10, 0) rotate(-45)')
@@ -73,8 +74,10 @@ function updateChart({
     .range([heightChart, 0]);
   svg
     .append('g')
+    .style('color', 'var(--chart-text-color)')
     .call(d3.axisLeft(y))
     .selectAll('text')
+    .attr('fill', 'var(--chart-text-color)')
     .style('font-size', '0.8rem');
 
   // Bars
