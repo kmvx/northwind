@@ -258,7 +258,7 @@ class SVGBuilder {
       .attr('width', parentWidth)
       .attr('height', parentHeight)
       .append('g')
-      .attr('transform', `translate(${margin.left},${margin.top})`);
+      .attr('transform', `translate(${margin.left}, ${margin.top})`);
     this.width = parentWidth - margin.left - margin.right;
     this.height = parentHeight - margin.top - margin.bottom;
     return true;
@@ -275,7 +275,7 @@ class SVGBuilder {
     this.svgXAxis?.remove();
     this.svgXAxis = this.svg
       ?.append('g')
-      .attr('transform', 'translate(0,' + this.height + ')')
+      .attr('transform', `translate(0, ${this.height})`)
       .call(
         d3.axisBottom(x).tickFormat((domainValue: d3.NumberValue) => {
           const d = domainValue as number;

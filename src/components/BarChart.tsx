@@ -45,7 +45,7 @@ function updateChart({
     .attr('width', width + margin.left + margin.right)
     .attr('height', height + margin.top + margin.bottom)
     .append('g')
-    .attr('transform', `translate(${margin.left},${margin.top})`);
+    .attr('transform', `translate(${margin.left}, ${margin.top})`);
 
   // X axis
   const x = d3
@@ -59,7 +59,7 @@ function updateChart({
     .padding(0.2);
   svg
     .append('g')
-    .attr('transform', 'translate(0,' + (5 + heightChart) + ')')
+    .attr('transform', `translate(0, ${5 + heightChart})`)
     .style('color', 'var(--chart-text-color)')
     .call(d3.axisBottom(x))
     .selectAll('text')
@@ -98,8 +98,8 @@ function updateChart({
     .attr('height', function (d) {
       return heightChart - y(d.count);
     })
-    .attr('fill', `hsl(${hue} 100% 90%`)
-    .attr('stroke', `hsl(${hue} 100% 50%`)
+    .attr('fill', `hsl(${hue} 100% 90%)`)
+    .attr('stroke', `hsl(${hue} 100% 50%)`)
     .attr('stroke-width', 2);
 
   addTooltip({ svg: svgBase, hue, name });
