@@ -64,7 +64,7 @@ function updateChart({
     .call(d3.axisBottom(x))
     .selectAll('text')
     .attr('transform', 'translate(-10, 0) rotate(-45)')
-    .style('font-size', '1rem')
+    .style('font-size', '9pt')
     .style('text-anchor', 'end');
 
   // Y axis
@@ -78,7 +78,7 @@ function updateChart({
     .call(d3.axisLeft(y))
     .selectAll('text')
     .attr('fill', 'var(--chart-text-color)')
-    .style('font-size', '0.8rem');
+    .style('font-size', '9pt');
 
   // Bars
   svg
