@@ -179,8 +179,7 @@ export default function Orders(): JSX.Element {
   const { paginateData, paginateStore } = usePaginate(filteredData);
   if (isOrdersPage || isOrdersEndPage) setDocumentTitle('Orders');
   if (error) return <ErrorMessage error={error} />;
-  if (isLoading || (!preparedData && data && dataEmployees))
-    return <WaitSpinner />;
+  if (isLoading || (!filteredData && data)) return <WaitSpinner />;
   if (!filteredData) return <div>No data</div>;
   if (filteredData.length === 0 && !hasFilter) {
     return (
