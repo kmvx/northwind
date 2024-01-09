@@ -18,12 +18,12 @@ export function addTooltip({
     .style('visibility', 'hidden');
   svgParent
     .on('mousemove', (event: MouseEvent) => {
+      const width = tooltip.node()?.clientWidth || 0;
+      let left = event.offsetX - width - 25;
+      left = Math.max(0, left);
       tooltip
-        .style(
-          'left',
-          event.offsetX - (tooltip.node()?.clientWidth || 0) - 20 + 'px',
-        )
-        .style('top', event.offsetY + 20 + 'px')
+        .style('left', left + 'px')
+        .style('top', event.offsetY + 25 + 'px')
         .style('visibility', 'visible');
       const target = d3.select(event.target as Element);
       const country = target.attr('data-country');
