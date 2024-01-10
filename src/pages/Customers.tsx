@@ -16,12 +16,14 @@ import {
   pluralize,
   setDocumentTitle,
 } from '../utils';
+import { useParamsBuilder } from '../hooks';
 import type { ICustomers } from '../models';
 
 export default function Customers(): JSX.Element {
   // Filters
-  const [stringFilter, setStringFilter] = React.useState('');
-  const [countryFilter, setCountryFilter] = React.useState('');
+  const paramsBuilder = useParamsBuilder();
+  const [stringFilter, setStringFilter] = paramsBuilder.str('q');
+  const [countryFilter, setCountryFilter] = paramsBuilder.str('country');
   const hasFilter = !!stringFilter || !!countryFilter;
   function onClearFilters() {
     setStringFilter('');

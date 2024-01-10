@@ -1,4 +1,3 @@
-import * as React from 'react';
 import * as ReactQuery from '@tanstack/react-query';
 import { NavLink } from 'react-router-dom';
 import {
@@ -8,6 +7,7 @@ import {
   PanelStretched,
   WaitSpinner,
 } from '../ui';
+import { useParamsBuilder } from '../hooks';
 import {
   API_URL,
   isStringIncludes,
@@ -25,8 +25,9 @@ export default function Employees({
   reportsTo?: string;
 }): JSX.Element {
   // Filters
-  const [stringFilter, setStringFilter] = React.useState('');
-  const [countryFilter, setCountryFilter] = React.useState('');
+  const paramsBuilder = useParamsBuilder();
+  const [stringFilter, setStringFilter] = paramsBuilder.str('q');
+  const [countryFilter, setCountryFilter] = paramsBuilder.str('country');
   const hasFilter = !!stringFilter || !!countryFilter;
   function onClearFilters() {
     setStringFilter('');

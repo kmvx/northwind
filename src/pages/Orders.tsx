@@ -9,7 +9,12 @@ import {
   WaitSpinner,
   YearFilterButtons,
 } from '../ui';
-import { useMemoWaitCursor, usePaginate, useSortTable } from '../hooks';
+import {
+  useMemoWaitCursor,
+  usePaginate,
+  useParamsBuilder,
+  useSortTable,
+} from '../hooks';
 import {
   API_URL,
   joinFields,
@@ -29,9 +34,10 @@ function getEmployeeNameById(dataEmployees?: IEmployees, id?: any) {
 
 export default function Orders(): JSX.Element {
   // Filters
-  const [stringFilter, setStringFilter] = React.useState('');
-  const [countryFilter, setCountryFilter] = React.useState('');
-  const [yearFilter, setYearFilter] = React.useState<number>();
+  const paramsBuilder = useParamsBuilder();
+  const [stringFilter, setStringFilter] = paramsBuilder.str('q');
+  const [countryFilter, setCountryFilter] = paramsBuilder.str('country');
+  const [yearFilter, setYearFilter] = paramsBuilder.num('year');
   const hasFilter = !!stringFilter || !!countryFilter || !!yearFilter;
   function onClearFilters() {
     setStringFilter('');

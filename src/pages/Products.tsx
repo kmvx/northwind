@@ -7,7 +7,7 @@ import {
   Paginate,
   WaitSpinner,
 } from '../ui';
-import { usePaginate, useSortTable } from '../hooks';
+import { usePaginate, useParamsBuilder, useSortTable } from '../hooks';
 import {
   API_URL,
   isStringIncludes,
@@ -29,8 +29,10 @@ export default function Products({
     categoryId == undefined ? undefined : parseInt(categoryId, 10);
 
   // Filters
-  const [stringFilter, setStringFilter] = React.useState('');
-  const [discontinuedFilter, setDicontinuedFilter] = React.useState<boolean>();
+  const paramsBuilder = useParamsBuilder();
+  const [stringFilter, setStringFilter] = paramsBuilder.str('q');
+  const [discontinuedFilter, setDicontinuedFilter] =
+    paramsBuilder.tristate('discontinued');
   const hasFilter = !!stringFilter || discontinuedFilter !== undefined;
   function onClearFilters() {
     setStringFilter('');
