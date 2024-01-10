@@ -10,6 +10,9 @@ export default function useMemoWaitCursor<T>(
   const [isWaiting, setIsWaiting] = React.useState(false);
   React.useEffect(() => {
     document.documentElement.classList.toggle('u-wait', isWaiting);
+    return () => {
+      document.documentElement.classList.remove('u-wait');
+    };
   }, [isWaiting]);
 
   // Value state
