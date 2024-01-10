@@ -3,7 +3,7 @@ import { NavLink, useParams, useLocation } from 'react-router-dom';
 import { ErrorMessage, PanelCentred, WaitSpinner } from '../ui';
 import { API_URL, pluralize, setDocumentTitle } from '../utils';
 import { useSortTable } from '../hooks';
-import type { IOrderDetails, IProducts } from '../models';
+import type { IOrderDetail, IOrderDetails, IProducts } from '../models';
 
 export default function OrderDetails(): JSX.Element {
   // Params
@@ -53,11 +53,21 @@ export default function OrderDetails(): JSX.Element {
   if (error) return <ErrorMessage error={error} />;
   if (isLoading) return <WaitSpinner />;
   if (!filteredData) return <div>No data</div>;
+  function roundMoney(money: number) {
+    return Math.round(money * 100) / 100;
+  }
+  function getTotalCost(item: IOrderDetail) {
+    return roundMoney(
+      item.unitPrice * item.quantity * (1 - item.discount / 100),
+    );
+  }
+  const total = filteredData.reduce((acc, item) => acc + getTotalCost(item), 0);
   return (
     <PanelCentred>
       <h3 className="m-2 text-center">Order details</h3>
       <div className="m-2">
-        {pluralize(filteredData.length, 'order detail')}
+        {pluralize(filteredData.length, 'order detail')}, ${roundMoney(total)}{' '}
+        total.
       </div>
       <table
         ref={refTable}
@@ -69,6 +79,7 @@ export default function OrderDetails(): JSX.Element {
             <th scope="col">Unit price</th>
             <th scope="col">Qu&shy;an&shy;tity</th>
             <th scope="col">Dis&shy;cou&shy;nt</th>
+            <th scope="col">Total cost</th>
           </tr>
         </thead>
         <tbody className="table-group-divider">
@@ -89,9 +100,10 @@ export default function OrderDetails(): JSX.Element {
                   </NavLink>
                 </td>
               )}
-              <td>{item.unitPrice}</td>
+              <td>${item.unitPrice}</td>
               <td>{item.quantity}</td>
               <td>{item.discount ? item.discount * 100 + '%' : '-'}</td>
+              <td>${getTotalCost(item)}</td>
             </tr>
           ))}
         </tbody>
