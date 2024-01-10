@@ -62,10 +62,7 @@ function updateChart({
       .selectAll('path')
       .data(data.features)
       .join('path')
-      .attr(
-        'class',
-        (d: any) => 'world-map-chart__country x-' + getCountryName(d),
-      )
+      .attr('class', 'world-map-chart__country')
       .attr('data-country', (d: any) => getCountryName(d))
       .attr(
         'data-count',
