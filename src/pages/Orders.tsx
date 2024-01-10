@@ -108,9 +108,11 @@ export default function Orders(): JSX.Element {
     return preparedData;
   }, [data, dataEmployees]);
 
+  const countries = [...new Set(data?.map((item) => item.shipCountry))].sort();
+
   // Filter and sort data
   const { sortColumn, reverseSortingOrder, refTable } = useSortTable();
-  const { filteredData, countries } = React.useMemo(() => {
+  const filteredData = React.useMemo(() => {
     let filteredData = preparedData;
 
     // String filter
@@ -127,9 +129,6 @@ export default function Orders(): JSX.Element {
     }
 
     // Country filter
-    const countries = [
-      ...new Set(filteredData?.map((item) => item.shipCountry)),
-    ].sort();
     if (countryFilter) {
       filteredData = filteredData?.filter(
         (item) => item.shipCountry === countryFilter,
@@ -175,7 +174,7 @@ export default function Orders(): JSX.Element {
     });
     if (filteredData) filteredData = [...filteredData]; // Toggle data change hooks
 
-    return { filteredData, countries };
+    return filteredData;
   }, [
     preparedData,
     stringFilter,

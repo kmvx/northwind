@@ -58,9 +58,7 @@ export default function Employees({
       }),
     );
   }
-  const countries = [
-    ...new Set(filteredData?.map((item) => item.country)),
-  ].sort();
+  const countries = [...new Set(data?.map((item) => item.country))].sort();
   if (countryFilter) {
     filteredData = filteredData?.filter(
       (item) => item.country === countryFilter,
