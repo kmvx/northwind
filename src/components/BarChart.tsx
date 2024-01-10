@@ -133,8 +133,7 @@ function BarChart({
       const itemsPerCountryCount = new Map<string, number>();
       let maxItemsCountPerCountry = 0;
       data?.forEach((order) => {
-        let country = countrySelector(order);
-        if (country === 'UK') country = 'England';
+        const country = countrySelector(order);
         const count = (itemsPerCountryCount.get(country) || 0) + 1;
         maxItemsCountPerCountry = Math.max(maxItemsCountPerCountry, count);
         itemsPerCountryCount.set(country, count);

@@ -52,6 +52,11 @@ function updateChart({
       .attr('fill-opacity', 0.1);
 
     // Countries
+    function getCountryName(d: any) {
+      const country = d.properties.name;
+      if (country === 'England') return 'UK';
+      else return country;
+    }
     svg
       .append('g')
       .selectAll('path')
@@ -59,15 +64,15 @@ function updateChart({
       .join('path')
       .attr(
         'class',
-        (d: any) => 'world-map-chart__country x-' + d.properties.name,
+        (d: any) => 'world-map-chart__country x-' + getCountryName(d),
       )
-      .attr('data-country', (d: any) => d.properties.name)
+      .attr('data-country', (d: any) => getCountryName(d))
       .attr(
         'data-count',
-        (d: any) => itemsPerCountryCount.get(d.properties.name) || 'no',
+        (d: any) => itemsPerCountryCount.get(getCountryName(d)) || 'no',
       )
       .attr('fill', function (d: any) {
-        const count = itemsPerCountryCount.get(d.properties.name);
+        const count = itemsPerCountryCount.get(getCountryName(d));
         if (count) {
           return `hsl(${hue} 100% ${
             80 - Math.round((count / maxItemsCountPerCountry) * 60)
@@ -104,8 +109,7 @@ function WorldMapChart({
       const itemsPerCountryCount = new Map<string, number>();
       let maxItemsCountPerCountry = 0;
       data?.forEach((order) => {
-        let country = countrySelector(order);
-        if (country === 'UK') country = 'England';
+        const country = countrySelector(order);
         const count = (itemsPerCountryCount.get(country) || 0) + 1;
         maxItemsCountPerCountry = Math.max(maxItemsCountPerCountry, count);
         itemsPerCountryCount.set(country, count);
