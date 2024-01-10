@@ -29,11 +29,11 @@ export default function Products({
     categoryId == undefined ? undefined : parseInt(categoryId, 10);
 
   // Filters
-  const [filter, setFilter] = React.useState('');
+  const [stringFilter, setStringFilter] = React.useState('');
   const [discontinuedFilter, setDicontinuedFilter] = React.useState<boolean>();
-  const hasFilter = !!filter || discontinuedFilter !== undefined;
+  const hasFilter = !!stringFilter || discontinuedFilter !== undefined;
   function onClearFilters() {
-    setFilter('');
+    setStringFilter('');
     setDicontinuedFilter(undefined);
   }
 
@@ -58,7 +58,7 @@ export default function Products({
         return item.categoryId === categoryIdNumber;
       });
     }
-    if (filter) {
+    if (stringFilter) {
       filteredData = filteredData.filter((item) =>
         ['productName', 'quantityPerUnit'].some((name) => {
           const categoryName = getCategoryNameById(
@@ -67,10 +67,13 @@ export default function Products({
           );
           if (
             typeof categoryName === 'string' &&
-            isStringIncludes(categoryName, filter)
+            isStringIncludes(categoryName, stringFilter)
           )
             return true;
-          return isStringIncludes((item as Record<string, any>)[name], filter);
+          return isStringIncludes(
+            (item as Record<string, any>)[name],
+            stringFilter,
+          );
         }),
       );
     }
@@ -117,7 +120,7 @@ export default function Products({
   }, [
     data,
     dataCategories,
-    filter,
+    stringFilter,
     discontinuedFilter,
     supplierId,
     categoryId,
@@ -191,8 +194,8 @@ export default function Products({
             className="p-2 form-control"
             type="search"
             placeholder="Enter filter string here"
-            value={filter}
-            onChange={(event) => setFilter(event.target.value)}
+            value={stringFilter}
+            onChange={(event) => setStringFilter(event.target.value)}
           ></input>
         </div>
         <DiscontinuedFilterButtons

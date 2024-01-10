@@ -20,11 +20,11 @@ import type { ICustomers } from '../models';
 
 export default function Customers(): JSX.Element {
   // Filters
-  const [filter, setFilter] = React.useState('');
+  const [stringFilter, setStringFilter] = React.useState('');
   const [countryFilter, setCountryFilter] = React.useState('');
-  const hasFilter = !!filter || !!countryFilter;
+  const hasFilter = !!stringFilter || !!countryFilter;
   function onClearFilters() {
-    setFilter('');
+    setStringFilter('');
     setCountryFilter('');
   }
 
@@ -38,10 +38,10 @@ export default function Customers(): JSX.Element {
   const filteredData = React.useMemo(() => {
     let result = data;
     if (result) {
-      if (filter) {
+      if (stringFilter) {
         result = result.filter((item) =>
           ['companyName', 'customerId', 'country', 'city'].some((name) =>
-            isStringIncludes((item as Record<string, any>)[name], filter),
+            isStringIncludes((item as Record<string, any>)[name], stringFilter),
           ),
         );
       }
@@ -50,7 +50,7 @@ export default function Customers(): JSX.Element {
       }
     }
     return result;
-  }, [data, filter, countryFilter]);
+  }, [data, stringFilter, countryFilter]);
 
   const { paginateData, paginateStore } = usePaginate(filteredData, 20);
 
@@ -69,8 +69,8 @@ export default function Customers(): JSX.Element {
               className="p-2 form-control"
               type="search"
               placeholder="Enter filter string here"
-              value={filter}
-              onChange={(event) => setFilter(event.target.value)}
+              value={stringFilter}
+              onChange={(event) => setStringFilter(event.target.value)}
             ></input>
           </div>
         </div>

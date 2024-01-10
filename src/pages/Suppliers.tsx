@@ -20,11 +20,11 @@ export default function Suppliers(): JSX.Element {
   setDocumentTitle('Suppliers');
 
   // Filters
-  const [filter, setFilter] = React.useState('');
+  const [stringFilter, setStringFilter] = React.useState('');
   const [countryFilter, setCountryFilter] = React.useState('');
-  const hasFilter = !!filter || !!countryFilter;
+  const hasFilter = !!stringFilter || !!countryFilter;
   function onClearFilters() {
-    setFilter('');
+    setStringFilter('');
     setCountryFilter('');
   }
 
@@ -36,10 +36,10 @@ export default function Suppliers(): JSX.Element {
   // Filtered data
   const countries = [...new Set(data?.map((item) => item.country))].sort();
   let filteredData = data;
-  if (filter) {
+  if (stringFilter) {
     filteredData = filteredData?.filter((item) =>
       ['companyName', 'country', 'city'].some((name) =>
-        isStringIncludes((item as Record<string, any>)[name], filter),
+        isStringIncludes((item as Record<string, any>)[name], stringFilter),
       ),
     );
   }
@@ -63,8 +63,8 @@ export default function Suppliers(): JSX.Element {
               className="p-2 form-control"
               type="search"
               placeholder="Enter filter string here"
-              value={filter}
-              onChange={(event) => setFilter(event.target.value)}
+              value={stringFilter}
+              onChange={(event) => setStringFilter(event.target.value)}
             ></input>
           </div>
         </div>

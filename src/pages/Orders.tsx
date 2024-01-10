@@ -29,12 +29,12 @@ function getEmployeeNameById(dataEmployees?: IEmployees, id?: any) {
 
 export default function Orders(): JSX.Element {
   // Filters
-  const [filter, setFilter] = React.useState('');
+  const [stringFilter, setStringFilter] = React.useState('');
   const [countryFilter, setCountryFilter] = React.useState('');
   const [yearFilter, setYearFilter] = React.useState<number>();
-  const hasFilter = !!filter || !!countryFilter || !!yearFilter;
+  const hasFilter = !!stringFilter || !!countryFilter || !!yearFilter;
   function onClearFilters() {
-    setFilter('');
+    setStringFilter('');
     setCountryFilter('');
     setYearFilter(undefined);
   }
@@ -108,11 +108,14 @@ export default function Orders(): JSX.Element {
     let filteredData = preparedData;
 
     // String filter
-    if (filter) {
+    if (stringFilter) {
       filteredData = filteredData?.filter((item) => {
         return Object.keys(item).some((name) => {
           if (name === 'employeeId') return false;
-          return isStringIncludes((item as Record<string, any>)[name], filter);
+          return isStringIncludes(
+            (item as Record<string, any>)[name],
+            stringFilter,
+          );
         });
       });
     }
@@ -169,7 +172,7 @@ export default function Orders(): JSX.Element {
     return { filteredData, countries };
   }, [
     preparedData,
-    filter,
+    stringFilter,
     countryFilter,
     yearFilter,
     sortColumn,
@@ -215,8 +218,8 @@ export default function Orders(): JSX.Element {
             className="p-2 form-control"
             type="search"
             placeholder="Enter filter string here"
-            value={filter}
-            onChange={(event) => setFilter(event.target.value)}
+            value={stringFilter}
+            onChange={(event) => setStringFilter(event.target.value)}
             style={{ minWidth: '200px' }}
           ></input>
         </div>

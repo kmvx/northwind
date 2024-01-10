@@ -25,11 +25,11 @@ export default function Employees({
   reportsTo?: string;
 }): JSX.Element {
   // Filters
-  const [filter, setFilter] = React.useState('');
+  const [stringFilter, setStringFilter] = React.useState('');
   const [countryFilter, setCountryFilter] = React.useState('');
-  const hasFilter = !!filter || !!countryFilter;
+  const hasFilter = !!stringFilter || !!countryFilter;
   function onClearFilters() {
-    setFilter('');
+    setStringFilter('');
     setCountryFilter('');
   }
 
@@ -45,11 +45,15 @@ export default function Employees({
       (item) => String(item.reportsTo) == reportsTo,
     );
   }
-  if (filter) {
+  if (stringFilter) {
     filteredData = filteredData?.filter((item) =>
       ['title', 'country', 'city'].some((name) => {
-        if (isStringIncludes(getEmployeeNameByData(item), filter)) return true;
-        return isStringIncludes((item as Record<string, any>)[name], filter);
+        if (isStringIncludes(getEmployeeNameByData(item), stringFilter))
+          return true;
+        return isStringIncludes(
+          (item as Record<string, any>)[name],
+          stringFilter,
+        );
       }),
     );
   }
@@ -82,8 +86,8 @@ export default function Employees({
               className="p-2 form-control"
               type="search"
               placeholder="Enter filter string here"
-              value={filter}
-              onChange={(event) => setFilter(event.target.value)}
+              value={stringFilter}
+              onChange={(event) => setStringFilter(event.target.value)}
             ></input>
           </div>
         </div>
