@@ -92,3 +92,16 @@ export interface ISupplier extends IAddress {
   supplierId: number;
 }
 export type ISuppliers = ISupplier[];
+
+export interface ITerritory {
+  territoryId: number;
+  territoryDescription: string;
+  regionId: number;
+}
+export type ITerritories = ITerritory[];
+
+export interface IRegion {
+  regionId: number;
+  regionDescription: string;
+}
+export type IRegions = IRegion[];

@@ -12,7 +12,48 @@ import {
   setDocumentTitle,
 } from '../utils';
 import { Employees } from '.';
-import type { IEmployee } from '../models';
+import type { IEmployee, ITerritories, IRegions } from '../models';
+
+function Territories({ employeeId }: { employeeId?: string }) {
+  const { data, error, isLoading } = ReactQuery.useQuery<ITerritories>({
+    queryKey: [API_URL + '/Employees/' + employeeId + '/Territories'],
+  });
+  const { data: dataRegions } = ReactQuery.useQuery<IRegions>({
+    queryKey: [API_URL + '/Regions'],
+  });
+  if (error) return <ErrorMessage error={error} />;
+  if (isLoading) return <WaitSpinner />;
+  if (!data) return <div>No data</div>;
+
+  // Regions map
+  const regionsMap = new Map<number, string>();
+  dataRegions?.forEach((region) =>
+    regionsMap.set(region.regionId, region.regionDescription),
+  );
+
+  return (
+    <div className="hstack">
+      <i className="bi bi-globe2 m-2" title="Territories" />
+      <span className="m-2">
+        {data.reduce<JSX.Element | undefined>(
+          (acc, item) => (
+            <>
+              {acc && <>{acc}, </>}
+              <b
+                title={`Index: ${item.territoryId}\nRegion: ${
+                  regionsMap.get(item.regionId) || item.regionId
+                }`}
+              >
+                {item.territoryDescription}
+              </b>
+            </>
+          ),
+          undefined,
+        )}
+      </span>
+    </div>
+  );
+}
 
 function EmployeeLink({
   id,
@@ -78,14 +119,15 @@ export default function Employee(): JSX.Element {
                 )}
               </b>
             </div>
+            <Territories employeeId={id} />
+          </div>
+          <div className="col-md-5">
             <div className="hstack" title="Home phone">
               <i className="bi bi-telephone m-2" />
               <span className="m-2">
                 <b>{data.homePhone}</b> <span>Home</span>
               </span>
             </div>
-          </div>
-          <div className="col-md-5">
             <div className="hstack">
               <i className="bi bi-balloon m-2" />
               <span className="m-2">
