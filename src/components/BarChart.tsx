@@ -2,6 +2,8 @@ import * as React from 'react';
 import * as d3 from 'd3';
 import clsx from 'clsx';
 import { useQuery } from '@tanstack/react-query';
+import { useNavigate } from 'react-router-dom';
+import type { NavigateFunction } from 'react-router-dom';
 
 import { API_URL } from '../utils';
 import { ErrorMessage, PanelStretched, WaitSpinner } from '../ui';
@@ -16,6 +18,7 @@ function updateChart({
   maxItemsCountPerCountry,
   hue,
   name,
+  navigate,
 }: {
   current: SVGSVGElement;
   width: number;
@@ -24,6 +27,7 @@ function updateChart({
   maxItemsCountPerCountry: number;
   hue: number;
   name: string;
+  navigate: NavigateFunction;
 }) {
   // Prepare data
   const itemsPerCountryCountArray = [...itemsPerCountryCount]
@@ -102,7 +106,7 @@ function updateChart({
     .attr('stroke', `hsl(${hue} 100% 50%)`)
     .attr('stroke-width', 2);
 
-  addTooltip({ svg: svgBase, hue, name });
+  addTooltip({ svg: svgBase, hue, name, navigate });
 }
 
 function BarChart({
@@ -139,6 +143,7 @@ function BarChart({
     }, [data, countrySelector]);
 
   // SVG chart
+  const navigate = useNavigate();
   const ref = React.useRef<SVGSVGElement>(null);
   React.useLayoutEffect(() => {
     function update() {
@@ -157,6 +162,7 @@ function BarChart({
         maxItemsCountPerCountry,
         hue,
         name,
+        navigate,
       });
     }
     update();
@@ -166,7 +172,7 @@ function BarChart({
     return () => {
       if (element) resizeObserver.unobserve(element);
     };
-  }, [itemsPerCountryCount, maxItemsCountPerCountry, hue, name]);
+  }, [itemsPerCountryCount, maxItemsCountPerCountry, hue, name, navigate]);
 
   // Handle errors and loading state
   if (error) return <ErrorMessage error={error} />;

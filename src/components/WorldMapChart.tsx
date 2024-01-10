@@ -2,6 +2,8 @@ import * as React from 'react';
 import * as d3 from 'd3';
 import clsx from 'clsx';
 import { useQuery } from '@tanstack/react-query';
+import { useNavigate } from 'react-router-dom';
+import type { NavigateFunction } from 'react-router-dom';
 
 import { API_URL } from '../utils';
 import { ErrorMessage, PanelStretched, WaitSpinner } from '../ui';
@@ -16,6 +18,7 @@ function updateChart({
   maxItemsCountPerCountry,
   hue,
   name,
+  navigate,
 }: {
   current: SVGSVGElement;
   width: number;
@@ -24,6 +27,7 @@ function updateChart({
   maxItemsCountPerCountry: number;
   hue: number;
   name: string;
+  navigate: NavigateFunction;
 }) {
   d3.json(
     'https://raw.githubusercontent.com/holtzy/D3-graph-gallery/master/DATA/world.geojson',
@@ -72,7 +76,7 @@ function updateChart({
       })
       .attr('d', d3.geoPath().projection(projection) as any);
 
-    addTooltip({ svg, hue, name });
+    addTooltip({ svg, hue, name, navigate });
   });
 }
 
@@ -110,6 +114,7 @@ function WorldMapChart({
     }, [data, countrySelector]);
 
   // SVG chart
+  const navigate = useNavigate();
   const ref = React.useRef<SVGSVGElement>(null);
   React.useLayoutEffect(() => {
     function update() {
@@ -128,6 +133,7 @@ function WorldMapChart({
         maxItemsCountPerCountry,
         hue,
         name,
+        navigate,
       });
     }
     update();
@@ -137,7 +143,7 @@ function WorldMapChart({
     return () => {
       if (element) resizeObserver.unobserve(element);
     };
-  }, [itemsPerCountryCount, maxItemsCountPerCountry, hue, name]);
+  }, [itemsPerCountryCount, maxItemsCountPerCountry, hue, name, navigate]);
 
   // Handle errors and loading state
   if (error) return <ErrorMessage error={error} />;
