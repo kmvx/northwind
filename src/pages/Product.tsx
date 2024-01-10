@@ -52,7 +52,9 @@ export default function Product(): JSX.Element {
       <div className="u-prop-grid m-2">
         <span>Category:</span>
         <b className="text-end" title={String(data.categoryId)}>
-          {getCategoryNameById(dataCategories, data.categoryId)}
+          <NavLink to={'/products/category/' + data.categoryId}>
+            {getCategoryNameById(dataCategories, data.categoryId)}
+          </NavLink>
           {/*
           {' '}
           <img
