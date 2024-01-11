@@ -189,6 +189,7 @@ function App(): JSX.Element {
                 path="/products/:id/order-details"
                 element={<OrderDetails />}
               />
+              <Route path="/shippers/:id/orders" element={<Orders />} />
               <Route path="/suppliers" element={<Suppliers />} />
               <Route path="/suppliers/:id" element={<Supplier />} />
               <Route path="/chartjs" element={<ChartJS />} />

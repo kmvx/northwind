@@ -63,6 +63,7 @@ export default function Orders(): JSX.Element {
   const { pathname } = useLocation();
   const isCustomersPage = pathname.startsWith('/customers/');
   const isEmployeesPage = pathname.startsWith('/employees/');
+  const isShippersPage = pathname.startsWith('/shippers/');
   const isOrdersPage = pathname.startsWith('/orders');
   const isOrdersEndPage = !isOrdersPage && pathname.endsWith('/orders');
 
@@ -74,6 +75,8 @@ export default function Orders(): JSX.Element {
           ? '/Customers/'
           : isEmployeesPage
           ? '/Employees/'
+          : isShippersPage
+          ? '/Shippers/'
           : '') +
         (id || '') +
         '/Orders',
