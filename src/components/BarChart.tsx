@@ -100,7 +100,7 @@ function updateChart({
     })
     .attr('width', x.bandwidth())
     .attr('height', function (d) {
-      return heightChart - y(d.count);
+      return Math.max(0, heightChart - y(d.count));
     })
     .attr('fill', `hsl(${hue} 100% 90%)`)
     .attr('stroke', `hsl(${hue} 100% 50%)`)
