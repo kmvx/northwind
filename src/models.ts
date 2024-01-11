@@ -51,6 +51,7 @@ export interface IOrder {
   shipName: string;
   shipPostalCode: string;
   shipRegion: string;
+  shipVia: number;
   shippedDate: string;
 }
 export type IOrders = IOrder[];

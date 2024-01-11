@@ -24,12 +24,25 @@ import {
   setDocumentTitle,
   getEmployeeNameByData,
 } from '../utils';
-import type { IEmployees, IOrders } from '../models';
+import type { IEmployees, IOrders, IShippers } from '../models';
 
-function getEmployeeNameById(dataEmployees?: IEmployees, id?: any) {
+function getEmployeeNameById(dataEmployees?: IEmployees, id?: number) {
   const item = dataEmployees?.find((item) => item.employeeId === id);
   if (item) return getEmployeeNameByData(item);
-  return id;
+  else return id;
+}
+
+function ShipperPreview({
+  dataShippers,
+  id,
+}: {
+  dataShippers?: IShippers;
+  id?: number;
+}) {
+  const item = dataShippers?.find((item) => item.shipperId === id);
+  return (
+    <span title={`Phone: ${item?.phone}`}>{item ? item.companyName : id}</span>
+  );
 }
 
 export default function Orders(): JSX.Element {
@@ -69,6 +82,9 @@ export default function Orders(): JSX.Element {
   const { data: dataEmployees } = ReactQuery.useQuery<IEmployees>({
     queryKey: [API_URL + '/Employees'],
   });
+  const { data: dataShippers } = ReactQuery.useQuery<IShippers>({
+    queryKey: [API_URL + '/Shippers'],
+  });
 
   // Prepare data
   const [yearsSet, setYearsSet] = React.useState<Set<number>>(new Set());
@@ -86,6 +102,7 @@ export default function Orders(): JSX.Element {
         customerId: item.customerId,
         employeeId: item.employeeId,
         employeeName: getEmployeeNameById(dataEmployees, item.employeeId),
+        shipVia: item.shipVia,
         orderDate: formatDateFromString(item.orderDate),
         shippedDate: formatDateFromString(item.shippedDate),
         requiredDate: formatDateFromString(item.requiredDate),
@@ -149,6 +166,7 @@ export default function Orders(): JSX.Element {
         'orderId',
         'customerId',
         'employeeName',
+        'shipVia',
         'orderDateObject',
         'shippedDateObject',
         'requiredDateObject',
@@ -265,6 +283,9 @@ export default function Orders(): JSX.Element {
                   {!isCustomersPage && <th scope="col">Custo&shy;mer ID</th>}
                   {!isEmployeesPage && <th scope="col">Emp&shy;loyee</th>}
                   <th scope="col" className="d-none d-sm-table-cell">
+                    Shipper
+                  </th>
+                  <th scope="col" className="d-none d-sm-table-cell">
                     Order date
                   </th>
                   <th scope="col" className="d-none d-md-table-cell">
@@ -309,6 +330,12 @@ export default function Orders(): JSX.Element {
                         </NavLink>
                       </td>
                     )}
+                    <td className="d-none d-sm-table-cell">
+                      <ShipperPreview
+                        dataShippers={dataShippers}
+                        id={item.shipVia}
+                      />
+                    </td>
                     <td className="d-none d-sm-table-cell">{item.orderDate}</td>
                     <td className="d-none d-md-table-cell">
                       {item.shippedDate}
