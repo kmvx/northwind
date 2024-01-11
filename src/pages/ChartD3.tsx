@@ -15,7 +15,7 @@ export default function ChartD3(): JSX.Element {
   setDocumentTitle('Charts');
   return (
     <section>
-      <div>
+      <div className="m-2">
         <OrdersChart />
       </div>
       <div className="hstack align-items-stretch flex-wrap">

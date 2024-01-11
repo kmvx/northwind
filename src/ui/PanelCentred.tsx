@@ -12,7 +12,7 @@ export default function PanelCentred({
       <section
         className={clsx(
           className,
-          'd-inline-block bg-light shadow rounded p-2 my-2',
+          'd-inline-block bg-light shadow rounded p-2',
         )}
       >
         {children}

@@ -9,7 +9,7 @@ export default function PanelStretched({
 }): JSX.Element {
   return (
     <section
-      className={clsx(className, 'container bg-light shadow rounded p-2 my-2')}
+      className={clsx(className, 'container bg-light shadow rounded p-2')}
     >
       {children}
     </section>
