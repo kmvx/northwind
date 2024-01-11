@@ -170,14 +170,15 @@ function App(): JSX.Element {
           <ErrorBoundary FallbackComponent={ErrorFallback}>
             <Routes>
               <Route path="/" element={<About />} />
-              <Route path="/employees" element={<Employees />} />
-              <Route path="/employees/:id" element={<Employee />} />
-              <Route path="/employees/:id/orders" element={<Orders />} />
-              <Route path="/suppliers" element={<Suppliers />} />
-              <Route path="/suppliers/:id" element={<Supplier />} />
               <Route path="/customers" element={<Customers />} />
               <Route path="/customers/:id" element={<Customer />} />
               <Route path="/customers/:id/orders" element={<Orders />} />
+              <Route path="/employees" element={<Employees />} />
+              <Route path="/employees/:id" element={<Employee />} />
+              <Route path="/employees/:id/orders" element={<Orders />} />
+              <Route path="/orders" element={<Orders />} />
+              <Route path="/orders/:id" element={<Order />} />
+              <Route path="/orderNew" element={<OrderEdit />} />
               <Route path="/products" element={<Products />} />
               <Route
                 path="/products/category/:categoryId"
@@ -188,9 +189,8 @@ function App(): JSX.Element {
                 path="/products/:id/order-details"
                 element={<OrderDetails />}
               />
-              <Route path="/orders" element={<Orders />} />
-              <Route path="/orders/:id" element={<Order />} />
-              <Route path="/orderNew" element={<OrderEdit />} />
+              <Route path="/suppliers" element={<Suppliers />} />
+              <Route path="/suppliers/:id" element={<Supplier />} />
               <Route path="/chartjs" element={<ChartJS />} />
               <Route path="/charts" element={<ChartD3 />} />
               <Route path="*" element={<NotFound />} />
