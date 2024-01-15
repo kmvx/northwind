@@ -4,7 +4,7 @@ import clsx from 'clsx';
 import { useQuery } from '@tanstack/react-query';
 import {
   ErrorMessage,
-  PanelStretched,
+  PanelBasic,
   WaitSpinner,
   YearFilterButtons,
 } from '../ui';
@@ -398,7 +398,7 @@ export default function OrdersChart({
   if (isLoading) return <WaitSpinner />;
 
   return (
-    <PanelStretched className={clsx(className, 'hstack align-items-stretch')}>
+    <PanelBasic className={clsx(className, 'hstack align-items-stretch')}>
       <div className="orders-chart vstack">
         <h3 className="mt-2 mb-4 text-center">
           Distribution of count of <b>orders</b> by month
@@ -410,6 +410,6 @@ export default function OrdersChart({
           <svg ref={ref} className="position-absolute" />
         </div>
       </div>
-    </PanelStretched>
+    </PanelBasic>
   );
 }

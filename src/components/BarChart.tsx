@@ -6,7 +6,7 @@ import { useNavigate } from 'react-router-dom';
 import type { NavigateFunction } from 'react-router-dom';
 
 import { API_URL } from '../utils';
-import { ErrorMessage, PanelStretched, WaitSpinner } from '../ui';
+import { ErrorMessage, PanelBasic, WaitSpinner } from '../ui';
 import { addTooltip } from './Chart';
 import './BarChart.scss';
 
@@ -177,14 +177,14 @@ function BarChart({
   if (error) return <ErrorMessage error={error} />;
   if (isLoading) return <WaitSpinner />;
   return (
-    <PanelStretched className={clsx('world-map-chart', className, 'vstack')}>
+    <PanelBasic className={clsx('world-map-chart', className, 'vstack')}>
       <h3 className="mt-2 mb-4 text-center">
         Distribution of count of <b>{name}</b> by countries
       </h3>
       <div className="world-map-chart__chart-parent flex-grow-1">
         <svg ref={ref} className="position-absolute" />
       </div>
-    </PanelStretched>
+    </PanelBasic>
   );
 }
 

@@ -15,27 +15,33 @@ export default function ChartD3(): JSX.Element {
   setDocumentTitle('Charts');
   return (
     <section>
-      <div className="m-2">
-        <OrdersChart />
+      <div className="container">
+        <OrdersChart className="" />
       </div>
-      <div className="hstack align-items-stretch flex-wrap">
-        <div className="m-2 flex-grow-1 hstack align-items-stretch">
-          <OrdersWorldMapChart />
+      <div className="container">
+        <div className="row">
+          <div className="col-lg-6 d-flex">
+            <OrdersWorldMapChart className="my-3" />
+          </div>
+          <div className="col-lg-6 d-flex">
+            <OrdersBarChart className="my-3" />
+          </div>
         </div>
-        <div className="m-2 flex-grow-1 hstack align-items-stretch">
-          <OrdersBarChart />
+        <div className="row">
+          <div className="col-lg-6 d-flex">
+            <CustomersWorldMapChart className="my-3" />
+          </div>
+          <div className="col-lg-6 d-flex">
+            <CustomersBarChart className="my-3" />
+          </div>
         </div>
-        <div className="m-2 flex-grow-1 hstack align-items-stretch">
-          <CustomersWorldMapChart />
-        </div>
-        <div className="m-2 flex-grow-1 hstack align-items-stretch">
-          <CustomersBarChart />
-        </div>
-        <div className="m-2 flex-grow-1 hstack align-items-stretch">
-          <SuppliersWorldMapChart />
-        </div>
-        <div className="m-2 flex-grow-1 hstack align-items-stretch">
-          <SuppliersBarChart />
+        <div className="row">
+          <div className="col-lg-6 d-flex">
+            <SuppliersWorldMapChart className="my-3" />
+          </div>
+          <div className="col-lg-6 d-flex">
+            <SuppliersBarChart className="my-3" />
+          </div>
         </div>
       </div>
     </section>
