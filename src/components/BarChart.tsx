@@ -74,6 +74,15 @@ function updateChart({
     .domain([0, maxItemsCountPerCountry])
     .range([heightChart, 0])
     .nice();
+
+  // Remove fractional ticks
+  const ticksOld = y.ticks;
+  y.ticks = function () {
+    // eslint-disable-next-line prefer-rest-params
+    const result = ticksOld.apply(this, arguments as any);
+    return result.filter((value) => Number.isInteger(value));
+  };
+
   svg
     .append('g')
     .style('color', 'var(--chart-text-color)')
