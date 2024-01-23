@@ -75,7 +75,8 @@ function updateChart({
   const y = d3
     .scaleLinear()
     .domain([0, maxItemsCountPerCountry])
-    .range([heightChart, 0]);
+    .range([heightChart, 0])
+    .nice();
   svg
     .append('g')
     .style('color', 'var(--chart-text-color)')
