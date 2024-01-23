@@ -91,6 +91,19 @@ function updateChart({
     .attr('fill', 'var(--chart-text-color)')
     .style('font-size', '9pt');
 
+  // Y grid
+  svg
+    .selectAll('.whatever-grid')
+    .data(y.ticks())
+    .join('line')
+    .attr('x1', 0)
+    .attr('y1', (d: number) => Math.round(y(d)) + 0.5)
+    .attr('x2', widthChart)
+    .attr('y2', (d: number) => Math.round(y(d)) + 0.5)
+    .style('stroke', 'var(--chart-text-color)')
+    .style('stroke-dasharray', '2 3')
+    .style('opacity', 0.3);
+
   // Bars
   svg
     .selectAll('.whatever')
