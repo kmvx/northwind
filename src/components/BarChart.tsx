@@ -45,9 +45,6 @@ function updateChart({
   const widthChart = width - margin.left - margin.right;
   const heightChart = height - margin.top - margin.bottom;
   const svg = svgBase
-    .append('svg')
-    .attr('width', width + margin.left + margin.right)
-    .attr('height', height + margin.top + margin.bottom)
     .append('g')
     .attr('transform', `translate(${margin.left}, ${margin.top})`);
 
