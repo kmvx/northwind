@@ -41,8 +41,10 @@ function updateChart({
     const svg = d3.select(current);
     svg.selectAll('*').remove();
 
+    const svgGroup = svg.append('g');
+
     // Background
-    svg
+    svgGroup
       .append('rect')
       .attr('x', 0)
       .attr('y', 0)
@@ -57,7 +59,7 @@ function updateChart({
       if (country === 'England') return 'UK';
       else return country;
     }
-    svg
+    svgGroup
       .append('g')
       .selectAll('path')
       .data(data.features)
@@ -78,6 +80,26 @@ function updateChart({
       })
       .attr('d', d3.geoPath().projection(projection) as any);
 
+    // Zoom
+    const zoomObject = d3
+      .zoom()
+      .scaleExtent([1, 4])
+      .on('zoom', function (event) {
+        function isFloatSame(a: number, b: number) {
+          return Math.abs(a - b) < 1e-5;
+        }
+        if (
+          isFloatSame(event.transform.k, 1) &&
+          String(event.transform) !== String(d3.zoomIdentity)
+        ) {
+          setTimeout(() => {
+            zoomObject.transform(svgGroup as any, d3.zoomIdentity);
+          }, 1e3);
+        } else svgGroup.attr('transform', event.transform);
+      });
+    svg.call(zoomObject as any);
+
+    // Tooltip
     addTooltip({ svg, hue, name, navigate });
   });
 }
