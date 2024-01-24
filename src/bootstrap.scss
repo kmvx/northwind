@@ -9,3 +9,10 @@ $bootstrap-icons-font-src:
   background-color: var(--bs-btn-active-bg);
   border-color: var(--bs-btn-active-border-color);
 }
+
+.btn-close {
+  transition: transform 0.5s ease;
+  &:hover {
+    transform: rotate(90deg);
+  }
+}
