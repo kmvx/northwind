@@ -1,4 +1,5 @@
 import { getFlagEmojiByCountryName } from '../utils';
+import clsx from 'clsx';
 
 export default function Flag({
   className,
@@ -8,7 +9,7 @@ export default function Flag({
   country: string;
 }): JSX.Element {
   return (
-    <span className={className} style={{ fontSize: '2rem' }}>
+    <span className={clsx('u-flag', className)} style={{ fontSize: '2rem' }}>
       {getFlagEmojiByCountryName(country)}
     </span>
   );

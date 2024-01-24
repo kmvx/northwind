@@ -20,7 +20,7 @@ export default function CountryFilter({
     <div className={clsx('input-group', className)}>
       <span className="input-group-text">Country</span>
       <select
-        className={clsx('form-select h-100')}
+        className={clsx('u-flag form-select h-100')}
         onChange={onChange}
         value={countryFilter}
         title="Country filter"
