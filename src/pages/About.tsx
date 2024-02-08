@@ -26,7 +26,14 @@ export default function About(): JSX.Element {
           </p>
           <p>
             See{' '}
-            <a href="https://kmvx.tk/projects/northwind" target="_blank">
+            <a
+              href={`${
+                location.hostname.endsWith('kmvx.tk')
+                  ? 'https://kmvx.tk'
+                  : 'https://kmvx.pages.dev'
+              }/projects/northwind`}
+              target="_blank"
+            >
               project description <i className="bi bi-box-arrow-up-right" />
             </a>
             .
