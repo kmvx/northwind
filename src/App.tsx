@@ -1,11 +1,8 @@
 import * as React from 'react';
 import * as ReactRouterDOM from 'react-router-dom';
-import * as ReactQuery from '@tanstack/react-query';
 import clsx from 'clsx';
-import { ReactQueryDevtools } from '@tanstack/react-query-devtools';
 import { ErrorBoundary, type FallbackProps } from 'react-error-boundary';
 
-import axios from 'axios';
 import {
   About,
   ChartD3,
@@ -26,6 +23,7 @@ import {
 } from './pages';
 import { ErrorMessage } from './ui';
 import './App.scss';
+import Providers from './Providers';
 
 function ErrorFallback({
   error,
@@ -45,26 +43,6 @@ function ErrorFallback({
   );
 }
 
-const queryClient = new ReactQuery.QueryClient({
-  defaultOptions: {
-    queries: {
-      queryFn: async ({ queryKey }) => {
-        const url = queryKey[0] as string;
-        const response = await axios.get(url);
-        const data = response.data;
-        return data;
-      },
-      retry: (failureCount, error: any) => {
-        if (error.code === 'ERR_NETWORK') return false;
-        if (error.response?.status >= 400 && error.response?.status <= 500)
-          return false;
-        return failureCount < 3;
-      },
-      staleTime: 60e3, // 1 min
-      refetchOnWindowFocus: false,
-    },
-  },
-});
 interface NavItemProps {
   className?: string;
   children: React.ReactNode;
@@ -164,7 +142,7 @@ function App(): JSX.Element {
   //const Router = ReactRouterDOM.HashRouter;
   const Router = ReactRouterDOM.BrowserRouter;
   return (
-    <ReactQuery.QueryClientProvider client={queryClient}>
+    <Providers>
       <Router>
         <Layout>
           <ErrorBoundary FallbackComponent={ErrorFallback}>
@@ -199,8 +177,7 @@ function App(): JSX.Element {
           </ErrorBoundary>
         </Layout>
       </Router>
-      <ReactQueryDevtools />
-    </ReactQuery.QueryClientProvider>
+    </Providers>
   );
 }
 
