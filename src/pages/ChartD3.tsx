@@ -21,7 +21,7 @@ export default function ChartD3(): JSX.Element {
       <div className="container">
         <div className="row">
           <div className="col-lg-6 d-flex">
-            <OrdersWorldMapChart className="my-3" />
+            <OrdersWorldMapChart className="my-3" allowZoom />
           </div>
           <div className="col-lg-6 d-flex">
             <OrdersBarChart className="my-3" />
@@ -29,7 +29,7 @@ export default function ChartD3(): JSX.Element {
         </div>
         <div className="row">
           <div className="col-lg-6 d-flex">
-            <CustomersWorldMapChart className="my-3" />
+            <CustomersWorldMapChart className="my-3" hue={30} allowZoom />
           </div>
           <div className="col-lg-6 d-flex">
             <CustomersBarChart className="my-3" />
@@ -37,7 +37,7 @@ export default function ChartD3(): JSX.Element {
         </div>
         <div className="row">
           <div className="col-lg-6 d-flex">
-            <SuppliersWorldMapChart className="my-3" />
+            <SuppliersWorldMapChart className="my-3" hue={120} allowZoom />
           </div>
           <div className="col-lg-6 d-flex">
             <SuppliersBarChart className="my-3" />

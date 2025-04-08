@@ -15,6 +15,7 @@ import {
   setDocumentTitle,
 } from '../utils';
 import type { ISuppliers } from '../models';
+import { SuppliersWorldMapChart } from '../components/WorldMapChart';
 
 export default function Suppliers(): JSX.Element {
   setDocumentTitle('Suppliers');
@@ -112,6 +113,7 @@ export default function Suppliers(): JSX.Element {
           </NavLink>
         ))}
       </div>
+      {!countryFilter && <SuppliersWorldMapChart className="mx-2 my-3" />}
     </PanelStretched>
   );
 }

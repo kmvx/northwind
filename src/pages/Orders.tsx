@@ -25,6 +25,7 @@ import {
   getEmployeeNameByData,
 } from '../utils';
 import type { IEmployees, IOrders, IShippers } from '../models';
+import { OrdersWorldMapChart } from '../components/WorldMapChart';
 
 function getEmployeeNameById(dataEmployees?: IEmployees, id?: number) {
   const item = dataEmployees?.find((item) => item.employeeId === id);
@@ -363,6 +364,9 @@ export default function Orders(): JSX.Element {
         </div>
       ) : (
         <div className="m-2">Orders not found</div>
+      )}
+      {!countryFilter && !isCustomersPage && (
+        <OrdersWorldMapChart className="mx-2 my-3" />
       )}
     </section>
   );

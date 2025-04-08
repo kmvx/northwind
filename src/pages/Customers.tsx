@@ -18,6 +18,7 @@ import {
 } from '../utils';
 import { useParamsBuilder } from '../hooks';
 import type { ICustomers } from '../models';
+import { CustomersWorldMapChart } from '../components/WorldMapChart';
 
 export default function Customers(): JSX.Element {
   // Filters
@@ -124,6 +125,7 @@ export default function Customers(): JSX.Element {
         ))}
       </div>
       <Paginate paginateStore={paginateStore} />
+      {!countryFilter && <CustomersWorldMapChart className="mx-2 my-3" />}
     </PanelStretched>
   );
 }

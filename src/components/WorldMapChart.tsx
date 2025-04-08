@@ -17,6 +17,7 @@ function updateChart({
   itemsPerCountryCount,
   maxItemsCountPerCountry,
   hue,
+  allowZoom,
   name,
   navigate,
 }: {
@@ -26,6 +27,7 @@ function updateChart({
   itemsPerCountryCount: Map<string, number>;
   maxItemsCountPerCountry: number;
   hue: number;
+  allowZoom: boolean;
   name: string;
   navigate: NavigateFunction;
 }) {
@@ -34,6 +36,8 @@ function updateChart({
   ).then(function (data: any) {
     const projection = d3
       .geoNaturalEarth1()
+      //.geoAzimuthalEqualArea()
+      //.geoCylindricalEqualArea()
       .scale(width / 1.5 / Math.PI)
       .translate([width / 2.2, height / 2]);
 
@@ -81,23 +85,26 @@ function updateChart({
       .attr('d', d3.geoPath().projection(projection) as any);
 
     // Zoom
-    const zoomObject = d3
-      .zoom()
-      .scaleExtent([1, 4])
-      .on('zoom', function (event) {
-        function isFloatSame(a: number, b: number) {
-          return Math.abs(a - b) < 1e-5;
-        }
-        if (
-          isFloatSame(event.transform.k, 1) &&
-          String(event.transform) !== String(d3.zoomIdentity)
-        ) {
-          setTimeout(() => {
-            zoomObject.transform(svgGroup as any, d3.zoomIdentity);
-          }, 1e3);
-        } else svgGroup.attr('transform', event.transform);
-      });
-    svg.call(zoomObject as any);
+    if (allowZoom) {
+      const zoomObject = d3
+        .zoom()
+        .scaleExtent([1, 4])
+        .on('zoom', function (event) {
+          function isFloatSame(a: number, b: number) {
+            return Math.abs(a - b) < 1e-5;
+          }
+          if (
+            isFloatSame(event.transform.k, 1) &&
+            String(event.transform) !== String(d3.zoomIdentity)
+          ) {
+            // Reset scale and translate values on scale out
+            setTimeout(() => {
+              zoomObject.transform(svgGroup as any, d3.zoomIdentity);
+            }, 1e3);
+          } else svgGroup.attr('transform', event.transform);
+        });
+      svg.call(zoomObject as any);
+    }
 
     // Tooltip
     addTooltip({ svg, hue, name, navigate });
@@ -109,13 +116,15 @@ function WorldMapChart({
   name,
   urlPath,
   countrySelector,
-  hue,
+  hue = 216,
+  allowZoom = false,
 }: {
   className?: string;
   name: string;
   urlPath: string;
   countrySelector: (item: any) => string;
-  hue: number;
+  hue?: number;
+  allowZoom?: boolean;
 }): JSX.Element {
   // Load data
   const { data, error, isLoading } = useQuery<any[]>({
@@ -155,6 +164,7 @@ function WorldMapChart({
         itemsPerCountryCount,
         maxItemsCountPerCountry,
         hue,
+        allowZoom,
         name,
         navigate,
       });
@@ -166,7 +176,14 @@ function WorldMapChart({
     return () => {
       if (element) resizeObserver.unobserve(element);
     };
-  }, [itemsPerCountryCount, maxItemsCountPerCountry, hue, name, navigate]);
+  }, [
+    itemsPerCountryCount,
+    maxItemsCountPerCountry,
+    hue,
+    allowZoom,
+    name,
+    navigate,
+  ]);
 
   // Handle errors and loading state
   if (error) return <ErrorMessage error={error} />;
@@ -185,8 +202,12 @@ function WorldMapChart({
 
 export function CustomersWorldMapChart({
   className,
+  hue,
+  allowZoom,
 }: {
   className?: string;
+  hue?: number;
+  allowZoom?: boolean;
 }): JSX.Element {
   return (
     <WorldMapChart
@@ -194,15 +215,20 @@ export function CustomersWorldMapChart({
       name="customers"
       urlPath="/Customers"
       countrySelector={(item) => item.country}
-      hue={30}
+      hue={hue}
+      allowZoom={allowZoom}
     />
   );
 }
 
 export function OrdersWorldMapChart({
   className,
+  hue,
+  allowZoom,
 }: {
   className?: string;
+  hue?: number;
+  allowZoom?: boolean;
 }): JSX.Element {
   return (
     <WorldMapChart
@@ -210,15 +236,20 @@ export function OrdersWorldMapChart({
       name="orders"
       urlPath="/Orders"
       countrySelector={(item) => item.shipCountry}
-      hue={216}
+      hue={hue}
+      allowZoom={allowZoom}
     />
   );
 }
 
 export function SuppliersWorldMapChart({
   className,
+  hue,
+  allowZoom,
 }: {
   className?: string;
+  hue?: number;
+  allowZoom?: boolean;
 }): JSX.Element {
   return (
     <WorldMapChart
@@ -226,7 +257,8 @@ export function SuppliersWorldMapChart({
       name="suppliers"
       urlPath="/Suppliers"
       countrySelector={(item) => item.country}
-      hue={120}
+      hue={hue}
+      allowZoom={allowZoom}
     />
   );
 }
