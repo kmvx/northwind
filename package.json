@@ -22,9 +22,11 @@
     "vitest:typecheck": "vitest typecheck",
     "vitest:typecheck:run": "vitest typecheck --run",
     "test": "npm run tsc && npm run format && npm run vitest:typecheck:run && npm run vitest:run && echo OK",
-    "pw": "playwright test",
-    "pw:chrome": "playwright test --project=chromium",
+    "pw": "playwright test --forbid-only",
     "pw:rep": "playwright show-report",
+    "pw:chrome": "playwright test --project=chromium",
+    "pw:ui": "playwright test --ui --headed",
+    "pw:debug": "playwright test --project=chromium --debug",
     "tsc": "tsc",
     "tsc:watch": "tsc --watch"
   },

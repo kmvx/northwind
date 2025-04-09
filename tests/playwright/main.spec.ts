@@ -1,7 +1,7 @@
 import { test, expect } from '@playwright/test';
 
 const URL = 'http://localhost:5173/';
-//const URL = 'https://kmvx.tk/northwind/';
+//const URL = 'https://northwind-kmvx.pages.dev/';
 
 test('has title', async ({ page }) => {
   await page.goto(URL);
@@ -10,8 +10,10 @@ test('has title', async ({ page }) => {
 
 test('filter field', async ({ page }) => {
   await page.goto(URL);
-  await expect(page.getByText('Filter')).toHaveCount(0);
+  const filterText = page.getByText('Filter', { exact: true });
+  await expect(filterText).toHaveCount(0);
   await page.getByText('Employees').click();
-  await expect(page.getByText('Filter')).toHaveCount(1);
-  await expect(page.getByText('Filter')).toBeVisible();
+  await expect(filterText).toHaveCount(1);
+  console.log('Filters count', await filterText.count());
+  await expect(filterText).toBeVisible();
 });
