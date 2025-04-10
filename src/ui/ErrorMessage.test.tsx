@@ -1,10 +1,8 @@
 import { expect, test } from 'vitest';
-import renderer from 'react-test-renderer';
+import { render } from '@testing-library/react';
 import ErrorMessage from './ErrorMessage';
 
-test('ErrorMessage', () => {
-  const tree = renderer
-    .create(<ErrorMessage error={new Error('Test')} />)
-    .toJSON();
-  expect(tree).toMatchSnapshot();
+test('ErrorMessage', async () => {
+  const { container } = render(<ErrorMessage error={new Error('Test')} />);
+  expect(container).toMatchSnapshot();
 });

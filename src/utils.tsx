@@ -8,7 +8,7 @@ export function joinFields(...args: string[]) {
 export function formatDateFromString(date: string) {
   if (!date) return 'N/A';
   const dataObject = new Date(date);
-  if (isNaN(dataObject as any)) return `${dataObject}`;
+  if (isNaN(dataObject as unknown as number)) return `${dataObject}`;
   return `${dataObject.toLocaleString('default', {
     month: 'short',
   })} ${dataObject.getDate()}, ${dataObject.getFullYear()}`;

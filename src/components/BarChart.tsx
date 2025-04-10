@@ -1,4 +1,4 @@
-import * as React from 'react';
+import React from 'react';
 import * as d3 from 'd3';
 import clsx from 'clsx';
 import { useQuery } from '@tanstack/react-query';
@@ -141,7 +141,7 @@ function BarChart({
   urlPath: string;
   countrySelector: (item: any) => string;
   hue: number;
-}): JSX.Element {
+}): React.JSX.Element {
   // Load data
   const { data, error, isLoading } = useQuery<any[]>({
     queryKey: [API_URL + urlPath],
@@ -212,7 +212,7 @@ export function CustomersBarChart({
   className,
 }: {
   className?: string;
-}): JSX.Element {
+}): React.JSX.Element {
   return (
     <BarChart
       className={className}
@@ -228,7 +228,7 @@ export function OrdersBarChart({
   className,
 }: {
   className?: string;
-}): JSX.Element {
+}): React.JSX.Element {
   return (
     <BarChart
       className={className}
@@ -244,7 +244,7 @@ export function SuppliersBarChart({
   className,
 }: {
   className?: string;
-}): JSX.Element {
+}): React.JSX.Element {
   return (
     <BarChart
       className={className}

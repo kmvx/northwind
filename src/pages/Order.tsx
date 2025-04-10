@@ -1,3 +1,4 @@
+import React from 'react';
 import * as ReactQuery from '@tanstack/react-query';
 import { NavLink, useParams } from 'react-router-dom';
 import { Flag, PanelCentred } from '../ui';
@@ -11,7 +12,7 @@ import {
 import { OrderDetails } from '.';
 import type { ICustomer, IEmployee, IOrder, IShipper } from '../models';
 
-export default function Order(): JSX.Element {
+export default function Order(): React.JSX.Element {
   const { id } = useParams();
   const { data: dataCustomer } = ReactQuery.useQuery<ICustomer>({
     queryKey: [API_URL + '/Orders/' + id + '/Customer'],

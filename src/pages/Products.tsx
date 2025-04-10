@@ -1,4 +1,4 @@
-import * as React from 'react';
+import React from 'react';
 import * as ReactQuery from '@tanstack/react-query';
 import { NavLink, useParams } from 'react-router-dom';
 import {
@@ -22,7 +22,7 @@ export default function Products({
   supplierId,
 }: {
   supplierId?: string;
-}): JSX.Element {
+}): React.JSX.Element {
   // Params
   const { categoryId } = useParams();
   const categoryIdNumber =

@@ -1,8 +1,9 @@
+import React from 'react';
 import * as ReactPaginate from 'react-paginate';
 
-export default function Paginate({ paginateStore }: any): JSX.Element {
+export default function Paginate({ paginateStore }: any): React.JSX.Element {
   const { pageCount, activePageIndex, setActivePageIndex } = paginateStore;
-  const onPageChange = (event: any) => {
+  const onPageChange = (event: { selected: number }) => {
     setActivePageIndex(event.selected);
   };
   return (

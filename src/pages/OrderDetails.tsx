@@ -1,3 +1,4 @@
+import React from 'react';
 import * as ReactQuery from '@tanstack/react-query';
 import { NavLink, useParams, useLocation } from 'react-router-dom';
 import { ErrorMessage, PanelCentred, WaitSpinner } from '../ui';
@@ -5,7 +6,7 @@ import { API_URL, pluralize, setDocumentTitle } from '../utils';
 import { useSortTable } from '../hooks';
 import type { IOrderDetail, IOrderDetails, IProducts } from '../models';
 
-export default function OrderDetails(): JSX.Element {
+export default function OrderDetails(): React.JSX.Element {
   // Params
   const { id } = useParams();
   const { pathname } = useLocation();

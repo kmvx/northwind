@@ -1,3 +1,4 @@
+import React from 'react';
 import * as ReactQuery from '@tanstack/react-query';
 import { NavLink, useParams } from 'react-router-dom';
 import { Orders } from '.';
@@ -5,7 +6,7 @@ import { ErrorMessage, Flag, PanelCentred, WaitSpinner } from '../ui';
 import { API_URL, joinFields, setDocumentTitle } from '../utils';
 import type { ICustomer } from '../models';
 
-export default function Customer(): JSX.Element {
+export default function Customer(): React.JSX.Element {
   const { id } = useParams();
 
   // Network data

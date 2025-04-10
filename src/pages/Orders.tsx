@@ -1,4 +1,4 @@
-import * as React from 'react';
+import React from 'react';
 import * as ReactQuery from '@tanstack/react-query';
 import { NavLink, useLocation, useParams } from 'react-router-dom';
 import {
@@ -46,7 +46,7 @@ function ShipperPreview({
   );
 }
 
-export default function Orders(): JSX.Element {
+export default function Orders(): React.JSX.Element {
   // Filters
   const paramsBuilder = useParamsBuilder();
   const [stringFilter, setStringFilter] = paramsBuilder.str('q');
@@ -75,10 +75,10 @@ export default function Orders(): JSX.Element {
         (isCustomersPage
           ? '/Customers/'
           : isEmployeesPage
-          ? '/Employees/'
-          : isShippersPage
-          ? '/Shippers/'
-          : '') +
+            ? '/Employees/'
+            : isShippersPage
+              ? '/Shippers/'
+              : '') +
         (id || '') +
         '/Orders',
     ],

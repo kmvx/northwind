@@ -1,4 +1,4 @@
-import * as React from 'react';
+import React from 'react';
 import * as d3 from 'd3';
 import clsx from 'clsx';
 import { useQuery } from '@tanstack/react-query';
@@ -125,7 +125,7 @@ function WorldMapChart({
   countrySelector: (item: any) => string;
   hue?: number;
   allowZoom?: boolean;
-}): JSX.Element {
+}): React.JSX.Element {
   // Load data
   const { data, error, isLoading } = useQuery<any[]>({
     queryKey: [API_URL + urlPath],
@@ -208,7 +208,7 @@ export function CustomersWorldMapChart({
   className?: string;
   hue?: number;
   allowZoom?: boolean;
-}): JSX.Element {
+}): React.JSX.Element {
   return (
     <WorldMapChart
       className={className}
@@ -229,7 +229,7 @@ export function OrdersWorldMapChart({
   className?: string;
   hue?: number;
   allowZoom?: boolean;
-}): JSX.Element {
+}): React.JSX.Element {
   return (
     <WorldMapChart
       className={className}
@@ -250,7 +250,7 @@ export function SuppliersWorldMapChart({
   className?: string;
   hue?: number;
   allowZoom?: boolean;
-}): JSX.Element {
+}): React.JSX.Element {
   return (
     <WorldMapChart
       className={className}

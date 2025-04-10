@@ -1,3 +1,4 @@
+import React from 'react';
 import * as ReactQuery from '@tanstack/react-query';
 import { ErrorMessage, PanelStretched, WaitSpinner } from '../ui';
 import { API_URL, setDocumentTitle } from '../utils';
@@ -32,7 +33,7 @@ const chartOptions = {
   },
 };
 
-export default function Charts(): JSX.Element {
+export default function Charts(): React.JSX.Element {
   setDocumentTitle('Charts');
   const { data, error, isLoading } = ReactQuery.useQuery<IOrders>({
     queryKey: [API_URL + '/Orders'],

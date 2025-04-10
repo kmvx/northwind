@@ -1,5 +1,6 @@
-import { getFlagEmojiByCountryName } from '../utils';
+import React from 'react';
 import clsx from 'clsx';
+import { getFlagEmojiByCountryName } from '../utils';
 
 export default function Flag({
   className,
@@ -7,7 +8,7 @@ export default function Flag({
 }: {
   className?: string;
   country: string;
-}): JSX.Element {
+}): React.JSX.Element {
   return (
     <span className={clsx('u-flag', className)} style={{ fontSize: '2rem' }}>
       {getFlagEmojiByCountryName(country)}

@@ -1,7 +1,8 @@
+import React from 'react';
 import { PanelCentred } from '../ui';
 import { setDocumentTitle } from '../utils';
 
-export default function OrderEdit(): JSX.Element {
+export default function OrderEdit(): React.JSX.Element {
   setDocumentTitle('Add new order');
   return (
     <PanelCentred>

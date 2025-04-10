@@ -1,3 +1,4 @@
+import React from 'react';
 import clsx from 'clsx';
 import styles from './Discontinued.module.scss';
 
@@ -5,7 +6,7 @@ export default function Discontinued({
   discontinued,
 }: {
   discontinued: boolean;
-}): JSX.Element {
+}): React.JSX.Element {
   return (
     <span
       className={clsx(

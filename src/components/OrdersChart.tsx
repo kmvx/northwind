@@ -1,5 +1,5 @@
+import React from 'react';
 import * as d3 from 'd3';
-import * as React from 'react';
 import clsx from 'clsx';
 import { useQuery } from '@tanstack/react-query';
 import {
@@ -31,7 +31,7 @@ const GRID_PADDING_X = 20;
 type Selection = d3.Selection<SVGGElement, unknown, null, undefined>;
 
 class SVGBuilder {
-  private create(ref: React.RefObject<SVGSVGElement>) {
+  private create(ref: React.RefObject<SVGSVGElement | null>) {
     if (this.svgLines) return; // Already created
     if (!this.updateSizes(ref)) return;
     const svg = this.svg;
@@ -183,7 +183,7 @@ class SVGBuilder {
   }
   setData(
     data: IOrders,
-    ref: React.RefObject<SVGSVGElement>,
+    ref: React.RefObject<SVGSVGElement | null>,
     setYearsSet: (yearsArray: Set<number>) => void,
     yearFilter?: number,
   ) {
@@ -246,7 +246,7 @@ class SVGBuilder {
       return { x: x(index) + this.margin.left, y: y(d) + this.margin.top };
     });
   }
-  private updateSizes(ref: React.RefObject<SVGSVGElement>) {
+  private updateSizes(ref: React.RefObject<SVGSVGElement | null>) {
     if (!ref.current) return; // HTML Element not created yet
     const parentNode = ref.current.parentNode as HTMLElement;
     if (!parentNode) return false;
@@ -364,7 +364,7 @@ export default function OrdersChart({
 }: {
   className?: string;
   employeeId?: string;
-}): JSX.Element {
+}): React.JSX.Element {
   // Load data
   const { data, error, isLoading } = useQuery<IOrders>({
     queryKey: [
@@ -378,7 +378,7 @@ export default function OrdersChart({
   const [svgBuilder] = React.useState(new SVGBuilder());
 
   // Connect SVG element
-  const ref = React.useRef<SVGSVGElement>(null);
+  const ref = React.useRef<SVGSVGElement | null>(null);
   React.useLayoutEffect(() => {
     function update() {
       if (!data) return;

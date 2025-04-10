@@ -1,3 +1,4 @@
+import React from 'react';
 import * as ReactQuery from '@tanstack/react-query';
 import { NavLink, useParams } from 'react-router-dom';
 import { ErrorMessage, PanelCentred, WaitSpinner } from '../ui';
@@ -11,7 +12,7 @@ function SupplierLink({
 }: {
   id: number;
   className?: string;
-}): JSX.Element {
+}): React.JSX.Element {
   const hasId = Boolean(id);
   const { data, error, isLoading } = ReactQuery.useQuery<ISupplier>({
     queryKey: [API_URL + '/Suppliers/' + id],
@@ -30,7 +31,7 @@ function SupplierLink({
   );
 }
 
-export default function Product(): JSX.Element {
+export default function Product(): React.JSX.Element {
   const { id } = useParams();
 
   // Network data

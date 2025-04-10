@@ -1,3 +1,4 @@
+import React from 'react';
 import { setDocumentTitle } from '../utils';
 import { OrdersChart } from '../components';
 import {
@@ -11,7 +12,7 @@ import {
   SuppliersWorldMapChart,
 } from '../components/WorldMapChart';
 
-export default function ChartD3(): JSX.Element {
+export default function ChartD3(): React.JSX.Element {
   setDocumentTitle('Charts');
   return (
     <section>

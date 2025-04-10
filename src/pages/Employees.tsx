@@ -1,3 +1,4 @@
+import React from 'react';
 import * as ReactQuery from '@tanstack/react-query';
 import { NavLink } from 'react-router-dom';
 import {
@@ -23,7 +24,7 @@ export default function Employees({
 }: {
   className?: string;
   reportsTo?: string;
-}): JSX.Element {
+}): React.JSX.Element {
   // Filters
   const paramsBuilder = useParamsBuilder();
   const [stringFilter, setStringFilter] = paramsBuilder.str('q');

@@ -1,7 +1,8 @@
+import React from 'react';
 import { setDocumentTitle } from '../utils';
 import './About.scss';
 
-export default function About(): JSX.Element {
+export default function About(): React.JSX.Element {
   setDocumentTitle();
   return (
     <div className="about">
@@ -19,6 +20,7 @@ export default function About(): JSX.Element {
             <a
               href="https://en.wikiversity.org/wiki/Database_Examples/Northwind"
               target="_blank"
+              rel="noreferrer"
             >
               Northwind database <i className="bi bi-box-arrow-up-right" />
             </a>
@@ -33,6 +35,7 @@ export default function About(): JSX.Element {
                   : 'https://kmvx.pages.dev'
               }/projects/northwind`}
               target="_blank"
+              rel="noreferrer"
             >
               project description <i className="bi bi-box-arrow-up-right" />
             </a>

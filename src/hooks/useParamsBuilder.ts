@@ -45,7 +45,7 @@ export default function useParamsBuilder() {
           try {
             const result = JSON.parse(valueGet || '');
             return typeof result === 'boolean' ? result : undefined;
-          } catch (err) {
+          } catch {
             return undefined;
           }
         })(),

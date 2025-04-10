@@ -1,3 +1,4 @@
+import React from 'react';
 import clsx from 'clsx';
 
 export default function PanelStretched({
@@ -6,7 +7,7 @@ export default function PanelStretched({
 }: {
   children: React.ReactNode;
   className?: string;
-}): JSX.Element {
+}): React.JSX.Element {
   return (
     <section
       className={clsx(className, 'container bg-light shadow rounded p-2')}

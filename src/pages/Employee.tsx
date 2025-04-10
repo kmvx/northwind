@@ -1,3 +1,4 @@
+import React from 'react';
 import * as ReactQuery from '@tanstack/react-query';
 import { NavLink, useParams } from 'react-router-dom';
 import { Orders } from '.';
@@ -14,7 +15,11 @@ import {
 import { Employees } from '.';
 import type { IEmployee, ITerritories, IRegions } from '../models';
 
-function Territories({ employeeId }: { employeeId?: string }) {
+function Territories({
+  employeeId,
+}: {
+  employeeId?: string;
+}): React.JSX.Element {
   const { data, error, isLoading } = ReactQuery.useQuery<ITerritories>({
     queryKey: [API_URL + '/Employees/' + employeeId + '/Territories'],
   });
@@ -35,7 +40,7 @@ function Territories({ employeeId }: { employeeId?: string }) {
     <div className="hstack">
       <i className="bi bi-globe2 m-2" title="Territories" />
       <span className="m-2">
-        {data.reduce<JSX.Element | undefined>(
+        {data.reduce<React.JSX.Element | undefined>(
           (acc, item) => (
             <>
               {acc && <>{acc}, </>}
@@ -61,7 +66,7 @@ function EmployeeLink({
 }: {
   id: number;
   className?: string;
-}): JSX.Element {
+}): React.JSX.Element {
   const hasReportsTo = Boolean(id);
 
   // Network data
@@ -84,7 +89,7 @@ function EmployeeLink({
   );
 }
 
-export default function Employee(): JSX.Element {
+export default function Employee(): React.JSX.Element {
   const { id } = useParams();
 
   // Network data

@@ -1,3 +1,4 @@
+import React from 'react';
 import * as ReactQuery from '@tanstack/react-query';
 import { NavLink } from 'react-router-dom';
 import {
@@ -17,7 +18,7 @@ import {
 import type { ISuppliers } from '../models';
 import { SuppliersWorldMapChart } from '../components/WorldMapChart';
 
-export default function Suppliers(): JSX.Element {
+export default function Suppliers(): React.JSX.Element {
   setDocumentTitle('Suppliers');
 
   // Filters

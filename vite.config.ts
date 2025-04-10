@@ -17,6 +17,7 @@ export default defineConfig({
   },
   //base: '/',
   test: {
+    environment: 'jsdom',
     exclude: [...configDefaults.exclude, './tests/playwright/*'],
   },
 });

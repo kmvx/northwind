@@ -1,4 +1,4 @@
-import * as React from 'react';
+import React from 'react';
 import * as ReactQuery from '@tanstack/react-query';
 import { NavLink } from 'react-router-dom';
 import {
@@ -20,7 +20,7 @@ import { useParamsBuilder } from '../hooks';
 import type { ICustomers } from '../models';
 import { CustomersWorldMapChart } from '../components/WorldMapChart';
 
-export default function Customers(): JSX.Element {
+export default function Customers(): React.JSX.Element {
   // Filters
   const paramsBuilder = useParamsBuilder();
   const [stringFilter, setStringFilter] = paramsBuilder.str('q');
