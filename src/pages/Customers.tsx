@@ -125,7 +125,16 @@ export default function Customers(): React.JSX.Element {
         ))}
       </div>
       <Paginate paginateStore={paginateStore} />
-      {!countryFilter && <CustomersWorldMapChart className="mx-2 my-3" />}
+      {!countryFilter && (
+        <CustomersWorldMapChart
+          countriesQueryResult={{
+            countries: filteredData.map((item) => item.country),
+            error,
+            isLoading,
+          }}
+          className="mx-2 my-3"
+        />
+      )}
     </PanelStretched>
   );
 }

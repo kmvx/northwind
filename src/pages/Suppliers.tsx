@@ -114,7 +114,16 @@ export default function Suppliers(): React.JSX.Element {
           </NavLink>
         ))}
       </div>
-      {!countryFilter && <SuppliersWorldMapChart className="mx-2 my-3" />}
+      {!countryFilter && (
+        <SuppliersWorldMapChart
+          countriesQueryResult={{
+            countries: filteredData.map((item) => item.country),
+            error,
+            isLoading,
+          }}
+          className="mx-2 my-3"
+        />
+      )}
     </PanelStretched>
   );
 }

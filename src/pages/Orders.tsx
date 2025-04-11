@@ -366,7 +366,14 @@ export default function Orders(): React.JSX.Element {
         <div className="m-2">Orders not found</div>
       )}
       {!countryFilter && !isCustomersPage && (
-        <OrdersWorldMapChart className="mx-2 my-3" />
+        <OrdersWorldMapChart
+          countriesQueryResult={{
+            countries: filteredData.map((item) => item.shipCountry),
+            error,
+            isLoading,
+          }}
+          className="mx-2 my-3"
+        />
       )}
     </section>
   );

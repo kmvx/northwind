@@ -1,5 +1,6 @@
 import React from 'react';
-import { setDocumentTitle } from '../utils';
+import * as ReactQuery from '@tanstack/react-query';
+import { API_URL, setDocumentTitle } from '../utils';
 import { OrdersChart } from '../components';
 import {
   CustomersBarChart,
@@ -11,9 +12,34 @@ import {
   OrdersWorldMapChart,
   SuppliersWorldMapChart,
 } from '../components/WorldMapChart';
+import { ICustomers, IOrders, ISuppliers } from '../models';
 
 export default function ChartD3(): React.JSX.Element {
   setDocumentTitle('Charts');
+
+  // Network data
+  const {
+    data: dataCustomers,
+    error: errorCustomers,
+    isLoading: isLoadingCustomers,
+  } = ReactQuery.useQuery<ICustomers>({
+    queryKey: [API_URL + '/Customers'],
+  });
+  const {
+    data: dataOrders,
+    error: errorOrders,
+    isLoading: isLoadingOrders,
+  } = ReactQuery.useQuery<IOrders>({
+    queryKey: [API_URL + '/Orders'],
+  });
+  const {
+    data: dataSuppliers,
+    error: errorSuppliers,
+    isLoading: isLoadingSuppliers,
+  } = ReactQuery.useQuery<ISuppliers>({
+    queryKey: [API_URL + '/Suppliers'],
+  });
+
   return (
     <section>
       <div className="container">
@@ -22,7 +48,15 @@ export default function ChartD3(): React.JSX.Element {
       <div className="container">
         <div className="row">
           <div className="col-lg-6 d-flex">
-            <OrdersWorldMapChart className="my-3" allowZoom />
+            <OrdersWorldMapChart
+              countriesQueryResult={{
+                countries: dataOrders?.map((item) => item.shipCountry),
+                error: errorOrders,
+                isLoading: isLoadingOrders,
+              }}
+              className="my-3"
+              allowZoom
+            />
           </div>
           <div className="col-lg-6 d-flex">
             <OrdersBarChart className="my-3" />
@@ -30,7 +64,16 @@ export default function ChartD3(): React.JSX.Element {
         </div>
         <div className="row">
           <div className="col-lg-6 d-flex">
-            <CustomersWorldMapChart className="my-3" hue={30} allowZoom />
+            <CustomersWorldMapChart
+              countriesQueryResult={{
+                countries: dataCustomers?.map((item) => item.country),
+                error: errorCustomers,
+                isLoading: isLoadingCustomers,
+              }}
+              className="my-3"
+              hue={30}
+              allowZoom
+            />
           </div>
           <div className="col-lg-6 d-flex">
             <CustomersBarChart className="my-3" />
@@ -38,7 +81,16 @@ export default function ChartD3(): React.JSX.Element {
         </div>
         <div className="row">
           <div className="col-lg-6 d-flex">
-            <SuppliersWorldMapChart className="my-3" hue={120} allowZoom />
+            <SuppliersWorldMapChart
+              countriesQueryResult={{
+                countries: dataSuppliers?.map((item) => item.country),
+                error: errorSuppliers,
+                isLoading: isLoadingSuppliers,
+              }}
+              className="my-3"
+              hue={120}
+              allowZoom
+            />
           </div>
           <div className="col-lg-6 d-flex">
             <SuppliersBarChart className="my-3" />

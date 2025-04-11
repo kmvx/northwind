@@ -1,11 +1,9 @@
 import React from 'react';
 import * as d3 from 'd3';
 import clsx from 'clsx';
-import { useQuery } from '@tanstack/react-query';
 import { useNavigate } from 'react-router-dom';
 import type { NavigateFunction } from 'react-router-dom';
 
-import { API_URL } from '../utils';
 import { ErrorMessage, PanelBasic, WaitSpinner } from '../ui';
 import { addTooltip } from './Chart';
 import './WorldMapChart.scss';
@@ -111,39 +109,37 @@ function updateChart({
   });
 }
 
+interface CountriesQueryResultType {
+  countries?: string[];
+  error: Error | null;
+  isLoading: boolean;
+}
+
 function WorldMapChart({
   className,
   name,
-  urlPath,
-  countrySelector,
+  countriesQueryResult,
   hue = 216,
   allowZoom = false,
 }: {
   className?: string;
   name: string;
-  urlPath: string;
-  countrySelector: (item: any) => string;
+  countriesQueryResult: CountriesQueryResultType;
   hue?: number;
   allowZoom?: boolean;
 }): React.JSX.Element {
-  // Load data
-  const { data, error, isLoading } = useQuery<any[]>({
-    queryKey: [API_URL + urlPath],
-  });
-
   // Prepare data for the chart
   const { itemsPerCountryCount, maxItemsCountPerCountry } =
     React.useMemo(() => {
       const itemsPerCountryCount = new Map<string, number>();
       let maxItemsCountPerCountry = 0;
-      data?.forEach((order) => {
-        const country = countrySelector(order);
+      countriesQueryResult.countries?.forEach((country) => {
         const count = (itemsPerCountryCount.get(country) || 0) + 1;
         maxItemsCountPerCountry = Math.max(maxItemsCountPerCountry, count);
         itemsPerCountryCount.set(country, count);
       });
       return { itemsPerCountryCount, maxItemsCountPerCountry };
-    }, [data, countrySelector]);
+    }, [countriesQueryResult.countries]);
 
   // SVG chart
   const navigate = useNavigate();
@@ -186,8 +182,10 @@ function WorldMapChart({
   ]);
 
   // Handle errors and loading state
+  const { error, isLoading } = countriesQueryResult;
   if (error) return <ErrorMessage error={error} />;
   if (isLoading) return <WaitSpinner />;
+  if (itemsPerCountryCount.size === 0) return <React.Fragment />;
   return (
     <PanelBasic className={clsx('world-map-chart', className, 'vstack')}>
       <h3 className="mt-2 mb-4 text-center">
@@ -201,20 +199,21 @@ function WorldMapChart({
 }
 
 export function CustomersWorldMapChart({
+  countriesQueryResult,
   className,
   hue,
   allowZoom,
 }: {
+  countriesQueryResult: CountriesQueryResultType;
   className?: string;
   hue?: number;
   allowZoom?: boolean;
 }): React.JSX.Element {
   return (
     <WorldMapChart
+      countriesQueryResult={countriesQueryResult}
       className={className}
       name="customers"
-      urlPath="/Customers"
-      countrySelector={(item) => item.country}
       hue={hue}
       allowZoom={allowZoom}
     />
@@ -222,20 +221,21 @@ export function CustomersWorldMapChart({
 }
 
 export function OrdersWorldMapChart({
+  countriesQueryResult,
   className,
   hue,
   allowZoom,
 }: {
+  countriesQueryResult: CountriesQueryResultType;
   className?: string;
   hue?: number;
   allowZoom?: boolean;
 }): React.JSX.Element {
   return (
     <WorldMapChart
+      countriesQueryResult={countriesQueryResult}
       className={className}
       name="orders"
-      urlPath="/Orders"
-      countrySelector={(item) => item.shipCountry}
       hue={hue}
       allowZoom={allowZoom}
     />
@@ -243,20 +243,21 @@ export function OrdersWorldMapChart({
 }
 
 export function SuppliersWorldMapChart({
+  countriesQueryResult,
   className,
   hue,
   allowZoom,
 }: {
+  countriesQueryResult: CountriesQueryResultType;
   className?: string;
   hue?: number;
   allowZoom?: boolean;
 }): React.JSX.Element {
   return (
     <WorldMapChart
+      countriesQueryResult={countriesQueryResult}
       className={className}
       name="suppliers"
-      urlPath="/Suppliers"
-      countrySelector={(item) => item.country}
       hue={hue}
       allowZoom={allowZoom}
     />
