@@ -208,16 +208,131 @@ export default function Orders(): React.JSX.Element {
 
   const { paginateData, paginateStore } = usePaginate(filteredData);
   if (isOrdersPage || isOrdersEndPage) setDocumentTitle('Orders');
-  if (error) return <ErrorMessage error={error} />;
-  if (isLoading || (!filteredData && data)) return <WaitSpinner />;
-  if (!filteredData) return <div>No data</div>;
-  if (filteredData.length === 0 && !hasFilter) {
+
+  const getContent = () => {
+    if (error) return <ErrorMessage error={error} />;
+    if (isLoading || (!filteredData && data)) return <WaitSpinner />;
+    if (!filteredData) return <div>No data</div>;
+    if (filteredData.length === 0 && !hasFilter) {
+      return (
+        <div>
+          <h1 className="m-2 text-center">No orders</h1>
+        </div>
+      );
+    }
     return (
-      <div>
-        <h1 className="m-2 text-center">No orders</h1>
-      </div>
+      <>
+        {filteredData.length !== 0 ? (
+          <div>
+            <div className="m-2">{pluralize(filteredData.length, 'order')}</div>
+            <Paginate paginateStore={paginateStore} />
+            <div className="d-flex">
+              <table
+                ref={refTable}
+                className="table table-hover table-striped m-2"
+              >
+                <thead className="sticky-top bg-white">
+                  <tr>
+                    <th scope="col">#</th>
+                    {!isCustomersPage && <th scope="col">Custo&shy;mer ID</th>}
+                    {!isEmployeesPage && <th scope="col">Emp&shy;loyee</th>}
+                    <th scope="col" className="d-none d-sm-table-cell">
+                      Shipper
+                    </th>
+                    <th scope="col" className="d-none d-sm-table-cell">
+                      Order date
+                    </th>
+                    <th scope="col" className="d-none d-md-table-cell">
+                      Shipped date
+                    </th>
+                    <th scope="col" className="d-none d-md-table-cell">
+                      Required date
+                    </th>
+                    <th scope="col" className="d-none d-xl-table-cell">
+                      Freight
+                    </th>
+                    <th scope="col" className="d-none d-xl-table-cell">
+                      Ship name
+                    </th>
+                    <th scope="col" className="d-none d-sm-table-cell">
+                      Ship address
+                    </th>
+                  </tr>
+                </thead>
+                <tbody className="table-group-divider">
+                  {paginateData.map((item: any) => (
+                    <tr key={item.orderId}>
+                      <th scope="row">
+                        <NavLink to={'/orders/' + item.orderId}>
+                          {item.orderId}
+                        </NavLink>
+                      </th>
+                      {!isCustomersPage && (
+                        <td>
+                          <NavLink to={'/customers/' + item.customerId}>
+                            {item.customerId}
+                          </NavLink>
+                        </td>
+                      )}
+                      {!isEmployeesPage && (
+                        <td>
+                          <NavLink
+                            to={'/employees/' + item.employeeId}
+                            title={'ID: ' + item.employeeId}
+                          >
+                            {item.employeeName}
+                          </NavLink>
+                        </td>
+                      )}
+                      <td className="d-none d-sm-table-cell">
+                        <ShipperPreview
+                          dataShippers={dataShippers}
+                          id={item.shipVia}
+                        />
+                      </td>
+                      <td className="d-none d-sm-table-cell">
+                        {item.orderDate}
+                      </td>
+                      <td className="d-none d-md-table-cell">
+                        {item.shippedDate}
+                      </td>
+                      <td className="d-none d-md-table-cell">
+                        {item.requiredDate}
+                      </td>
+                      <td className="d-none d-xl-table-cell">{item.freight}</td>
+                      <td className="d-none d-xl-table-cell">
+                        {item.shipName}
+                      </td>
+                      <td className="d-none d-sm-table-cell">
+                        <div className="hstack">
+                          <Flag className="me-2" country={item.shipCountry} />
+                          {item.addressLine}
+                        </div>
+                      </td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+            </div>
+            <Paginate paginateStore={paginateStore} />
+          </div>
+        ) : (
+          <div className="m-2">Orders not found</div>
+        )}
+        {!countryFilter && !isCustomersPage && (
+          <OrdersWorldMapChart
+            countriesQueryResult={{
+              countries: filteredData.map((item) => item.shipCountry),
+              error,
+              isLoading,
+            }}
+            className="mx-2 my-3"
+          />
+        )}
+      </>
     );
-  }
+  };
+
   return (
     <section>
       <h1 className="m-2 text-center">
@@ -272,109 +387,7 @@ export default function Orders(): React.JSX.Element {
           onClick={onClearFilters}
         />
       </div>
-      {filteredData.length !== 0 ? (
-        <div>
-          <div className="m-2">{pluralize(filteredData.length, 'order')}</div>
-          <Paginate paginateStore={paginateStore} />
-          <div className="d-flex">
-            <table
-              ref={refTable}
-              className="table table-hover table-striped m-2"
-            >
-              <thead className="sticky-top bg-white">
-                <tr>
-                  <th scope="col">#</th>
-                  {!isCustomersPage && <th scope="col">Custo&shy;mer ID</th>}
-                  {!isEmployeesPage && <th scope="col">Emp&shy;loyee</th>}
-                  <th scope="col" className="d-none d-sm-table-cell">
-                    Shipper
-                  </th>
-                  <th scope="col" className="d-none d-sm-table-cell">
-                    Order date
-                  </th>
-                  <th scope="col" className="d-none d-md-table-cell">
-                    Shipped date
-                  </th>
-                  <th scope="col" className="d-none d-md-table-cell">
-                    Required date
-                  </th>
-                  <th scope="col" className="d-none d-xl-table-cell">
-                    Freight
-                  </th>
-                  <th scope="col" className="d-none d-xl-table-cell">
-                    Ship name
-                  </th>
-                  <th scope="col" className="d-none d-sm-table-cell">
-                    Ship address
-                  </th>
-                </tr>
-              </thead>
-              <tbody className="table-group-divider">
-                {paginateData.map((item: any) => (
-                  <tr key={item.orderId}>
-                    <th scope="row">
-                      <NavLink to={'/orders/' + item.orderId}>
-                        {item.orderId}
-                      </NavLink>
-                    </th>
-                    {!isCustomersPage && (
-                      <td>
-                        <NavLink to={'/customers/' + item.customerId}>
-                          {item.customerId}
-                        </NavLink>
-                      </td>
-                    )}
-                    {!isEmployeesPage && (
-                      <td>
-                        <NavLink
-                          to={'/employees/' + item.employeeId}
-                          title={'ID: ' + item.employeeId}
-                        >
-                          {item.employeeName}
-                        </NavLink>
-                      </td>
-                    )}
-                    <td className="d-none d-sm-table-cell">
-                      <ShipperPreview
-                        dataShippers={dataShippers}
-                        id={item.shipVia}
-                      />
-                    </td>
-                    <td className="d-none d-sm-table-cell">{item.orderDate}</td>
-                    <td className="d-none d-md-table-cell">
-                      {item.shippedDate}
-                    </td>
-                    <td className="d-none d-md-table-cell">
-                      {item.requiredDate}
-                    </td>
-                    <td className="d-none d-xl-table-cell">{item.freight}</td>
-                    <td className="d-none d-xl-table-cell">{item.shipName}</td>
-                    <td className="d-none d-sm-table-cell">
-                      <div className="hstack">
-                        <Flag className="me-2" country={item.shipCountry} />
-                        {item.addressLine}
-                      </div>
-                    </td>
-                  </tr>
-                ))}
-              </tbody>
-            </table>
-          </div>
-          <Paginate paginateStore={paginateStore} />
-        </div>
-      ) : (
-        <div className="m-2">Orders not found</div>
-      )}
-      {!countryFilter && !isCustomersPage && (
-        <OrdersWorldMapChart
-          countriesQueryResult={{
-            countries: filteredData.map((item) => item.shipCountry),
-            error,
-            isLoading,
-          }}
-          className="mx-2 my-3"
-        />
-      )}
+      {getContent()}
     </section>
   );
 }

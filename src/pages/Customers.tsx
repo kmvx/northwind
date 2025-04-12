@@ -58,9 +58,59 @@ export default function Customers(): React.JSX.Element {
   const { paginateData, paginateStore } = usePaginate(filteredData, 20);
 
   setDocumentTitle('Customers');
-  if (error) return <ErrorMessage error={error} />;
-  if (isLoading) return <WaitSpinner />;
-  if (!filteredData) return <div>No data</div>;
+
+  const getContent = () => {
+    if (error) return <ErrorMessage error={error} />;
+    if (isLoading) return <WaitSpinner />;
+    if (!filteredData) return <div>No data</div>;
+    return (
+      <>
+        <div className="m-2">{pluralize(filteredData.length, 'customer')}</div>
+        <Paginate paginateStore={paginateStore} />
+        <div className="customers__list">
+          {paginateData.map((item: any) => (
+            <NavLink
+              to={'/customers/' + item.customerId}
+              className="card m-2 p-3 shadow"
+              key={item.customerId}
+            >
+              <h5
+                className="card-title flex-grow-1"
+                title="Customer company name"
+              >
+                {item.companyName}
+              </h5>
+              <div className="card-text text-end" title="Customer company ID">
+                {item.customerId}
+              </div>
+              <div
+                className="card-text hstack flex-wrap justify-content-end"
+                title="Customer HQ location"
+              >
+                <i className="bi bi-geo-alt m-2" />
+                <span>
+                  {item.country}, {item.city}
+                </span>
+                <Flag className="ms-2" country={item.country} />
+              </div>
+            </NavLink>
+          ))}
+        </div>
+        <Paginate paginateStore={paginateStore} />
+        {!countryFilter && (
+          <CustomersWorldMapChart
+            countriesQueryResult={{
+              countries: filteredData.map((item) => item.country),
+              error,
+              isLoading,
+            }}
+            className="mx-2 my-3"
+          />
+        )}
+      </>
+    );
+  };
+
   return (
     <PanelStretched>
       <h2 className="m-2 text-center">Customers</h2>
@@ -93,48 +143,7 @@ export default function Customers(): React.JSX.Element {
           onClick={onClearFilters}
         />
       </div>
-      <div className="m-2">{pluralize(filteredData.length, 'customer')}</div>
-      <Paginate paginateStore={paginateStore} />
-      <div className="customers__list">
-        {paginateData.map((item: any) => (
-          <NavLink
-            to={'/customers/' + item.customerId}
-            className="card m-2 p-3 shadow"
-            key={item.customerId}
-          >
-            <h5
-              className="card-title flex-grow-1"
-              title="Customer company name"
-            >
-              {item.companyName}
-            </h5>
-            <div className="card-text text-end" title="Customer company ID">
-              {item.customerId}
-            </div>
-            <div
-              className="card-text hstack flex-wrap justify-content-end"
-              title="Customer HQ location"
-            >
-              <i className="bi bi-geo-alt m-2" />
-              <span>
-                {item.country}, {item.city}
-              </span>
-              <Flag className="ms-2" country={item.country} />
-            </div>
-          </NavLink>
-        ))}
-      </div>
-      <Paginate paginateStore={paginateStore} />
-      {!countryFilter && (
-        <CustomersWorldMapChart
-          countriesQueryResult={{
-            countries: filteredData.map((item) => item.country),
-            error,
-            isLoading,
-          }}
-          className="mx-2 my-3"
-        />
-      )}
+      {getContent()}
     </PanelStretched>
   );
 }

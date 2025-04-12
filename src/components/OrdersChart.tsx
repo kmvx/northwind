@@ -393,9 +393,11 @@ export default function OrdersChart({
     };
   }, [data, yearFilter, svgBuilder]);
 
-  // Handle errors and loading state
-  if (error) return <ErrorMessage error={error} />;
-  if (isLoading) return <WaitSpinner />;
+  const getContent = () => {
+    if (error) return <ErrorMessage error={error} />;
+    if (isLoading) return <WaitSpinner />;
+    return <svg ref={ref} className="position-absolute" />;
+  };
 
   return (
     <PanelBasic className={clsx(className, 'hstack align-items-stretch')}>
@@ -406,8 +408,8 @@ export default function OrdersChart({
         <div className="d-flex justify-content-end">
           <YearFilterButtons {...{ yearsSet, yearFilter, setYearFilter }} />
         </div>
-        <div className="orders-chart__chart-parent flex-grow-1">
-          <svg ref={ref} className="position-absolute" />
+        <div className="orders-chart__chart-parent flex-grow-1 d-flex justify-content-center">
+          {getContent()}
         </div>
       </div>
     </PanelBasic>

@@ -52,9 +52,53 @@ export default function Suppliers(): React.JSX.Element {
     );
   }
 
-  if (error) return <ErrorMessage error={error} />;
-  if (isLoading) return <WaitSpinner />;
-  if (!filteredData) return <div>No data</div>;
+  const getContent = () => {
+    if (error) return <ErrorMessage error={error} />;
+    if (isLoading) return <WaitSpinner />;
+    if (!filteredData) return <div>No data</div>;
+    return (
+      <>
+        <div className="m-2">{pluralize(filteredData.length, 'supplier')}</div>
+        <div className="suppliers__list">
+          {filteredData.map((item) => (
+            <NavLink
+              to={'/suppliers/' + item.supplierId}
+              className="card m-2 p-3 shadow"
+              key={item.supplierId}
+            >
+              <h5
+                className="card-title flex-grow-1"
+                title="Supplier company name"
+              >
+                {item.companyName}
+              </h5>
+              <span
+                className="card-text hstack flex-wrap justify-content-end"
+                title="Supplier HQ location"
+              >
+                <i className="bi bi-geo-alt m-2" />
+                <span>
+                  {item.country}, {item.city}
+                </span>
+                <Flag className="ms-2" country={item.country} />
+              </span>
+            </NavLink>
+          ))}
+        </div>
+        {!countryFilter && (
+          <SuppliersWorldMapChart
+            countriesQueryResult={{
+              countries: filteredData.map((item) => item.country),
+              error,
+              isLoading,
+            }}
+            className="mx-2 my-3"
+          />
+        )}
+      </>
+    );
+  };
+
   return (
     <PanelStretched>
       <h2 className="m-2 text-center">Suppliers</h2>
@@ -87,43 +131,7 @@ export default function Suppliers(): React.JSX.Element {
           onClick={onClearFilters}
         />
       </div>
-      <div className="m-2">{pluralize(filteredData.length, 'supplier')}</div>
-      <div className="suppliers__list">
-        {filteredData.map((item) => (
-          <NavLink
-            to={'/suppliers/' + item.supplierId}
-            className="card m-2 p-3 shadow"
-            key={item.supplierId}
-          >
-            <h5
-              className="card-title flex-grow-1"
-              title="Supplier company name"
-            >
-              {item.companyName}
-            </h5>
-            <span
-              className="card-text hstack flex-wrap justify-content-end"
-              title="Supplier HQ location"
-            >
-              <i className="bi bi-geo-alt m-2" />
-              <span>
-                {item.country}, {item.city}
-              </span>
-              <Flag className="ms-2" country={item.country} />
-            </span>
-          </NavLink>
-        ))}
-      </div>
-      {!countryFilter && (
-        <SuppliersWorldMapChart
-          countriesQueryResult={{
-            countries: filteredData.map((item) => item.country),
-            error,
-            isLoading,
-          }}
-          className="mx-2 my-3"
-        />
-      )}
+      {getContent()}
     </PanelStretched>
   );
 }

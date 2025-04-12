@@ -183,16 +183,21 @@ function WorldMapChart({
 
   // Handle errors and loading state
   const { error, isLoading } = countriesQueryResult;
-  if (error) return <ErrorMessage error={error} />;
-  if (isLoading) return <WaitSpinner />;
-  if (itemsPerCountryCount.size === 0) return <React.Fragment />;
+  if (!error && !isLoading && itemsPerCountryCount.size === 0) return <></>;
+
+  const getContent = () => {
+    if (error) return <ErrorMessage error={error} />;
+    if (isLoading) return <WaitSpinner />;
+    return <svg ref={ref} className="position-absolute" />;
+  };
+
   return (
     <PanelBasic className={clsx('world-map-chart', className, 'vstack')}>
       <h3 className="mt-2 mb-4 text-center">
         Distribution of count of <b>{name}</b> by countries
       </h3>
-      <div className="world-map-chart__chart-parent flex-grow-1">
-        <svg ref={ref} className="position-absolute" />
+      <div className="world-map-chart__chart-parent flex-grow-1 d-flex justify-content-center">
+        {getContent()}
       </div>
     </PanelBasic>
   );

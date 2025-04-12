@@ -11,9 +11,11 @@ const queryClient = new ReactQuery.QueryClient({
         const url = queryKey[0] as string;
         const response = await axios.get(url);
         const data = response.data;
+        //throw new Error('Test network error');
         return data;
       },
       retry: (failureCount, error: any) => {
+        //return false;
         if (error.code === 'ERR_NETWORK') return false;
         if (error.response?.status >= 400 && error.response?.status <= 500)
           return false;

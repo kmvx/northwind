@@ -67,12 +67,61 @@ export default function Employees({
   }
 
   if (!reportsTo) setDocumentTitle('Employees');
-  if (error) return <ErrorMessage error={error} />;
-  if (isLoading) return <WaitSpinner />;
-  if (!filteredData) return <div>No data</div>;
-  if (filteredData.length === 0 && reportsTo && !hasFilter) {
-    return <></>;
-  }
+
+  const getContent = () => {
+    if (error) return <ErrorMessage error={error} />;
+    if (isLoading) return <WaitSpinner />;
+    if (!filteredData) return <div>No data</div>;
+    if (filteredData.length === 0 && reportsTo && !hasFilter) {
+      return <></>;
+    }
+    return (
+      <>
+        <div className="m-2">{pluralize(filteredData.length, 'employee')}</div>
+        <div className="employees__list">
+          {filteredData.map((item) => (
+            <NavLink
+              to={'/employees/' + item.employeeId}
+              className="card m-2 p-3 shadow"
+              key={item.employeeId}
+            >
+              <h4 className="card-title" title="Employee name">
+                {getEmployeeNameByData(item)}
+              </h4>
+              <div className="hstack">
+                <img
+                  src={`/assets/img/database/${item.firstName.toLowerCase()}.jpg`}
+                  width="70px"
+                  className="m-2"
+                  alt=""
+                  title="Employee photo"
+                />
+                <div className="vstack">
+                  <span
+                    className="flex-grow-1 card-text text-end"
+                    title="Employee title"
+                  >
+                    {item.title}
+                  </span>
+                  <span
+                    className="card-text hstack flex-wrap justify-content-end"
+                    title="Employee location"
+                  >
+                    <i className="bi bi-geo-alt m-2" />
+                    <span>
+                      {item.country}, {item.city}
+                    </span>
+                    <Flag className="ms-2" country={item.country} />
+                  </span>
+                </div>
+              </div>
+            </NavLink>
+          ))}
+        </div>
+      </>
+    );
+  };
+
   return (
     <PanelStretched className={className}>
       <h2 className="m-2 text-center">
@@ -107,47 +156,7 @@ export default function Employees({
           onClick={onClearFilters}
         />
       </div>
-      <div className="m-2">{pluralize(filteredData.length, 'employee')}</div>
-      <div className="employees__list">
-        {filteredData.map((item) => (
-          <NavLink
-            to={'/employees/' + item.employeeId}
-            className="card m-2 p-3 shadow"
-            key={item.employeeId}
-          >
-            <h4 className="card-title" title="Employee name">
-              {getEmployeeNameByData(item)}
-            </h4>
-            <div className="hstack">
-              <img
-                src={`/assets/img/database/${item.firstName.toLowerCase()}.jpg`}
-                width="70px"
-                className="m-2"
-                alt=""
-                title="Employee photo"
-              />
-              <div className="vstack">
-                <span
-                  className="flex-grow-1 card-text text-end"
-                  title="Employee title"
-                >
-                  {item.title}
-                </span>
-                <span
-                  className="card-text hstack flex-wrap justify-content-end"
-                  title="Employee location"
-                >
-                  <i className="bi bi-geo-alt m-2" />
-                  <span>
-                    {item.country}, {item.city}
-                  </span>
-                  <Flag className="ms-2" country={item.country} />
-                </span>
-              </div>
-            </div>
-          </NavLink>
-        ))}
-      </div>
+      {getContent()}
     </PanelStretched>
   );
 }

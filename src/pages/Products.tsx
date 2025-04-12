@@ -139,10 +139,100 @@ export default function Products({
   );
   if (!supplierId) setDocumentTitle(categoryNameProducts, 'Products');
 
-  if (error) return <ErrorMessage error={error} />;
-  if (isLoading) return <WaitSpinner />;
-  if (!filteredData) return <div>No data</div>;
-  function THead() {
+  const getContent = () => {
+    if (error) return <ErrorMessage error={error} />;
+    if (isLoading) return <WaitSpinner />;
+    if (!filteredData) return <div>No data</div>;
+    return (
+      <>
+        {filteredData.length !== 0 ? (
+          <div>
+            <div className="m-2">
+              {pluralize(filteredData.length, 'product')}
+            </div>
+            <Paginate paginateStore={paginateStore} />
+            <div className="d-flex">
+              <table
+                ref={refTable}
+                className="table table-hover table-striped m-2"
+              >
+                <THead />
+                <tbody className="table-group-divider">
+                  {paginateData.map((item: any) => {
+                    const categoryName = getCategoryNameById(
+                      dataCategories,
+                      item.categoryId,
+                    );
+                    return (
+                      <tr key={item.productId}>
+                        <th scope="row">{item.productId}</th>
+                        <td>
+                          <div className="d-flex flex-wrap">
+                            <NavLink
+                              to={'/products/' + item.productId}
+                              className="flex-fill"
+                            >
+                              {item.productName}
+                            </NavLink>
+                            <span className="d-none d-sm-table-cell d-md-none">
+                              <NavLink
+                                to={'/products/category/' + item.categoryId}
+                              >
+                                {categoryName}
+                              </NavLink>
+                            </span>
+                          </div>
+                          <div className="d-md-none d-flex flex-wrap">
+                            <span className="flex-fill"></span>
+                            <span>Unit price: ${item.unitPrice}</span>
+                          </div>
+                        </td>
+                        <td
+                          className="d-none d-md-table-cell"
+                          title={item.categoryId}
+                        >
+                          <NavLink
+                            to={'/products/category/' + item.categoryId}
+                            className="d-block h-100"
+                          >
+                            {categoryName}
+                          </NavLink>
+                        </td>
+                        <td className="d-none d-md-table-cell">
+                          {item.quantityPerUnit}
+                        </td>
+                        <td className="d-none d-md-table-cell">
+                          ${item.unitPrice}
+                        </td>
+                        <td className="d-none d-lg-table-cell">
+                          {item.unitsInStock}
+                        </td>
+                        <td className="d-none d-lg-table-cell">
+                          {item.unitsOnOrder}
+                        </td>
+                        <td className="d-none d-lg-table-cell">
+                          {item.reorderLevel}
+                        </td>
+                        <td className="d-none d-xl-table-cell">
+                          <Discontinued discontinued={item.discontinued} />
+                        </td>
+                      </tr>
+                    );
+                  })}
+                </tbody>
+                <THead />
+              </table>
+            </div>
+            <Paginate paginateStore={paginateStore} />
+          </div>
+        ) : (
+          <div className="m-2">Products not found</div>
+        )}
+      </>
+    );
+  };
+
+  const THead = () => {
     return (
       <thead className="sticky-top bg-white">
         <tr>
@@ -181,8 +271,10 @@ export default function Products({
         </tr>
       </thead>
     );
-  }
+  };
+
   if (supplierId && data?.length === 0) return <div>No products</div>;
+
   return (
     <section>
       <h2 className="m-2 text-center">
@@ -211,87 +303,7 @@ export default function Products({
           onClick={onClearFilters}
         />
       </div>
-      {filteredData.length !== 0 ? (
-        <div>
-          <div className="m-2">{pluralize(filteredData.length, 'product')}</div>
-          <Paginate paginateStore={paginateStore} />
-          <div className="d-flex">
-            <table
-              ref={refTable}
-              className="table table-hover table-striped m-2"
-            >
-              <THead />
-              <tbody className="table-group-divider">
-                {paginateData.map((item: any) => {
-                  const categoryName = getCategoryNameById(
-                    dataCategories,
-                    item.categoryId,
-                  );
-                  return (
-                    <tr key={item.productId}>
-                      <th scope="row">{item.productId}</th>
-                      <td>
-                        <div className="d-flex flex-wrap">
-                          <NavLink
-                            to={'/products/' + item.productId}
-                            className="flex-fill"
-                          >
-                            {item.productName}
-                          </NavLink>
-                          <span className="d-none d-sm-table-cell d-md-none">
-                            <NavLink
-                              to={'/products/category/' + item.categoryId}
-                            >
-                              {categoryName}
-                            </NavLink>
-                          </span>
-                        </div>
-                        <div className="d-md-none d-flex flex-wrap">
-                          <span className="flex-fill"></span>
-                          <span>Unit price: ${item.unitPrice}</span>
-                        </div>
-                      </td>
-                      <td
-                        className="d-none d-md-table-cell"
-                        title={item.categoryId}
-                      >
-                        <NavLink
-                          to={'/products/category/' + item.categoryId}
-                          className="d-block h-100"
-                        >
-                          {categoryName}
-                        </NavLink>
-                      </td>
-                      <td className="d-none d-md-table-cell">
-                        {item.quantityPerUnit}
-                      </td>
-                      <td className="d-none d-md-table-cell">
-                        ${item.unitPrice}
-                      </td>
-                      <td className="d-none d-lg-table-cell">
-                        {item.unitsInStock}
-                      </td>
-                      <td className="d-none d-lg-table-cell">
-                        {item.unitsOnOrder}
-                      </td>
-                      <td className="d-none d-lg-table-cell">
-                        {item.reorderLevel}
-                      </td>
-                      <td className="d-none d-xl-table-cell">
-                        <Discontinued discontinued={item.discontinued} />
-                      </td>
-                    </tr>
-                  );
-                })}
-              </tbody>
-              <THead />
-            </table>
-          </div>
-          <Paginate paginateStore={paginateStore} />
-        </div>
-      ) : (
-        <div className="m-2">Products not found</div>
-      )}
+      {getContent()}
     </section>
   );
 }
