@@ -69,7 +69,7 @@ export default function Orders(): React.JSX.Element {
   const isOrdersEndPage = !isOrdersPage && pathname.endsWith('/orders');
 
   // Network data
-  const { data, error, isLoading } = ReactQuery.useQuery<IOrders>({
+  const { data, error, isLoading, refetch } = ReactQuery.useQuery<IOrders>({
     queryKey: [
       API_URL +
         (isCustomersPage
@@ -210,7 +210,7 @@ export default function Orders(): React.JSX.Element {
   if (isOrdersPage || isOrdersEndPage) setDocumentTitle('Orders');
 
   const getContent = () => {
-    if (error) return <ErrorMessage error={error} />;
+    if (error) return <ErrorMessage error={error} retry={refetch} />;
     if (isLoading || (!filteredData && data)) return <WaitSpinner />;
     if (!filteredData) return <div>No data</div>;
     if (filteredData.length === 0 && !hasFilter) {
@@ -325,6 +325,7 @@ export default function Orders(): React.JSX.Element {
               countries: filteredData.map((item) => item.shipCountry),
               error,
               isLoading,
+              refetch,
             }}
             className="mx-2 my-3"
           />

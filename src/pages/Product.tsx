@@ -14,11 +14,11 @@ function SupplierLink({
   className?: string;
 }): React.JSX.Element {
   const hasId = Boolean(id);
-  const { data, error, isLoading } = ReactQuery.useQuery<ISupplier>({
+  const { data, error, isLoading, refetch } = ReactQuery.useQuery<ISupplier>({
     queryKey: [API_URL + '/Suppliers/' + id],
     enabled: hasId,
   });
-  if (error) return <ErrorMessage error={error} />;
+  if (error) return <ErrorMessage error={error} retry={refetch} />;
   if (isLoading) {
     if (hasId) return <WaitSpinner />;
     else return <></>;
@@ -35,7 +35,7 @@ export default function Product(): React.JSX.Element {
   const { id } = useParams();
 
   // Network data
-  const { data, error, isLoading } = ReactQuery.useQuery<IProduct>({
+  const { data, error, isLoading, refetch } = ReactQuery.useQuery<IProduct>({
     queryKey: [API_URL + '/Products/' + id],
   });
   const { data: dataCategories } = ReactQuery.useQuery<ICategories>({
@@ -43,9 +43,11 @@ export default function Product(): React.JSX.Element {
   });
 
   setDocumentTitle(data?.productName, 'Product');
-  if (error) return <ErrorMessage error={error} />;
+
+  if (error) return <ErrorMessage error={error} retry={refetch} />;
   if (isLoading) return <WaitSpinner />;
   if (!data) return <div>No data</div>;
+
   return (
     <PanelCentred>
       <h1 className="m-2 text-center">{data.productName}</h1>

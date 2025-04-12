@@ -5,9 +5,17 @@ exports[`ErrorMessage 1`] = `
   <div
     class="m-2 text-danger"
   >
-    <div>
-      Error: 
-      Test
+    <div
+      class="alert alert-danger d-flex align-items-center gap-3"
+    >
+      <div
+        title="Test"
+      >
+        <div>
+          Error: 
+          Test
+        </div>
+      </div>
     </div>
   </div>
 </div>

@@ -366,7 +366,7 @@ export default function OrdersChart({
   employeeId?: string;
 }): React.JSX.Element {
   // Load data
-  const { data, error, isLoading } = useQuery<IOrders>({
+  const { data, error, isLoading, refetch } = useQuery<IOrders>({
     queryKey: [
       API_URL + (employeeId ? '/Employees/' + employeeId : '') + '/Orders',
     ],
@@ -394,7 +394,7 @@ export default function OrdersChart({
   }, [data, yearFilter, svgBuilder]);
 
   const getContent = () => {
-    if (error) return <ErrorMessage error={error} />;
+    if (error) return <ErrorMessage error={error} retry={refetch} />;
     if (isLoading) return <WaitSpinner />;
     return <svg ref={ref} className="position-absolute" />;
   };

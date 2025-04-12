@@ -36,7 +36,7 @@ export default function Employees({
   }
 
   // Network data
-  const { data, error, isLoading } = ReactQuery.useQuery<IEmployees>({
+  const { data, error, isLoading, refetch } = ReactQuery.useQuery<IEmployees>({
     queryKey: [API_URL + '/Employees'],
   });
 
@@ -69,7 +69,7 @@ export default function Employees({
   if (!reportsTo) setDocumentTitle('Employees');
 
   const getContent = () => {
-    if (error) return <ErrorMessage error={error} />;
+    if (error) return <ErrorMessage error={error} retry={refetch} />;
     if (isLoading) return <WaitSpinner />;
     if (!filteredData) return <div>No data</div>;
     if (filteredData.length === 0 && reportsTo && !hasFilter) {

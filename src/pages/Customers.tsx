@@ -32,7 +32,7 @@ export default function Customers(): React.JSX.Element {
   }
 
   // Network data
-  const { data, error, isLoading } = ReactQuery.useQuery<ICustomers>({
+  const { data, error, isLoading, refetch } = ReactQuery.useQuery<ICustomers>({
     queryKey: [API_URL + '/Customers'],
   });
 
@@ -60,7 +60,7 @@ export default function Customers(): React.JSX.Element {
   setDocumentTitle('Customers');
 
   const getContent = () => {
-    if (error) return <ErrorMessage error={error} />;
+    if (error) return <ErrorMessage error={error} retry={refetch} />;
     if (isLoading) return <WaitSpinner />;
     if (!filteredData) return <div>No data</div>;
     return (
@@ -103,6 +103,7 @@ export default function Customers(): React.JSX.Element {
               countries: filteredData.map((item) => item.country),
               error,
               isLoading,
+              refetch,
             }}
             className="mx-2 my-3"
           />

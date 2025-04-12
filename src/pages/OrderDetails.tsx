@@ -13,14 +13,15 @@ export default function OrderDetails(): React.JSX.Element {
   const isOrdersPage = pathname.startsWith('/orders/');
 
   // Network data
-  const { data, error, isLoading } = ReactQuery.useQuery<IOrderDetails>({
-    queryKey: [
-      API_URL +
-        (isOrdersPage ? '/Orders/' : '/Products/') +
-        id +
-        '/OrderDetails',
-    ],
-  });
+  const { data, error, isLoading, refetch } =
+    ReactQuery.useQuery<IOrderDetails>({
+      queryKey: [
+        API_URL +
+          (isOrdersPage ? '/Orders/' : '/Products/') +
+          id +
+          '/OrderDetails',
+      ],
+    });
   const { data: dataProducts } = ReactQuery.useQuery<IProducts>({
     queryKey: [API_URL + '/Orders/' + id + '/Products'],
     enabled: isOrdersPage,
@@ -51,9 +52,11 @@ export default function OrderDetails(): React.JSX.Element {
   if (filteredData) filteredData = [...filteredData]; // Toggle data change hooks
 
   if (!isOrdersPage) setDocumentTitle('Order details');
-  if (error) return <ErrorMessage error={error} />;
+  if (error) return <ErrorMessage error={error} retry={refetch} />;
   if (isLoading) return <WaitSpinner />;
   if (!filteredData) return <div>No data</div>;
+
+  // Compute order total money
   function roundMoney(money: number) {
     return Math.round(money * 100) / 100;
   }
@@ -63,6 +66,7 @@ export default function OrderDetails(): React.JSX.Element {
     );
   }
   const total = filteredData.reduce((acc, item) => acc + getTotalCost(item), 0);
+
   return (
     <PanelCentred>
       <h3 className="m-2 text-center">Order details</h3>

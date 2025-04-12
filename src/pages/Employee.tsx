@@ -20,13 +20,16 @@ function Territories({
 }: {
   employeeId?: string;
 }): React.JSX.Element {
-  const { data, error, isLoading } = ReactQuery.useQuery<ITerritories>({
-    queryKey: [API_URL + '/Employees/' + employeeId + '/Territories'],
-  });
+  const { data, error, isLoading, refetch } = ReactQuery.useQuery<ITerritories>(
+    {
+      queryKey: [API_URL + '/Employees/' + employeeId + '/Territories'],
+    },
+  );
   const { data: dataRegions } = ReactQuery.useQuery<IRegions>({
     queryKey: [API_URL + '/Regions'],
   });
-  if (error) return <ErrorMessage error={error} />;
+
+  if (error) return <ErrorMessage error={error} retry={refetch} />;
   if (isLoading) return <WaitSpinner />;
   if (!data) return <div>No data</div>;
 
@@ -70,17 +73,18 @@ function EmployeeLink({
   const hasReportsTo = Boolean(id);
 
   // Network data
-  const { data, error, isLoading } = ReactQuery.useQuery<IEmployee>({
+  const { data, error, isLoading, refetch } = ReactQuery.useQuery<IEmployee>({
     queryKey: [API_URL + '/Employees/' + id],
     enabled: hasReportsTo,
   });
 
-  if (error) return <ErrorMessage error={error} />;
+  if (error) return <ErrorMessage error={error} retry={refetch} />;
   if (isLoading) {
     if (hasReportsTo) return <WaitSpinner />;
     else return <></>;
   }
   if (!data) return <div>No data</div>;
+
   return (
     <span className={className}>
       <span>Reports to </span>
@@ -93,15 +97,17 @@ export default function Employee(): React.JSX.Element {
   const { id } = useParams();
 
   // Network data
-  const { data, error, isLoading } = ReactQuery.useQuery<IEmployee>({
+  const { data, error, isLoading, refetch } = ReactQuery.useQuery<IEmployee>({
     queryKey: [API_URL + '/Employees/' + id],
   });
 
   const name = data ? getEmployeeNameByData(data) : undefined;
   setDocumentTitle(name, 'Employee');
-  if (error) return <ErrorMessage error={error} />;
+
+  if (error) return <ErrorMessage error={error} retry={refetch} />;
   if (isLoading) return <WaitSpinner />;
   if (!data) return <div>No data</div>;
+
   return (
     <PanelCentred className="employee">
       <h1 className="text-center m-2">{name}</h1>

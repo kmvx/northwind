@@ -32,7 +32,7 @@ export default function Suppliers(): React.JSX.Element {
   }
 
   // Network data
-  const { data, error, isLoading } = ReactQuery.useQuery<ISuppliers>({
+  const { data, error, isLoading, refetch } = ReactQuery.useQuery<ISuppliers>({
     queryKey: [API_URL + '/Suppliers'],
   });
 
@@ -53,7 +53,7 @@ export default function Suppliers(): React.JSX.Element {
   }
 
   const getContent = () => {
-    if (error) return <ErrorMessage error={error} />;
+    if (error) return <ErrorMessage error={error} retry={refetch} />;
     if (isLoading) return <WaitSpinner />;
     if (!filteredData) return <div>No data</div>;
     return (
@@ -91,6 +91,7 @@ export default function Suppliers(): React.JSX.Element {
               countries: filteredData.map((item) => item.country),
               error,
               isLoading,
+              refetch,
             }}
             className="mx-2 my-3"
           />

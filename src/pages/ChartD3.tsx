@@ -22,6 +22,7 @@ export default function ChartD3(): React.JSX.Element {
     data: dataCustomers,
     error: errorCustomers,
     isLoading: isLoadingCustomers,
+    refetch: refetchCustomers,
   } = ReactQuery.useQuery<ICustomers>({
     queryKey: [API_URL + '/Customers'],
   });
@@ -29,6 +30,7 @@ export default function ChartD3(): React.JSX.Element {
     data: dataOrders,
     error: errorOrders,
     isLoading: isLoadingOrders,
+    refetch: refetchOrders,
   } = ReactQuery.useQuery<IOrders>({
     queryKey: [API_URL + '/Orders'],
   });
@@ -36,6 +38,7 @@ export default function ChartD3(): React.JSX.Element {
     data: dataSuppliers,
     error: errorSuppliers,
     isLoading: isLoadingSuppliers,
+    refetch: refetchSuppliers,
   } = ReactQuery.useQuery<ISuppliers>({
     queryKey: [API_URL + '/Suppliers'],
   });
@@ -53,6 +56,7 @@ export default function ChartD3(): React.JSX.Element {
                 countries: dataOrders?.map((item) => item.shipCountry),
                 error: errorOrders,
                 isLoading: isLoadingOrders,
+                refetch: refetchOrders,
               }}
               className="my-3"
               allowZoom
@@ -69,6 +73,7 @@ export default function ChartD3(): React.JSX.Element {
                 countries: dataCustomers?.map((item) => item.country),
                 error: errorCustomers,
                 isLoading: isLoadingCustomers,
+                refetch: refetchCustomers,
               }}
               className="my-3"
               hue={30}
@@ -86,6 +91,7 @@ export default function ChartD3(): React.JSX.Element {
                 countries: dataSuppliers?.map((item) => item.country),
                 error: errorSuppliers,
                 isLoading: isLoadingSuppliers,
+                refetch: refetchSuppliers,
               }}
               className="my-3"
               hue={120}

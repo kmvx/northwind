@@ -27,6 +27,7 @@ export default function Order(): React.JSX.Element {
     queryKey: [API_URL + '/Orders/' + id + '/Shipper'],
   });
   setDocumentTitle('Order #' + id);
+
   return (
     <PanelCentred>
       <div className="m-2">

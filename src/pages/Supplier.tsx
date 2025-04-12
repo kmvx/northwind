@@ -8,13 +8,17 @@ import type { ISupplier } from '../models';
 
 export default function Supplier(): React.JSX.Element {
   const { id } = useParams();
-  const { data, error, isLoading } = ReactQuery.useQuery<ISupplier>({
+
+  const { data, error, isLoading, refetch } = ReactQuery.useQuery<ISupplier>({
     queryKey: [API_URL + '/Suppliers/' + id],
   });
+
   setDocumentTitle(data?.companyName, 'Supplier');
-  if (error) return <ErrorMessage error={error} />;
+
+  if (error) return <ErrorMessage error={error} retry={refetch} />;
   if (isLoading) return <WaitSpinner />;
   if (!data) return <div>No data</div>;
+
   return (
     <PanelCentred>
       <div className="m-2">

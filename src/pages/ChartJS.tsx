@@ -35,10 +35,10 @@ const chartOptions = {
 
 export default function Charts(): React.JSX.Element {
   setDocumentTitle('Charts');
-  const { data, error, isLoading } = ReactQuery.useQuery<IOrders>({
+  const { data, error, isLoading, refetch } = ReactQuery.useQuery<IOrders>({
     queryKey: [API_URL + '/Orders'],
   });
-  if (error) return <ErrorMessage error={error} />;
+  if (error) return <ErrorMessage error={error} retry={refetch} />;
   if (isLoading) return <WaitSpinner />;
   const ordersCountByCountry: Record<string, number> = {};
   data?.forEach((item) => {

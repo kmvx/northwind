@@ -40,7 +40,7 @@ export default function Products({
   }
 
   // Network data
-  const { data, error, isLoading } = ReactQuery.useQuery<IProducts>({
+  const { data, error, isLoading, refetch } = ReactQuery.useQuery<IProducts>({
     queryKey: [API_URL + '/Products'],
   });
   const { data: dataCategories } = ReactQuery.useQuery<ICategories>({
@@ -140,7 +140,7 @@ export default function Products({
   if (!supplierId) setDocumentTitle(categoryNameProducts, 'Products');
 
   const getContent = () => {
-    if (error) return <ErrorMessage error={error} />;
+    if (error) return <ErrorMessage error={error} retry={refetch} />;
     if (isLoading) return <WaitSpinner />;
     if (!filteredData) return <div>No data</div>;
     return (

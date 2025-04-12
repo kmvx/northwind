@@ -143,7 +143,7 @@ function BarChart({
   hue: number;
 }): React.JSX.Element {
   // Load data
-  const { data, error, isLoading } = useQuery<any[]>({
+  const { data, error, isLoading, refetch } = useQuery<any[]>({
     queryKey: [API_URL + urlPath],
   });
 
@@ -194,7 +194,7 @@ function BarChart({
   }, [itemsPerCountryCount, maxItemsCountPerCountry, hue, name, navigate]);
 
   const getContent = () => {
-    if (error) return <ErrorMessage error={error} />;
+    if (error) return <ErrorMessage error={error} retry={refetch} />;
     if (isLoading) return <WaitSpinner />;
     return <svg ref={ref} className="position-absolute" />;
   };

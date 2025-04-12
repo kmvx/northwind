@@ -113,6 +113,7 @@ interface CountriesQueryResultType {
   countries?: string[];
   error: Error | null;
   isLoading: boolean;
+  refetch: () => void;
 }
 
 function WorldMapChart({
@@ -182,11 +183,11 @@ function WorldMapChart({
   ]);
 
   // Handle errors and loading state
-  const { error, isLoading } = countriesQueryResult;
+  const { error, isLoading, refetch } = countriesQueryResult;
   if (!error && !isLoading && itemsPerCountryCount.size === 0) return <></>;
 
   const getContent = () => {
-    if (error) return <ErrorMessage error={error} />;
+    if (error) return <ErrorMessage error={error} retry={refetch} />;
     if (isLoading) return <WaitSpinner />;
     return <svg ref={ref} className="position-absolute" />;
   };

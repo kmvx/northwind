@@ -10,14 +10,16 @@ export default function Customer(): React.JSX.Element {
   const { id } = useParams();
 
   // Network data
-  const { data, error, isLoading } = ReactQuery.useQuery<ICustomer>({
+  const { data, error, isLoading, refetch } = ReactQuery.useQuery<ICustomer>({
     queryKey: [API_URL + '/Customers/' + id],
   });
 
   setDocumentTitle(data?.companyName, 'Customers');
-  if (error) return <ErrorMessage error={error} />;
+
+  if (error) return <ErrorMessage error={error} retry={refetch} />;
   if (isLoading) return <WaitSpinner />;
   if (!data) return <div>No data</div>;
+
   return (
     <PanelCentred className="customer">
       <h1 className="m-2 text-center">{data.companyName}</h1>
