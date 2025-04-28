@@ -15,11 +15,7 @@ import {
 import { Employees } from '.';
 import type { IEmployee, ITerritories, IRegions } from '../models';
 
-function Territories({
-  employeeId,
-}: {
-  employeeId?: string;
-}): React.JSX.Element {
+const Territories: React.FC<{ employeeId?: string }> = ({ employeeId }) => {
   const { data, error, isLoading, refetch } = ReactQuery.useQuery<ITerritories>(
     {
       queryKey: [API_URL + '/Employees/' + employeeId + '/Territories'],
@@ -43,7 +39,7 @@ function Territories({
     <div className="hstack">
       <i className="bi bi-globe2 m-2" title="Territories" />
       <span className="m-2">
-        {data.reduce<React.JSX.Element | undefined>(
+        {data.reduce<React.ReactNode>(
           (acc, item) => (
             <>
               {acc && <>{acc}, </>}
@@ -61,15 +57,12 @@ function Territories({
       </span>
     </div>
   );
-}
+};
 
-function EmployeeLink({
-  id,
-  className,
-}: {
+const EmployeeLink: React.FC<{
   id: number;
   className?: string;
-}): React.JSX.Element {
+}> = ({ id, className }) => {
   const hasReportsTo = Boolean(id);
 
   // Network data
@@ -91,9 +84,9 @@ function EmployeeLink({
       <NavLink to={'/employees/' + id}>{getEmployeeNameByData(data)}</NavLink>
     </span>
   );
-}
+};
 
-export default function Employee(): React.JSX.Element {
+const Employee: React.FC = () => {
   const { id } = useParams();
 
   // Network data
@@ -189,4 +182,6 @@ export default function Employee(): React.JSX.Element {
       <Orders />
     </PanelCentred>
   );
-}
+};
+
+export default Employee;

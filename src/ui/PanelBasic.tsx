@@ -1,16 +1,15 @@
 import React from 'react';
 import clsx from 'clsx';
 
-export default function PanelBasic({
-  children,
-  className,
-}: {
+const PanelBasic: React.FC<{
   children: React.ReactNode;
   className?: string;
-}): React.JSX.Element {
+}> = ({ children, className }) => {
   return (
     <section className={clsx(className, 'bg-light shadow rounded p-2')}>
       {children}
     </section>
   );
-}
+};
+
+export default PanelBasic;

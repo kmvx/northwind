@@ -1,14 +1,9 @@
 import React from 'react';
 
-type DiscontinuedFilterButtonsProps = {
+const DiscontinuedFilterButtons: React.FC<{
   discontinuedFilter?: boolean;
   setDicontinuedFilter: (discontinuedFilter?: boolean) => void;
-};
-
-const DiscontinuedFilterButtons: React.FC<DiscontinuedFilterButtonsProps> = ({
-  discontinuedFilter,
-  setDicontinuedFilter,
-}) => {
+}> = ({ discontinuedFilter, setDicontinuedFilter }) => {
   const id1 = React.useId();
   const id2 = React.useId();
   const id3 = React.useId();

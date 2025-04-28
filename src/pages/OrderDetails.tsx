@@ -6,7 +6,7 @@ import { API_URL, pluralize, setDocumentTitle } from '../utils';
 import { useSortTable } from '../hooks';
 import type { IOrderDetail, IOrderDetails, IProducts } from '../models';
 
-export default function OrderDetails(): React.JSX.Element {
+const OrderDetails: React.FC = () => {
   // Params
   const { id } = useParams();
   const { pathname } = useLocation();
@@ -115,4 +115,6 @@ export default function OrderDetails(): React.JSX.Element {
       </table>
     </PanelCentred>
   );
-}
+};
+
+export default OrderDetails;

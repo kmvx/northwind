@@ -2,11 +2,9 @@ import React from 'react';
 import clsx from 'clsx';
 import styles from './Discontinued.module.scss';
 
-export default function Discontinued({
-  discontinued,
-}: {
+const Discontinued: React.FC<{
   discontinued: boolean;
-}): React.JSX.Element {
+}> = ({ discontinued }) => {
   return (
     <span
       className={clsx(
@@ -18,4 +16,6 @@ export default function Discontinued({
       {discontinued ? 'Discontinued' : 'Not discontinued'}
     </span>
   );
-}
+};
+
+export default Discontinued;

@@ -129,19 +129,13 @@ function updateChart({
   addTooltip({ svg: svgBase, hue, name, navigate });
 }
 
-function BarChart({
-  className,
-  name,
-  urlPath,
-  countrySelector,
-  hue,
-}: {
+const BarChart: React.FC<{
   className?: string;
   name: string;
   urlPath: string;
   countrySelector: (item: any) => string;
   hue: number;
-}): React.JSX.Element {
+}> = ({ className, name, urlPath, countrySelector, hue }) => {
   // Load data
   const { data, error, isLoading, refetch } = useQuery<any[]>({
     queryKey: [API_URL + urlPath],
@@ -209,13 +203,11 @@ function BarChart({
       </div>
     </PanelBasic>
   );
-}
+};
 
-export function CustomersBarChart({
-  className,
-}: {
+export const CustomersBarChart: React.FC<{
   className?: string;
-}): React.JSX.Element {
+}> = ({ className }) => {
   return (
     <BarChart
       className={className}
@@ -225,13 +217,11 @@ export function CustomersBarChart({
       hue={30}
     />
   );
-}
+};
 
-export function OrdersBarChart({
-  className,
-}: {
+export const OrdersBarChart: React.FC<{
   className?: string;
-}): React.JSX.Element {
+}> = ({ className }) => {
   return (
     <BarChart
       className={className}
@@ -241,13 +231,11 @@ export function OrdersBarChart({
       hue={216}
     />
   );
-}
+};
 
-export function SuppliersBarChart({
-  className,
-}: {
+export const SuppliersBarChart: React.FC<{
   className?: string;
-}): React.JSX.Element {
+}> = ({ className }) => {
   return (
     <BarChart
       className={className}
@@ -257,4 +245,4 @@ export function SuppliersBarChart({
       hue={120}
     />
   );
-}
+};

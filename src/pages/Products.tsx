@@ -18,11 +18,9 @@ import {
 import type { ICategories, IProducts } from '../models';
 import { Discontinued } from '../ui';
 
-export default function Products({
-  supplierId,
-}: {
+const Products: React.FC<{
   supplierId?: string;
-}): React.JSX.Element {
+}> = ({ supplierId }) => {
   // Params
   const { categoryId } = useParams();
   const categoryIdNumber =
@@ -306,4 +304,6 @@ export default function Products({
       {getContent()}
     </section>
   );
-}
+};
+
+export default Products;

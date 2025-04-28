@@ -358,13 +358,10 @@ class SVGBuilder {
   private margin = { left: 70, right: 30, top: 30, bottom: 50 } as const;
 }
 
-export default function OrdersChart({
-  className,
-  employeeId,
-}: {
+const OrdersChart: React.FC<{
   className?: string;
   employeeId?: string;
-}): React.JSX.Element {
+}> = ({ className, employeeId }) => {
   // Load data
   const { data, error, isLoading, refetch } = useQuery<IOrders>({
     queryKey: [
@@ -414,4 +411,6 @@ export default function OrdersChart({
       </div>
     </PanelBasic>
   );
-}
+};
+
+export default OrdersChart;

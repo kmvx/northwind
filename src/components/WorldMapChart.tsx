@@ -116,19 +116,19 @@ interface CountriesQueryResultType {
   refetch: () => void;
 }
 
-function WorldMapChart({
-  className,
-  name,
-  countriesQueryResult,
-  hue = 216,
-  allowZoom = false,
-}: {
+const WorldMapChart: React.FC<{
   className?: string;
   name: string;
   countriesQueryResult: CountriesQueryResultType;
   hue?: number;
   allowZoom?: boolean;
-}): React.JSX.Element {
+}> = ({
+  className,
+  name,
+  countriesQueryResult,
+  hue = 216,
+  allowZoom = false,
+}) => {
   // Prepare data for the chart
   const { itemsPerCountryCount, maxItemsCountPerCountry } =
     React.useMemo(() => {
@@ -202,19 +202,14 @@ function WorldMapChart({
       </div>
     </PanelBasic>
   );
-}
+};
 
-export function CustomersWorldMapChart({
-  countriesQueryResult,
-  className,
-  hue,
-  allowZoom,
-}: {
+export const CustomersWorldMapChart: React.FC<{
   countriesQueryResult: CountriesQueryResultType;
   className?: string;
   hue?: number;
   allowZoom?: boolean;
-}): React.JSX.Element {
+}> = ({ countriesQueryResult, className, hue, allowZoom }) => {
   return (
     <WorldMapChart
       countriesQueryResult={countriesQueryResult}
@@ -224,19 +219,14 @@ export function CustomersWorldMapChart({
       allowZoom={allowZoom}
     />
   );
-}
+};
 
-export function OrdersWorldMapChart({
-  countriesQueryResult,
-  className,
-  hue,
-  allowZoom,
-}: {
+export const OrdersWorldMapChart: React.FC<{
   countriesQueryResult: CountriesQueryResultType;
   className?: string;
   hue?: number;
   allowZoom?: boolean;
-}): React.JSX.Element {
+}> = ({ countriesQueryResult, className, hue, allowZoom }) => {
   return (
     <WorldMapChart
       countriesQueryResult={countriesQueryResult}
@@ -246,19 +236,14 @@ export function OrdersWorldMapChart({
       allowZoom={allowZoom}
     />
   );
-}
+};
 
-export function SuppliersWorldMapChart({
-  countriesQueryResult,
-  className,
-  hue,
-  allowZoom,
-}: {
+export const SuppliersWorldMapChart: React.FC<{
   countriesQueryResult: CountriesQueryResultType;
   className?: string;
   hue?: number;
   allowZoom?: boolean;
-}): React.JSX.Element {
+}> = ({ countriesQueryResult, className, hue, allowZoom }) => {
   return (
     <WorldMapChart
       countriesQueryResult={countriesQueryResult}
@@ -268,4 +253,4 @@ export function SuppliersWorldMapChart({
       allowZoom={allowZoom}
     />
   );
-}
+};

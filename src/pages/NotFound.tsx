@@ -1,7 +1,9 @@
 import React from 'react';
 import { setDocumentTitle } from '../utils';
 
-export default function NotFound(): React.JSX.Element {
+const NotFound: React.FC = () => {
   setDocumentTitle('Page not found');
   return <h3 className="text-center m-5">Page not found</h3>;
-}
+};
+
+export default NotFound;

@@ -1,13 +1,10 @@
 import React from 'react';
 import clsx from 'clsx';
 
-export default function PanelCentred({
-  children,
-  className,
-}: {
+const PanelCentred: React.FC<{
   children: React.ReactNode;
   className?: string;
-}): React.JSX.Element {
+}> = ({ children, className }) => {
   return (
     <div className="container vstack align-items-center">
       <section
@@ -20,4 +17,6 @@ export default function PanelCentred({
       </section>
     </div>
   );
-}
+};
+
+export default PanelCentred;

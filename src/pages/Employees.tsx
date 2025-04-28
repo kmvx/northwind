@@ -18,13 +18,10 @@ import {
 } from '../utils';
 import type { IEmployees } from '../models';
 
-export default function Employees({
-  className,
-  reportsTo,
-}: {
+const Employees: React.FC<{
   className?: string;
   reportsTo?: string;
-}): React.JSX.Element {
+}> = ({ className, reportsTo }) => {
   // Filters
   const paramsBuilder = useParamsBuilder();
   const [stringFilter, setStringFilter] = paramsBuilder.str('q');
@@ -159,4 +156,6 @@ export default function Employees({
       {getContent()}
     </PanelStretched>
   );
-}
+};
+
+export default Employees;

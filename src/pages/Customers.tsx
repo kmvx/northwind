@@ -20,7 +20,7 @@ import { useParamsBuilder } from '../hooks';
 import type { ICustomers } from '../models';
 import { CustomersWorldMapChart } from '../components/WorldMapChart';
 
-export default function Customers(): React.JSX.Element {
+const Customers: React.FC = () => {
   // Filters
   const paramsBuilder = useParamsBuilder();
   const [stringFilter, setStringFilter] = paramsBuilder.str('q');
@@ -147,4 +147,6 @@ export default function Customers(): React.JSX.Element {
       {getContent()}
     </PanelStretched>
   );
-}
+};
+
+export default Customers;

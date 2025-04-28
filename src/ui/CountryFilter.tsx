@@ -2,17 +2,12 @@ import React from 'react';
 import clsx from 'clsx';
 import { getCountries, getFlagEmojiByCountryName } from '../utils';
 
-export default function CountryFilter({
-  className,
-  countryFilter,
-  setCountryFilter,
-  countries,
-}: {
+const CountryFilter: React.FC<{
   className?: string;
   countryFilter: string;
   setCountryFilter: (country: string) => void;
   countries?: string[];
-}): React.JSX.Element {
+}> = ({ className, countryFilter, setCountryFilter, countries }) => {
   const options = ['', ...(countries || getCountries())];
   const onChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
     setCountryFilter(event.target.value);
@@ -34,4 +29,6 @@ export default function CountryFilter({
       </select>
     </div>
   );
-}
+};
+
+export default CountryFilter;

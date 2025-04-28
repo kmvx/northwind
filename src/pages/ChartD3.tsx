@@ -14,7 +14,7 @@ import {
 } from '../components/WorldMapChart';
 import { ICustomers, IOrders, ISuppliers } from '../models';
 
-export default function ChartD3(): React.JSX.Element {
+const ChartD3: React.FC = () => {
   setDocumentTitle('Charts');
 
   // Network data
@@ -105,4 +105,6 @@ export default function ChartD3(): React.JSX.Element {
       </div>
     </section>
   );
-}
+};
+
+export default ChartD3;

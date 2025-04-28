@@ -2,7 +2,7 @@ import React from 'react';
 import { PanelCentred } from '../ui';
 import { setDocumentTitle } from '../utils';
 
-export default function OrderEdit(): React.JSX.Element {
+const OrderEdit: React.FC = () => {
   setDocumentTitle('Add new order');
   return (
     <PanelCentred>
@@ -36,4 +36,6 @@ export default function OrderEdit(): React.JSX.Element {
       </form>
     </PanelCentred>
   );
-}
+};
+
+export default OrderEdit;

@@ -6,7 +6,7 @@ import { API_URL, joinFields, setDocumentTitle } from '../utils';
 import { Products } from '.';
 import type { ISupplier } from '../models';
 
-export default function Supplier(): React.JSX.Element {
+const Supplier: React.FC = () => {
   const { id } = useParams();
 
   const { data, error, isLoading, refetch } = ReactQuery.useQuery<ISupplier>({
@@ -58,4 +58,6 @@ export default function Supplier(): React.JSX.Element {
       <Products supplierId={id} />
     </PanelCentred>
   );
-}
+};
+
+export default Supplier;

@@ -6,7 +6,7 @@ import { ErrorMessage, Flag, PanelCentred, WaitSpinner } from '../ui';
 import { API_URL, joinFields, setDocumentTitle } from '../utils';
 import type { ICustomer } from '../models';
 
-export default function Customer(): React.JSX.Element {
+const Customer: React.FC = () => {
   const { id } = useParams();
 
   // Network data
@@ -79,4 +79,6 @@ export default function Customer(): React.JSX.Element {
       <Orders />
     </PanelCentred>
   );
-}
+};
+
+export default Customer;

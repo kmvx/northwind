@@ -2,7 +2,7 @@ import React from 'react';
 import { setDocumentTitle } from '../utils';
 import './About.scss';
 
-export default function About(): React.JSX.Element {
+const About: React.FC = () => {
   setDocumentTitle();
   return (
     <div className="about">
@@ -45,4 +45,6 @@ export default function About(): React.JSX.Element {
       </div>
     </div>
   );
-}
+};
+
+export default About;

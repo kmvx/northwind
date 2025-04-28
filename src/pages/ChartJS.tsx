@@ -33,7 +33,7 @@ const chartOptions = {
   },
 };
 
-export default function Charts(): React.JSX.Element {
+const Charts: React.FC = () => {
   setDocumentTitle('Charts');
   const { data, error, isLoading, refetch } = ReactQuery.useQuery<IOrders>({
     queryKey: [API_URL + '/Orders'],
@@ -84,4 +84,6 @@ export default function Charts(): React.JSX.Element {
       <Bar data={chartData} options={chartOptions} className="m-5" />
     </PanelStretched>
   );
-}
+};
+
+export default Charts;

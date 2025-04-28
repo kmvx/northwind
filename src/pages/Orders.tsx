@@ -33,20 +33,17 @@ function getEmployeeNameById(dataEmployees?: IEmployees, id?: number) {
   else return id;
 }
 
-function ShipperPreview({
-  dataShippers,
-  id,
-}: {
+const ShipperPreview: React.FC<{
   dataShippers?: IShippers;
   id?: number;
-}) {
+}> = ({ dataShippers, id }) => {
   const item = dataShippers?.find((item) => item.shipperId === id);
   return (
     <span title={`Phone: ${item?.phone}`}>{item ? item.companyName : id}</span>
   );
-}
+};
 
-export default function Orders(): React.JSX.Element {
+const Orders: React.FC = () => {
   // Filters
   const paramsBuilder = useParamsBuilder();
   const [stringFilter, setStringFilter] = paramsBuilder.str('q');
@@ -391,4 +388,6 @@ export default function Orders(): React.JSX.Element {
       {getContent()}
     </section>
   );
-}
+};
+
+export default Orders;

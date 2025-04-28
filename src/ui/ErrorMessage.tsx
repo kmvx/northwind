@@ -2,15 +2,11 @@ import React from 'react';
 import axios from 'axios';
 import clsx from 'clsx';
 
-export default function ErrorMessage({
-  error,
-  retry,
-  className,
-}: {
+const ErrorMessage: React.FC<{
   error: Error;
   retry?: () => void;
   className?: string;
-}): React.JSX.Element {
+}> = ({ error, retry, className }) => {
   return (
     <div className={clsx('m-2 text-danger', className)}>
       <div className="alert alert-danger d-flex align-items-center gap-3">
@@ -38,4 +34,6 @@ export default function ErrorMessage({
       </div>
     </div>
   );
-}
+};
+
+export default ErrorMessage;

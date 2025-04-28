@@ -18,7 +18,7 @@ import {
 import type { ISuppliers } from '../models';
 import { SuppliersWorldMapChart } from '../components/WorldMapChart';
 
-export default function Suppliers(): React.JSX.Element {
+const Suppliers: React.FC = () => {
   setDocumentTitle('Suppliers');
 
   // Filters
@@ -135,4 +135,6 @@ export default function Suppliers(): React.JSX.Element {
       {getContent()}
     </PanelStretched>
   );
-}
+};
+
+export default Suppliers;

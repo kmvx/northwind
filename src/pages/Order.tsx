@@ -12,7 +12,7 @@ import {
 import { OrderDetails } from '.';
 import type { ICustomer, IEmployee, IOrder, IShipper } from '../models';
 
-export default function Order(): React.JSX.Element {
+const Order: React.FC = () => {
   const { id } = useParams();
   const { data: dataCustomer } = ReactQuery.useQuery<ICustomer>({
     queryKey: [API_URL + '/Orders/' + id + '/Customer'],
@@ -114,4 +114,6 @@ export default function Order(): React.JSX.Element {
       <OrderDetails />
     </PanelCentred>
   );
-}
+};
+
+export default Order;

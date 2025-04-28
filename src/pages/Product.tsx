@@ -6,13 +6,10 @@ import { API_URL, setDocumentTitle, getCategoryNameById } from '../utils';
 import type { ICategories, IProduct, ISupplier } from '../models';
 import { Discontinued } from '../ui';
 
-function SupplierLink({
-  id,
-  className,
-}: {
+const SupplierLink: React.FC<{
   id: number;
   className?: string;
-}): React.JSX.Element {
+}> = ({ id, className }) => {
   const hasId = Boolean(id);
   const { data, error, isLoading, refetch } = ReactQuery.useQuery<ISupplier>({
     queryKey: [API_URL + '/Suppliers/' + id],
@@ -29,9 +26,9 @@ function SupplierLink({
       <NavLink to={'/suppliers/' + id}>{data.companyName}</NavLink>
     </span>
   );
-}
+};
 
-export default function Product(): React.JSX.Element {
+const Product: React.FC = () => {
   const { id } = useParams();
 
   // Network data
@@ -99,4 +96,6 @@ export default function Product(): React.JSX.Element {
       </div>
     </PanelCentred>
   );
-}
+};
+
+export default Product;
