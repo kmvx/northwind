@@ -67,7 +67,7 @@
     "jsdom": "*",
     "onchange": "*",
     "prettier": "*",
-    "sass": "*",
+    "sass": "1.70.0",
     "typescript": "*",
     "typescript-eslint": "*",
     "vite": "*",
