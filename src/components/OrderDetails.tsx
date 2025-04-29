@@ -1,17 +1,20 @@
 import React from 'react';
-import { NavLink, useParams, useLocation } from 'react-router-dom';
+import { NavLink } from 'react-router-dom';
 import { ErrorMessage, PanelCentred, WaitSpinner } from '../ui';
-import { pluralize, setDocumentTitle } from '../utils';
+import { pluralize } from '../utils';
 import { useSortTable } from '../hooks';
 import type { IOrderDetail } from '../models';
 import { useQueryOrderDetails, useQueryOrderProducts } from '../net';
 
-const OrderDetailsRoute: React.FC = () => {
-  // Params
-  const { id } = useParams();
-  const { pathname } = useLocation();
-  const isOrdersPage = pathname.startsWith('/orders/');
+interface OrderDetailsProps {
+  id: string | undefined;
+  isOrdersPage: boolean;
+}
 
+const OrderDetails: React.FC<OrderDetailsProps> = ({
+  id,
+  isOrdersPage = false,
+}) => {
   // Network data
   const { data, error, isLoading, refetch } = useQueryOrderDetails({
     isOrdersPage,
@@ -46,7 +49,6 @@ const OrderDetailsRoute: React.FC = () => {
   });
   if (filteredData) filteredData = [...filteredData]; // Toggle data change hooks
 
-  if (!isOrdersPage) setDocumentTitle('Order details');
   if (error) return <ErrorMessage error={error} retry={refetch} />;
   if (isLoading) return <WaitSpinner />;
   if (!filteredData) return <div>No data</div>;
@@ -112,4 +114,4 @@ const OrderDetailsRoute: React.FC = () => {
   );
 };
 
-export default OrderDetailsRoute;
+export default OrderDetails;

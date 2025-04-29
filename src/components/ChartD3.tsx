@@ -1,5 +1,4 @@
 import React from 'react';
-import { setDocumentTitle } from '../utils';
 import {
   OrdersChart,
   CustomersBarChart,
@@ -8,12 +7,10 @@ import {
   CustomersWorldMapChart,
   OrdersWorldMapChart,
   SuppliersWorldMapChart,
-} from '../components/charts';
+} from './charts';
 import { useQueryCustomers, useQueryOrders, useQuerySuppliers } from '../net';
 
-const ChartD3Route: React.FC = () => {
-  setDocumentTitle('Charts');
-
+const ChartD3: React.FC = () => {
   // Network data
   const {
     data: dataCustomers,
@@ -98,4 +95,4 @@ const ChartD3Route: React.FC = () => {
   );
 };
 
-export default ChartD3Route;
+export default ChartD3;

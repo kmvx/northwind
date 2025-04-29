@@ -1,9 +1,7 @@
 import React from 'react';
-import { setDocumentTitle } from '../utils';
 import './About.scss';
 
-const AboutRoute: React.FC = () => {
-  setDocumentTitle();
+const About: React.FC = () => {
   return (
     <div className="about">
       <div className="about__image">
@@ -47,4 +45,4 @@ const AboutRoute: React.FC = () => {
   );
 };
 
-export default AboutRoute;
+export default About;

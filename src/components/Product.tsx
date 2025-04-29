@@ -1,5 +1,5 @@
 import React from 'react';
-import { NavLink, useParams } from 'react-router-dom';
+import { NavLink } from 'react-router-dom';
 import { ErrorMessage, PanelCentred, WaitSpinner } from '../ui';
 import { setDocumentTitle, getCategoryNameById } from '../utils';
 import { Discontinued } from '../ui';
@@ -27,9 +27,11 @@ const SupplierLink: React.FC<{
   );
 };
 
-const ProductRoute: React.FC = () => {
-  const { id } = useParams();
+interface ProductProps {
+  id: string | undefined;
+}
 
+const Product: React.FC<ProductProps> = ({ id }) => {
   // Network data
   const { data, error, isLoading, refetch } = useQueryProduct({ id });
   const { data: dataCategories } = useQueryCategories();
@@ -93,4 +95,4 @@ const ProductRoute: React.FC = () => {
   );
 };
 
-export default ProductRoute;
+export default Product;

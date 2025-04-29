@@ -1,6 +1,5 @@
 import React from 'react';
-import { NavLink, useParams } from 'react-router-dom';
-import { EmployeesRoute, OrdersRoute } from '.';
+import { NavLink } from 'react-router-dom';
 import { OrdersChart } from '../components/charts';
 import { ErrorMessage, Flag, PanelCentred, WaitSpinner } from '../ui';
 import {
@@ -15,6 +14,8 @@ import {
   useQueryEmployee,
   useQueryRegions,
 } from '../net';
+import Orders from './Orders';
+import Employees from './Employees';
 
 const Territories: React.FC<{ employeeId?: string }> = ({ employeeId }) => {
   const { data, error, isLoading, refetch } = useEmployeeTeritories({
@@ -83,9 +84,11 @@ const EmployeeLink: React.FC<{
   );
 };
 
-const EmployeeRoute: React.FC = () => {
-  const { id } = useParams();
+interface EmployeeProps {
+  id: string | undefined;
+}
 
+const Employee: React.FC<EmployeeProps> = ({ id }) => {
   // Network data
   const { data, error, isLoading, refetch } = useQueryEmployee({ id });
 
@@ -161,7 +164,7 @@ const EmployeeRoute: React.FC = () => {
         )}
       </div>
       <div className="m-2">
-        <EmployeesRoute reportsTo={id} />
+        <Employees reportsTo={id} />
       </div>
       <div className="m-2">
         <OrdersChart employeeId={id} />
@@ -174,9 +177,9 @@ const EmployeeRoute: React.FC = () => {
           Orders
         </NavLink>
       </div>
-      <OrdersRoute />
+      <Orders id={id} isEmployeesPage />
     </PanelCentred>
   );
 };
 
-export default EmployeeRoute;
+export default Employee;

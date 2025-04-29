@@ -1,27 +1,28 @@
 import React from 'react';
-import { NavLink, useParams } from 'react-router-dom';
+import { NavLink } from 'react-router-dom';
 import { Flag, PanelCentred } from '../ui';
 import {
   joinFields,
-  setDocumentTitle,
   formatDateFromString,
   getEmployeeNameByData,
 } from '../utils';
-import { OrderDetailsRoute } from '.';
 import {
   useQueryOrder,
   useQueryOrderCustomer,
   useQueryOrderEmployee,
   useQueryOrderShipper,
 } from '../net';
+import OrderDetails from './OrderDetails';
 
-const OrderRoute: React.FC = () => {
-  const { id } = useParams();
+interface OrderProps {
+  id: string | undefined;
+}
+
+const Order: React.FC<OrderProps> = ({ id }) => {
   const { data: dataCustomer } = useQueryOrderCustomer({ id });
   const { data: dataEmployee } = useQueryOrderEmployee({ id });
   const { data: dataOrder } = useQueryOrder({ id });
   const { data: dataShipper } = useQueryOrderShipper({ id });
-  setDocumentTitle('Order #' + id);
 
   return (
     <PanelCentred>
@@ -106,9 +107,9 @@ const OrderRoute: React.FC = () => {
         )}
         <div>&nbsp;</div>
       </div>
-      <OrderDetailsRoute />
+      <OrderDetails id={id} isOrdersPage />
     </PanelCentred>
   );
 };
 
-export default OrderRoute;
+export default Order;

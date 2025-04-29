@@ -1,13 +1,14 @@
 import React from 'react';
-import { useParams } from 'react-router-dom';
 import { ErrorMessage, Flag, PanelCentred, WaitSpinner } from '../ui';
 import { joinFields, setDocumentTitle } from '../utils';
-import { ProductsRoute } from '.';
 import { useQuerySupplier } from '../net';
+import Products from '../components/Products';
 
-const SupplierRoute: React.FC = () => {
-  const { id } = useParams();
+interface SupplierProps {
+  id: string | undefined;
+}
 
+const Supplier: React.FC<SupplierProps> = ({ id }) => {
   const { data, error, isLoading, refetch } = useQuerySupplier({ id });
 
   setDocumentTitle(data?.companyName, 'Supplier');
@@ -52,9 +53,9 @@ const SupplierRoute: React.FC = () => {
           </div>
         </div>
       </div>
-      <ProductsRoute supplierId={id} />
+      <Products supplierId={id} />
     </PanelCentred>
   );
 };
 
-export default SupplierRoute;
+export default Supplier;

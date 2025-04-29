@@ -1,13 +1,15 @@
 import React from 'react';
-import { NavLink, useParams } from 'react-router-dom';
-import { OrdersRoute } from '.';
+import { NavLink } from 'react-router-dom';
 import { ErrorMessage, Flag, PanelCentred, WaitSpinner } from '../ui';
 import { joinFields, setDocumentTitle } from '../utils';
 import { useQueryCustomer } from '../net';
+import Orders from './Orders';
 
-const CustomerRoute: React.FC = () => {
-  const { id } = useParams();
+interface CustomerProps {
+  id: string | undefined;
+}
 
+const Customer: React.FC<CustomerProps> = ({ id }) => {
   // Network data
   const { data, error, isLoading, refetch } = useQueryCustomer({ id });
 
@@ -73,9 +75,9 @@ const CustomerRoute: React.FC = () => {
           Orders
         </NavLink>
       </div>
-      <OrdersRoute />
+      <Orders id={id} isCustomersPage />
     </PanelCentred>
   );
 };
 
-export default CustomerRoute;
+export default Customer;

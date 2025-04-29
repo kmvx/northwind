@@ -1,9 +1,7 @@
 import React from 'react';
 import { PanelCentred } from '../ui';
-import { setDocumentTitle } from '../utils';
 
-const OrderEditRoute: React.FC = () => {
-  setDocumentTitle('Add new order');
+const OrderEdit: React.FC = () => {
   return (
     <PanelCentred>
       <h1 className="text-center m-2">Add new order</h1>
@@ -38,4 +36,4 @@ const OrderEditRoute: React.FC = () => {
   );
 };
 
-export default OrderEditRoute;
+export default OrderEdit;

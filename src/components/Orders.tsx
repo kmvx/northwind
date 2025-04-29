@@ -1,5 +1,5 @@
 import React from 'react';
-import { NavLink, useLocation, useParams } from 'react-router-dom';
+import { NavLink } from 'react-router-dom';
 import {
   CountryFilter,
   ErrorMessage,
@@ -19,7 +19,6 @@ import {
   isStringIncludes,
   pluralize,
   formatDateFromString,
-  setDocumentTitle,
   getEmployeeNameByData,
 } from '../utils';
 import type { IEmployees, IShippers } from '../models';
@@ -42,7 +41,21 @@ const ShipperPreview: React.FC<{
   );
 };
 
-const OrdersRoute: React.FC = () => {
+interface OrdersProps {
+  id: string | undefined;
+  isCustomersPage?: boolean;
+  isEmployeesPage?: boolean;
+  isShippersPage?: boolean;
+  isOrdersEndPage?: boolean;
+}
+
+const Orders: React.FC<OrdersProps> = ({
+  id,
+  isCustomersPage,
+  isEmployeesPage,
+  isShippersPage,
+  isOrdersEndPage,
+}) => {
   // Filters
   const paramsBuilder = useParamsBuilder();
   const [stringFilter, setStringFilter] = paramsBuilder.str('q');
@@ -54,15 +67,6 @@ const OrdersRoute: React.FC = () => {
     setCountryFilter('');
     setYearFilter(undefined);
   }
-
-  // Params
-  const { id } = useParams();
-  const { pathname } = useLocation();
-  const isCustomersPage = pathname.startsWith('/customers/');
-  const isEmployeesPage = pathname.startsWith('/employees/');
-  const isShippersPage = pathname.startsWith('/shippers/');
-  const isOrdersPage = pathname.startsWith('/orders');
-  const isOrdersEndPage = !isOrdersPage && pathname.endsWith('/orders');
 
   // Network data
   const { data, error, isLoading, refetch } = useQueryOrders({
@@ -191,7 +195,6 @@ const OrdersRoute: React.FC = () => {
   ]);
 
   const { paginateData, paginateStore } = usePaginate(filteredData);
-  if (isOrdersPage || isOrdersEndPage) setDocumentTitle('Orders');
 
   const getContent = () => {
     if (error) return <ErrorMessage error={error} retry={refetch} />;
@@ -377,4 +380,4 @@ const OrdersRoute: React.FC = () => {
   );
 };
 
-export default OrdersRoute;
+export default Orders;

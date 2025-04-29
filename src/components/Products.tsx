@@ -1,5 +1,5 @@
 import React from 'react';
-import { NavLink, useParams } from 'react-router-dom';
+import { NavLink } from 'react-router-dom';
 import {
   DiscontinuedFilterButtons,
   ErrorMessage,
@@ -16,13 +16,13 @@ import {
 import { Discontinued } from '../ui';
 import { useQueryCategories, useQueryProducts } from '../net';
 
-const ProductsRoute: React.FC<{
+interface ProductsProps {
   supplierId?: string;
-}> = ({ supplierId }) => {
-  // Params
-  const { categoryId } = useParams();
-  const categoryIdNumber =
-    categoryId == undefined ? undefined : parseInt(categoryId, 10);
+  categoryId?: string;
+}
+
+const Products: React.FC<ProductsProps> = ({ supplierId, categoryId }) => {
+  const categoryIdNumber = categoryId === undefined ? undefined : +categoryId;
 
   // Filters
   const paramsBuilder = useParamsBuilder();
@@ -300,4 +300,4 @@ const ProductsRoute: React.FC<{
   );
 };
 
-export default ProductsRoute;
+export default Products;

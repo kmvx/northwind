@@ -1,6 +1,5 @@
 import React from 'react';
 import { ErrorMessage, PanelStretched, WaitSpinner } from '../ui';
-import { setDocumentTitle } from '../utils';
 
 import {
   Chart as ChartJS,
@@ -32,8 +31,7 @@ const chartOptions = {
   },
 };
 
-const ChartsJSRoute: React.FC = () => {
-  setDocumentTitle('Charts');
+const ChartsJS: React.FC = () => {
   const { data, error, isLoading, refetch } = useQueryOrders();
   if (error) return <ErrorMessage error={error} retry={refetch} />;
   if (isLoading) return <WaitSpinner />;
@@ -83,4 +81,4 @@ const ChartsJSRoute: React.FC = () => {
   );
 };
 
-export default ChartsJSRoute;
+export default ChartsJS;
