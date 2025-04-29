@@ -1,10 +1,10 @@
 import React from 'react';
-import * as ReactQuery from '@tanstack/react-query';
 import { NavLink, useParams, useLocation } from 'react-router-dom';
 import { ErrorMessage, PanelCentred, WaitSpinner } from '../ui';
-import { API_URL, pluralize, setDocumentTitle } from '../utils';
+import { pluralize, setDocumentTitle } from '../utils';
 import { useSortTable } from '../hooks';
-import type { IOrderDetail, IOrderDetails, IProducts } from '../models';
+import type { IOrderDetail } from '../models';
+import { useQueryOrderDetails, useQueryOrderProducts } from '../net';
 
 const OrderDetails: React.FC = () => {
   // Params
@@ -13,17 +13,12 @@ const OrderDetails: React.FC = () => {
   const isOrdersPage = pathname.startsWith('/orders/');
 
   // Network data
-  const { data, error, isLoading, refetch } =
-    ReactQuery.useQuery<IOrderDetails>({
-      queryKey: [
-        API_URL +
-          (isOrdersPage ? '/Orders/' : '/Products/') +
-          id +
-          '/OrderDetails',
-      ],
-    });
-  const { data: dataProducts } = ReactQuery.useQuery<IProducts>({
-    queryKey: [API_URL + '/Orders/' + id + '/Products'],
+  const { data, error, isLoading, refetch } = useQueryOrderDetails({
+    isOrdersPage,
+    id,
+  });
+  const { data: dataProducts } = useQueryOrderProducts({
+    id,
     enabled: isOrdersPage,
   });
 

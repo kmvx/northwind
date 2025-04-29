@@ -1,5 +1,4 @@
 import React from 'react';
-import * as ReactQuery from '@tanstack/react-query';
 import { NavLink } from 'react-router-dom';
 import {
   CountryFilter,
@@ -10,13 +9,12 @@ import {
 } from '../ui';
 import { useParamsBuilder } from '../hooks';
 import {
-  API_URL,
   isStringIncludes,
   getEmployeeNameByData,
   pluralize,
   setDocumentTitle,
 } from '../utils';
-import type { IEmployees } from '../models';
+import { useQueryEmployees } from '../net';
 
 const Employees: React.FC<{
   className?: string;
@@ -33,9 +31,7 @@ const Employees: React.FC<{
   }
 
   // Network data
-  const { data, error, isLoading, refetch } = ReactQuery.useQuery<IEmployees>({
-    queryKey: [API_URL + '/Employees'],
-  });
+  const { data, error, isLoading, refetch } = useQueryEmployees();
 
   // Filter data
   let filteredData = data;
@@ -69,9 +65,6 @@ const Employees: React.FC<{
     if (error) return <ErrorMessage error={error} retry={refetch} />;
     if (isLoading) return <WaitSpinner />;
     if (!filteredData) return <div>No data</div>;
-    if (filteredData.length === 0 && reportsTo && !hasFilter) {
-      return <></>;
-    }
     return (
       <>
         <div className="m-2">{pluralize(filteredData.length, 'employee')}</div>
@@ -118,6 +111,10 @@ const Employees: React.FC<{
       </>
     );
   };
+
+  if (!filteredData?.length && reportsTo && !hasFilter) {
+    return <></>;
+  }
 
   return (
     <PanelStretched className={className}>

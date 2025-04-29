@@ -1,16 +1,15 @@
 import React from 'react';
 import * as d3 from 'd3';
 import clsx from 'clsx';
-import { useQuery } from '@tanstack/react-query';
 import {
   ErrorMessage,
   PanelBasic,
   WaitSpinner,
   YearFilterButtons,
 } from '../ui';
-import { API_URL } from '../utils';
 import type { IOrders } from '../models';
 import './OrdersChart.scss';
+import { useQueryOrders } from '../net';
 
 const months = [
   'JAN',
@@ -363,10 +362,9 @@ const OrdersChart: React.FC<{
   employeeId?: string;
 }> = ({ className, employeeId }) => {
   // Load data
-  const { data, error, isLoading, refetch } = useQuery<IOrders>({
-    queryKey: [
-      API_URL + (employeeId ? '/Employees/' + employeeId : '') + '/Orders',
-    ],
+  const { data, error, isLoading, refetch } = useQueryOrders({
+    isEmployeesPage: Boolean(employeeId),
+    id: employeeId,
   });
 
   // State

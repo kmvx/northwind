@@ -1,17 +1,14 @@
 import React from 'react';
-import * as ReactQuery from '@tanstack/react-query';
 import { useParams } from 'react-router-dom';
 import { ErrorMessage, Flag, PanelCentred, WaitSpinner } from '../ui';
-import { API_URL, joinFields, setDocumentTitle } from '../utils';
+import { joinFields, setDocumentTitle } from '../utils';
 import { Products } from '.';
-import type { ISupplier } from '../models';
+import { useQuerySupplier } from '../net';
 
 const Supplier: React.FC = () => {
   const { id } = useParams();
 
-  const { data, error, isLoading, refetch } = ReactQuery.useQuery<ISupplier>({
-    queryKey: [API_URL + '/Suppliers/' + id],
-  });
+  const { data, error, isLoading, refetch } = useQuerySupplier({ id });
 
   setDocumentTitle(data?.companyName, 'Supplier');
 

@@ -1,18 +1,17 @@
 import React from 'react';
-import * as ReactQuery from '@tanstack/react-query';
 import { NavLink, useParams } from 'react-router-dom';
 import { ErrorMessage, PanelCentred, WaitSpinner } from '../ui';
-import { API_URL, setDocumentTitle, getCategoryNameById } from '../utils';
-import type { ICategories, IProduct, ISupplier } from '../models';
+import { setDocumentTitle, getCategoryNameById } from '../utils';
 import { Discontinued } from '../ui';
+import { useQueryCategories, useQueryProduct, useQuerySupplier } from '../net';
 
 const SupplierLink: React.FC<{
   id: number;
   className?: string;
 }> = ({ id, className }) => {
   const hasId = Boolean(id);
-  const { data, error, isLoading, refetch } = ReactQuery.useQuery<ISupplier>({
-    queryKey: [API_URL + '/Suppliers/' + id],
+  const { data, error, isLoading, refetch } = useQuerySupplier({
+    id,
     enabled: hasId,
   });
   if (error) return <ErrorMessage error={error} retry={refetch} />;
@@ -32,12 +31,8 @@ const Product: React.FC = () => {
   const { id } = useParams();
 
   // Network data
-  const { data, error, isLoading, refetch } = ReactQuery.useQuery<IProduct>({
-    queryKey: [API_URL + '/Products/' + id],
-  });
-  const { data: dataCategories } = ReactQuery.useQuery<ICategories>({
-    queryKey: [API_URL + '/Categories'],
-  });
+  const { data, error, isLoading, refetch } = useQueryProduct({ id });
+  const { data: dataCategories } = useQueryCategories();
 
   setDocumentTitle(data?.productName, 'Product');
 

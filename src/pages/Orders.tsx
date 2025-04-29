@@ -1,5 +1,4 @@
 import React from 'react';
-import * as ReactQuery from '@tanstack/react-query';
 import { NavLink, useLocation, useParams } from 'react-router-dom';
 import {
   CountryFilter,
@@ -16,7 +15,6 @@ import {
   useSortTable,
 } from '../hooks';
 import {
-  API_URL,
   joinFields,
   isStringIncludes,
   pluralize,
@@ -24,8 +22,9 @@ import {
   setDocumentTitle,
   getEmployeeNameByData,
 } from '../utils';
-import type { IEmployees, IOrders, IShippers } from '../models';
+import type { IEmployees, IShippers } from '../models';
 import { OrdersWorldMapChart } from '../components/WorldMapChart';
+import { useQueryEmployees, useQueryOrders, useQueryShippers } from '../net';
 
 function getEmployeeNameById(dataEmployees?: IEmployees, id?: number) {
   const item = dataEmployees?.find((item) => item.employeeId === id);
@@ -66,26 +65,14 @@ const Orders: React.FC = () => {
   const isOrdersEndPage = !isOrdersPage && pathname.endsWith('/orders');
 
   // Network data
-  const { data, error, isLoading, refetch } = ReactQuery.useQuery<IOrders>({
-    queryKey: [
-      API_URL +
-        (isCustomersPage
-          ? '/Customers/'
-          : isEmployeesPage
-            ? '/Employees/'
-            : isShippersPage
-              ? '/Shippers/'
-              : '') +
-        (id || '') +
-        '/Orders',
-    ],
+  const { data, error, isLoading, refetch } = useQueryOrders({
+    isCustomersPage,
+    isEmployeesPage,
+    isShippersPage,
+    id,
   });
-  const { data: dataEmployees } = ReactQuery.useQuery<IEmployees>({
-    queryKey: [API_URL + '/Employees'],
-  });
-  const { data: dataShippers } = ReactQuery.useQuery<IShippers>({
-    queryKey: [API_URL + '/Shippers'],
-  });
+  const { data: dataEmployees } = useQueryEmployees();
+  const { data: dataShippers } = useQueryShippers();
 
   // Prepare data
   const [yearsSet, setYearsSet] = React.useState<Set<number>>(new Set());

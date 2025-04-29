@@ -1,9 +1,7 @@
 import type { ICategories, IEmployee } from './models';
 
-export const API_URL = 'https://demodata.grapecity.com/northwind/api/v1';
-
 export function joinFields(...args: string[]) {
-  return [...args].filter((item) => Boolean(item)).join(', ');
+  return [...args].filter(Boolean).join(', ');
 }
 export function formatDateFromString(date: string) {
   if (!date) return 'N/A';
@@ -41,7 +39,7 @@ export const setDocumentTitle = (function () {
     typeof document !== 'undefined' ? document.title : '';
   return function setDocumentTitle(...args: (string | undefined)[]) {
     document.title = [...args, initialDocumentTitle]
-      .filter((item) => Boolean(item))
+      .filter(Boolean)
       .join(' \u2014 ');
   };
 })();

@@ -1,5 +1,4 @@
 import React from 'react';
-import * as ReactQuery from '@tanstack/react-query';
 import { NavLink, useParams } from 'react-router-dom';
 import {
   DiscontinuedFilterButtons,
@@ -9,14 +8,13 @@ import {
 } from '../ui';
 import { usePaginate, useParamsBuilder, useSortTable } from '../hooks';
 import {
-  API_URL,
   isStringIncludes,
   pluralize,
   setDocumentTitle,
   getCategoryNameById,
 } from '../utils';
-import type { ICategories, IProducts } from '../models';
 import { Discontinued } from '../ui';
+import { useQueryCategories, useQueryProducts } from '../net';
 
 const Products: React.FC<{
   supplierId?: string;
@@ -38,14 +36,10 @@ const Products: React.FC<{
   }
 
   // Network data
-  const { data, error, isLoading, refetch } = ReactQuery.useQuery<IProducts>({
-    queryKey: [API_URL + '/Products'],
-  });
-  const { data: dataCategories } = ReactQuery.useQuery<ICategories>({
-    queryKey: [API_URL + '/Categories'],
-  });
+  const { data, error, isLoading, refetch } = useQueryProducts();
+  const { data: dataCategories } = useQueryCategories();
 
-  // Sort data
+  // Filter and sort data
   const { sortColumn, reverseSortingOrder, refTable } = useSortTable();
   const filteredData = React.useMemo(() => {
     if (!data) return undefined;

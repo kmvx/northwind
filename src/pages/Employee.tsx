@@ -1,11 +1,9 @@
 import React from 'react';
-import * as ReactQuery from '@tanstack/react-query';
 import { NavLink, useParams } from 'react-router-dom';
 import { Orders } from '.';
 import { OrdersChart } from '../components';
 import { ErrorMessage, Flag, PanelCentred, WaitSpinner } from '../ui';
 import {
-  API_URL,
   joinFields,
   getEmployeeNameByData,
   formatDateFromString,
@@ -13,17 +11,17 @@ import {
   setDocumentTitle,
 } from '../utils';
 import { Employees } from '.';
-import type { IEmployee, ITerritories, IRegions } from '../models';
+import {
+  useEmployeeTeritories,
+  useQueryEmployee,
+  useQueryRegions,
+} from '../net';
 
 const Territories: React.FC<{ employeeId?: string }> = ({ employeeId }) => {
-  const { data, error, isLoading, refetch } = ReactQuery.useQuery<ITerritories>(
-    {
-      queryKey: [API_URL + '/Employees/' + employeeId + '/Territories'],
-    },
-  );
-  const { data: dataRegions } = ReactQuery.useQuery<IRegions>({
-    queryKey: [API_URL + '/Regions'],
+  const { data, error, isLoading, refetch } = useEmployeeTeritories({
+    employeeId,
   });
+  const { data: dataRegions } = useQueryRegions();
 
   if (error) return <ErrorMessage error={error} retry={refetch} />;
   if (isLoading) return <WaitSpinner />;
@@ -66,8 +64,8 @@ const EmployeeLink: React.FC<{
   const hasReportsTo = Boolean(id);
 
   // Network data
-  const { data, error, isLoading, refetch } = ReactQuery.useQuery<IEmployee>({
-    queryKey: [API_URL + '/Employees/' + id],
+  const { data, error, isLoading, refetch } = useQueryEmployee({
+    id,
     enabled: hasReportsTo,
   });
 
@@ -90,9 +88,7 @@ const Employee: React.FC = () => {
   const { id } = useParams();
 
   // Network data
-  const { data, error, isLoading, refetch } = ReactQuery.useQuery<IEmployee>({
-    queryKey: [API_URL + '/Employees/' + id],
-  });
+  const { data, error, isLoading, refetch } = useQueryEmployee({ id });
 
   const name = data ? getEmployeeNameByData(data) : undefined;
   setDocumentTitle(name, 'Employee');

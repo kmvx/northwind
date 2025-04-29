@@ -1,11 +1,10 @@
 import React from 'react';
 import * as d3 from 'd3';
 import clsx from 'clsx';
-import { useQuery } from '@tanstack/react-query';
 import { useNavigate } from 'react-router-dom';
 import type { NavigateFunction } from 'react-router-dom';
 
-import { API_URL } from '../utils';
+import { useQueryCustomers, useQueryOrders, useQuerySuppliers } from '../net';
 import { ErrorMessage, PanelBasic, WaitSpinner } from '../ui';
 import { addTooltip } from './Chart';
 import './BarChart.scss';
@@ -132,28 +131,31 @@ function updateChart({
 const BarChart: React.FC<{
   className?: string;
   name: string;
-  urlPath: string;
-  countrySelector: (item: any) => string;
   hue: number;
-}> = ({ className, name, urlPath, countrySelector, hue }) => {
-  // Load data
-  const { data, error, isLoading, refetch } = useQuery<any[]>({
-    queryKey: [API_URL + urlPath],
-  });
-
+  queryResult: {
+    countries: string[] | undefined;
+    error: Error | null;
+    isLoading: boolean;
+    refetch: () => void;
+  };
+}> = ({
+  className,
+  name,
+  hue,
+  queryResult: { countries, error, isLoading, refetch },
+}) => {
   // Prepare data for the chart
   const { itemsPerCountryCount, maxItemsCountPerCountry } =
     React.useMemo(() => {
       const itemsPerCountryCount = new Map<string, number>();
       let maxItemsCountPerCountry = 0;
-      data?.forEach((order) => {
-        const country = countrySelector(order);
+      countries?.forEach((country) => {
         const count = (itemsPerCountryCount.get(country) || 0) + 1;
         maxItemsCountPerCountry = Math.max(maxItemsCountPerCountry, count);
         itemsPerCountryCount.set(country, count);
       });
       return { itemsPerCountryCount, maxItemsCountPerCountry };
-    }, [data, countrySelector]);
+    }, [countries]);
 
   // SVG chart
   const navigate = useNavigate();
@@ -208,13 +210,18 @@ const BarChart: React.FC<{
 export const CustomersBarChart: React.FC<{
   className?: string;
 }> = ({ className }) => {
+  const { data, error, isLoading, refetch } = useQueryCustomers();
+
+  const countries = React.useMemo(() => {
+    return data?.map((dataItem) => dataItem.country);
+  }, [data]);
+
   return (
     <BarChart
       className={className}
       name="customers"
-      urlPath="/Customers"
-      countrySelector={(item) => item.country}
       hue={30}
+      queryResult={{ countries, error, isLoading, refetch }}
     />
   );
 };
@@ -222,13 +229,18 @@ export const CustomersBarChart: React.FC<{
 export const OrdersBarChart: React.FC<{
   className?: string;
 }> = ({ className }) => {
+  const { data, error, isLoading, refetch } = useQueryOrders();
+
+  const countries = React.useMemo(() => {
+    return data?.map((dataItem) => dataItem.shipCountry);
+  }, [data]);
+
   return (
     <BarChart
       className={className}
       name="orders"
-      urlPath="/Orders"
-      countrySelector={(item) => item.shipCountry}
       hue={216}
+      queryResult={{ countries, error, isLoading, refetch }}
     />
   );
 };
@@ -236,13 +248,18 @@ export const OrdersBarChart: React.FC<{
 export const SuppliersBarChart: React.FC<{
   className?: string;
 }> = ({ className }) => {
+  const { data, error, isLoading, refetch } = useQuerySuppliers();
+
+  const countries = React.useMemo(() => {
+    return data?.map((dataItem) => dataItem.country);
+  }, [data]);
+
   return (
     <BarChart
       className={className}
       name="suppliers"
-      urlPath="/Suppliers"
-      countrySelector={(item) => item.country}
       hue={120}
+      queryResult={{ countries, error, isLoading, refetch }}
     />
   );
 };

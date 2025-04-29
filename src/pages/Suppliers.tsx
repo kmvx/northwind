@@ -1,5 +1,4 @@
 import React from 'react';
-import * as ReactQuery from '@tanstack/react-query';
 import { NavLink } from 'react-router-dom';
 import {
   CountryFilter,
@@ -9,14 +8,9 @@ import {
   WaitSpinner,
 } from '../ui';
 import { useParamsBuilder } from '../hooks';
-import {
-  API_URL,
-  isStringIncludes,
-  pluralize,
-  setDocumentTitle,
-} from '../utils';
-import type { ISuppliers } from '../models';
+import { isStringIncludes, pluralize, setDocumentTitle } from '../utils';
 import { SuppliersWorldMapChart } from '../components/WorldMapChart';
+import { useQuerySuppliers } from '../net';
 
 const Suppliers: React.FC = () => {
   setDocumentTitle('Suppliers');
@@ -32,9 +26,7 @@ const Suppliers: React.FC = () => {
   }
 
   // Network data
-  const { data, error, isLoading, refetch } = ReactQuery.useQuery<ISuppliers>({
-    queryKey: [API_URL + '/Suppliers'],
-  });
+  const { data, error, isLoading, refetch } = useQuerySuppliers();
 
   // Filtered data
   const countries = [...new Set(data?.map((item) => item.country))].sort();

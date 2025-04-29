@@ -1,31 +1,26 @@
 import React from 'react';
-import * as ReactQuery from '@tanstack/react-query';
 import { NavLink, useParams } from 'react-router-dom';
 import { Flag, PanelCentred } from '../ui';
 import {
-  API_URL,
   joinFields,
   setDocumentTitle,
   formatDateFromString,
   getEmployeeNameByData,
 } from '../utils';
 import { OrderDetails } from '.';
-import type { ICustomer, IEmployee, IOrder, IShipper } from '../models';
+import {
+  useQueryOrder,
+  useQueryOrderCustomer,
+  useQueryOrderEmployee,
+  useQueryOrderShipper,
+} from '../net';
 
 const Order: React.FC = () => {
   const { id } = useParams();
-  const { data: dataCustomer } = ReactQuery.useQuery<ICustomer>({
-    queryKey: [API_URL + '/Orders/' + id + '/Customer'],
-  });
-  const { data: dataEmployee } = ReactQuery.useQuery<IEmployee>({
-    queryKey: [API_URL + '/Orders/' + id + '/Employee'],
-  });
-  const { data: dataOrder } = ReactQuery.useQuery<IOrder>({
-    queryKey: [API_URL + '/Orders/' + id],
-  });
-  const { data: dataShipper } = ReactQuery.useQuery<IShipper>({
-    queryKey: [API_URL + '/Orders/' + id + '/Shipper'],
-  });
+  const { data: dataCustomer } = useQueryOrderCustomer({ id });
+  const { data: dataEmployee } = useQueryOrderEmployee({ id });
+  const { data: dataOrder } = useQueryOrder({ id });
+  const { data: dataShipper } = useQueryOrderShipper({ id });
   setDocumentTitle('Order #' + id);
 
   return (

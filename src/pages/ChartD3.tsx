@@ -1,6 +1,5 @@
 import React from 'react';
-import * as ReactQuery from '@tanstack/react-query';
-import { API_URL, setDocumentTitle } from '../utils';
+import { setDocumentTitle } from '../utils';
 import { OrdersChart } from '../components';
 import {
   CustomersBarChart,
@@ -12,7 +11,7 @@ import {
   OrdersWorldMapChart,
   SuppliersWorldMapChart,
 } from '../components/WorldMapChart';
-import { ICustomers, IOrders, ISuppliers } from '../models';
+import { useQueryCustomers, useQueryOrders, useQuerySuppliers } from '../net';
 
 const ChartD3: React.FC = () => {
   setDocumentTitle('Charts');
@@ -23,25 +22,19 @@ const ChartD3: React.FC = () => {
     error: errorCustomers,
     isLoading: isLoadingCustomers,
     refetch: refetchCustomers,
-  } = ReactQuery.useQuery<ICustomers>({
-    queryKey: [API_URL + '/Customers'],
-  });
+  } = useQueryCustomers();
   const {
     data: dataOrders,
     error: errorOrders,
     isLoading: isLoadingOrders,
     refetch: refetchOrders,
-  } = ReactQuery.useQuery<IOrders>({
-    queryKey: [API_URL + '/Orders'],
-  });
+  } = useQueryOrders();
   const {
     data: dataSuppliers,
     error: errorSuppliers,
     isLoading: isLoadingSuppliers,
     refetch: refetchSuppliers,
-  } = ReactQuery.useQuery<ISuppliers>({
-    queryKey: [API_URL + '/Suppliers'],
-  });
+  } = useQuerySuppliers();
 
   return (
     <section>

@@ -1,8 +1,6 @@
 import React from 'react';
-import * as ReactQuery from '@tanstack/react-query';
 import { ErrorMessage, PanelStretched, WaitSpinner } from '../ui';
-import { API_URL, setDocumentTitle } from '../utils';
-import type { IOrders } from '../models';
+import { setDocumentTitle } from '../utils';
 
 import {
   Chart as ChartJS,
@@ -14,6 +12,7 @@ import {
   Legend,
 } from 'chart.js';
 import { Bar } from 'react-chartjs-2';
+import { useQueryOrders } from '../net';
 
 ChartJS.register(
   CategoryScale,
@@ -35,9 +34,7 @@ const chartOptions = {
 
 const Charts: React.FC = () => {
   setDocumentTitle('Charts');
-  const { data, error, isLoading, refetch } = ReactQuery.useQuery<IOrders>({
-    queryKey: [API_URL + '/Orders'],
-  });
+  const { data, error, isLoading, refetch } = useQueryOrders();
   if (error) return <ErrorMessage error={error} retry={refetch} />;
   if (isLoading) return <WaitSpinner />;
   const ordersCountByCountry: Record<string, number> = {};
