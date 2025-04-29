@@ -1,19 +1,17 @@
 import React from 'react';
 import { setDocumentTitle } from '../utils';
-import { OrdersChart } from '../components';
 import {
+  OrdersChart,
   CustomersBarChart,
   OrdersBarChart,
   SuppliersBarChart,
-} from '../components/BarChart';
-import {
   CustomersWorldMapChart,
   OrdersWorldMapChart,
   SuppliersWorldMapChart,
-} from '../components/WorldMapChart';
+} from '../components/charts';
 import { useQueryCustomers, useQueryOrders, useQuerySuppliers } from '../net';
 
-const ChartD3: React.FC = () => {
+const ChartD3Route: React.FC = () => {
   setDocumentTitle('Charts');
 
   // Network data
@@ -100,4 +98,4 @@ const ChartD3: React.FC = () => {
   );
 };
 
-export default ChartD3;
+export default ChartD3Route;

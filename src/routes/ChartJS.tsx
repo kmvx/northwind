@@ -32,7 +32,7 @@ const chartOptions = {
   },
 };
 
-const Charts: React.FC = () => {
+const ChartsJSRoute: React.FC = () => {
   setDocumentTitle('Charts');
   const { data, error, isLoading, refetch } = useQueryOrders();
   if (error) return <ErrorMessage error={error} retry={refetch} />;
@@ -83,4 +83,4 @@ const Charts: React.FC = () => {
   );
 };
 
-export default Charts;
+export default ChartsJSRoute;

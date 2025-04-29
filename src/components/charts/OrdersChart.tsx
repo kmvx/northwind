@@ -6,10 +6,10 @@ import {
   PanelBasic,
   WaitSpinner,
   YearFilterButtons,
-} from '../ui';
-import type { IOrders } from '../models';
+} from '../../ui';
+import type { IOrders } from '../../models';
 import './OrdersChart.scss';
-import { useQueryOrders } from '../net';
+import { useQueryOrders } from '../../net';
 
 const months = [
   'JAN',

@@ -23,7 +23,7 @@ import {
   getEmployeeNameByData,
 } from '../utils';
 import type { IEmployees, IShippers } from '../models';
-import { OrdersWorldMapChart } from '../components/WorldMapChart';
+import { OrdersWorldMapChart } from '../components/charts';
 import { useQueryEmployees, useQueryOrders, useQueryShippers } from '../net';
 
 function getEmployeeNameById(dataEmployees?: IEmployees, id?: number) {
@@ -42,7 +42,7 @@ const ShipperPreview: React.FC<{
   );
 };
 
-const Orders: React.FC = () => {
+const OrdersRoute: React.FC = () => {
   // Filters
   const paramsBuilder = useParamsBuilder();
   const [stringFilter, setStringFilter] = paramsBuilder.str('q');
@@ -377,4 +377,4 @@ const Orders: React.FC = () => {
   );
 };
 
-export default Orders;
+export default OrdersRoute;

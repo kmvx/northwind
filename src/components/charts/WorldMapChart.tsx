@@ -4,7 +4,7 @@ import clsx from 'clsx';
 import { useNavigate } from 'react-router-dom';
 import type { NavigateFunction } from 'react-router-dom';
 
-import { ErrorMessage, PanelBasic, WaitSpinner } from '../ui';
+import { ErrorMessage, PanelBasic, WaitSpinner } from '../../ui';
 import { addTooltip } from './Chart';
 import './WorldMapChart.scss';
 

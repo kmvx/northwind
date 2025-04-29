@@ -4,17 +4,17 @@ import {
   CountryFilter,
   ErrorMessage,
   Flag,
+  Paginate,
   PanelStretched,
   WaitSpinner,
 } from '../ui';
-import { useParamsBuilder } from '../hooks';
+import { usePaginate } from '../hooks';
 import { isStringIncludes, pluralize, setDocumentTitle } from '../utils';
-import { SuppliersWorldMapChart } from '../components/WorldMapChart';
-import { useQuerySuppliers } from '../net';
+import { useParamsBuilder } from '../hooks';
+import { CustomersWorldMapChart } from '../components/charts';
+import { useQueryCustomers } from '../net';
 
-const Suppliers: React.FC = () => {
-  setDocumentTitle('Suppliers');
-
+const CustomersRoute: React.FC = () => {
   // Filters
   const paramsBuilder = useParamsBuilder();
   const [stringFilter, setStringFilter] = paramsBuilder.str('q');
@@ -26,23 +26,30 @@ const Suppliers: React.FC = () => {
   }
 
   // Network data
-  const { data, error, isLoading, refetch } = useQuerySuppliers();
+  const { data, error, isLoading, refetch } = useQueryCustomers();
 
-  // Filtered data
+  // Filter data
   const countries = [...new Set(data?.map((item) => item.country))].sort();
-  let filteredData = data;
-  if (stringFilter) {
-    filteredData = filteredData?.filter((item) =>
-      ['companyName', 'country', 'city'].some((name) =>
-        isStringIncludes((item as Record<string, any>)[name], stringFilter),
-      ),
-    );
-  }
-  if (countryFilter) {
-    filteredData = filteredData?.filter(
-      (item) => item.country === countryFilter,
-    );
-  }
+  const filteredData = React.useMemo(() => {
+    let result = data;
+    if (result) {
+      if (stringFilter) {
+        result = result.filter((item) =>
+          ['companyName', 'customerId', 'country', 'city'].some((name) =>
+            isStringIncludes((item as Record<string, any>)[name], stringFilter),
+          ),
+        );
+      }
+      if (countryFilter) {
+        result = result.filter((item) => item.country === countryFilter);
+      }
+    }
+    return result;
+  }, [data, stringFilter, countryFilter]);
+
+  const { paginateData, paginateStore } = usePaginate(filteredData, 20);
+
+  setDocumentTitle('Customers');
 
   const getContent = () => {
     if (error) return <ErrorMessage error={error} retry={refetch} />;
@@ -50,35 +57,40 @@ const Suppliers: React.FC = () => {
     if (!filteredData) return <div>No data</div>;
     return (
       <>
-        <div className="m-2">{pluralize(filteredData.length, 'supplier')}</div>
-        <div className="suppliers__list">
-          {filteredData.map((item) => (
+        <div className="m-2">{pluralize(filteredData.length, 'customer')}</div>
+        <Paginate paginateStore={paginateStore} />
+        <div className="customers__list">
+          {paginateData.map((item: any) => (
             <NavLink
-              to={'/suppliers/' + item.supplierId}
+              to={'/customers/' + item.customerId}
               className="card m-2 p-3 shadow"
-              key={item.supplierId}
+              key={item.customerId}
             >
               <h5
                 className="card-title flex-grow-1"
-                title="Supplier company name"
+                title="Customer company name"
               >
                 {item.companyName}
               </h5>
-              <span
+              <div className="card-text text-end" title="Customer company ID">
+                {item.customerId}
+              </div>
+              <div
                 className="card-text hstack flex-wrap justify-content-end"
-                title="Supplier HQ location"
+                title="Customer HQ location"
               >
                 <i className="bi bi-geo-alt m-2" />
                 <span>
                   {item.country}, {item.city}
                 </span>
                 <Flag className="ms-2" country={item.country} />
-              </span>
+              </div>
             </NavLink>
           ))}
         </div>
+        <Paginate paginateStore={paginateStore} />
         {!countryFilter && (
-          <SuppliersWorldMapChart
+          <CustomersWorldMapChart
             countriesQueryResult={{
               countries: filteredData.map((item) => item.country),
               error,
@@ -94,7 +106,7 @@ const Suppliers: React.FC = () => {
 
   return (
     <PanelStretched>
-      <h2 className="m-2 text-center">Suppliers</h2>
+      <h2 className="m-2 text-center">Customers</h2>
       <div className="d-flex flex-wrap">
         <div className="flex-grow-1 m-2">
           <div className="input-group">
@@ -129,4 +141,4 @@ const Suppliers: React.FC = () => {
   );
 };
 
-export default Suppliers;
+export default CustomersRoute;

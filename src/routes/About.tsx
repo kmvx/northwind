@@ -2,7 +2,7 @@ import React from 'react';
 import { setDocumentTitle } from '../utils';
 import './About.scss';
 
-const About: React.FC = () => {
+const AboutRoute: React.FC = () => {
   setDocumentTitle();
   return (
     <div className="about">
@@ -47,4 +47,4 @@ const About: React.FC = () => {
   );
 };
 
-export default About;
+export default AboutRoute;

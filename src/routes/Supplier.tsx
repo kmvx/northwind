@@ -2,10 +2,10 @@ import React from 'react';
 import { useParams } from 'react-router-dom';
 import { ErrorMessage, Flag, PanelCentred, WaitSpinner } from '../ui';
 import { joinFields, setDocumentTitle } from '../utils';
-import { Products } from '.';
+import { ProductsRoute } from '.';
 import { useQuerySupplier } from '../net';
 
-const Supplier: React.FC = () => {
+const SupplierRoute: React.FC = () => {
   const { id } = useParams();
 
   const { data, error, isLoading, refetch } = useQuerySupplier({ id });
@@ -52,9 +52,9 @@ const Supplier: React.FC = () => {
           </div>
         </div>
       </div>
-      <Products supplierId={id} />
+      <ProductsRoute supplierId={id} />
     </PanelCentred>
   );
 };
 
-export default Supplier;
+export default SupplierRoute;

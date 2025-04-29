@@ -1,0 +1,17 @@
+export { default as AboutRoute } from './About';
+export { default as ChartD3Route } from './ChartD3';
+export { default as ChartJSRoute } from './ChartJS';
+export { default as CustomerRoute } from './Customer';
+export { default as CustomersRoute } from './Customers';
+export { default as EmployeeRoute } from './Employee';
+export { default as EmployeesRoute } from './Employees';
+export { default as MainRouter } from './MainRouter';
+export { default as NotFoundRoute } from './NotFound';
+export { default as OrderRoute } from './Order';
+export { default as OrderDetailsRoute } from './OrderDetails';
+export { default as OrderEditRoute } from './OrderEdit';
+export { default as OrdersRoute } from './Orders';
+export { default as ProductRoute } from './Product';
+export { default as ProductsRoute } from './Products';
+export { default as SupplierRoute } from './Supplier';
+export { default as SuppliersRoute } from './Suppliers';

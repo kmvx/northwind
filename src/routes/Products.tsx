@@ -16,7 +16,7 @@ import {
 import { Discontinued } from '../ui';
 import { useQueryCategories, useQueryProducts } from '../net';
 
-const Products: React.FC<{
+const ProductsRoute: React.FC<{
   supplierId?: string;
 }> = ({ supplierId }) => {
   // Params
@@ -300,4 +300,4 @@ const Products: React.FC<{
   );
 };
 
-export default Products;
+export default ProductsRoute;

@@ -1,7 +1,7 @@
 import React from 'react';
 import { NavLink, useParams } from 'react-router-dom';
-import { Orders } from '.';
-import { OrdersChart } from '../components';
+import { EmployeesRoute, OrdersRoute } from '.';
+import { OrdersChart } from '../components/charts';
 import { ErrorMessage, Flag, PanelCentred, WaitSpinner } from '../ui';
 import {
   joinFields,
@@ -10,7 +10,6 @@ import {
   formatYearsOldFromDateString,
   setDocumentTitle,
 } from '../utils';
-import { Employees } from '.';
 import {
   useEmployeeTeritories,
   useQueryEmployee,
@@ -84,7 +83,7 @@ const EmployeeLink: React.FC<{
   );
 };
 
-const Employee: React.FC = () => {
+const EmployeeRoute: React.FC = () => {
   const { id } = useParams();
 
   // Network data
@@ -162,7 +161,7 @@ const Employee: React.FC = () => {
         )}
       </div>
       <div className="m-2">
-        <Employees reportsTo={id} />
+        <EmployeesRoute reportsTo={id} />
       </div>
       <div className="m-2">
         <OrdersChart employeeId={id} />
@@ -175,9 +174,9 @@ const Employee: React.FC = () => {
           Orders
         </NavLink>
       </div>
-      <Orders />
+      <OrdersRoute />
     </PanelCentred>
   );
 };
 
-export default Employee;
+export default EmployeeRoute;

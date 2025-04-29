@@ -6,7 +6,7 @@ import { useSortTable } from '../hooks';
 import type { IOrderDetail } from '../models';
 import { useQueryOrderDetails, useQueryOrderProducts } from '../net';
 
-const OrderDetails: React.FC = () => {
+const OrderDetailsRoute: React.FC = () => {
   // Params
   const { id } = useParams();
   const { pathname } = useLocation();
@@ -112,4 +112,4 @@ const OrderDetails: React.FC = () => {
   );
 };
 
-export default OrderDetails;
+export default OrderDetailsRoute;

@@ -1,11 +1,11 @@
 import React from 'react';
 import { NavLink, useParams } from 'react-router-dom';
-import { Orders } from '.';
+import { OrdersRoute } from '.';
 import { ErrorMessage, Flag, PanelCentred, WaitSpinner } from '../ui';
 import { joinFields, setDocumentTitle } from '../utils';
 import { useQueryCustomer } from '../net';
 
-const Customer: React.FC = () => {
+const CustomerRoute: React.FC = () => {
   const { id } = useParams();
 
   // Network data
@@ -73,9 +73,9 @@ const Customer: React.FC = () => {
           Orders
         </NavLink>
       </div>
-      <Orders />
+      <OrdersRoute />
     </PanelCentred>
   );
 };
 
-export default Customer;
+export default CustomerRoute;

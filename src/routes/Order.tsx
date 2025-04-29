@@ -7,7 +7,7 @@ import {
   formatDateFromString,
   getEmployeeNameByData,
 } from '../utils';
-import { OrderDetails } from '.';
+import { OrderDetailsRoute } from '.';
 import {
   useQueryOrder,
   useQueryOrderCustomer,
@@ -15,7 +15,7 @@ import {
   useQueryOrderShipper,
 } from '../net';
 
-const Order: React.FC = () => {
+const OrderRoute: React.FC = () => {
   const { id } = useParams();
   const { data: dataCustomer } = useQueryOrderCustomer({ id });
   const { data: dataEmployee } = useQueryOrderEmployee({ id });
@@ -106,9 +106,9 @@ const Order: React.FC = () => {
         )}
         <div>&nbsp;</div>
       </div>
-      <OrderDetails />
+      <OrderDetailsRoute />
     </PanelCentred>
   );
 };
 
-export default Order;
+export default OrderRoute;

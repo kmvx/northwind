@@ -4,8 +4,12 @@ import clsx from 'clsx';
 import { useNavigate } from 'react-router-dom';
 import type { NavigateFunction } from 'react-router-dom';
 
-import { useQueryCustomers, useQueryOrders, useQuerySuppliers } from '../net';
-import { ErrorMessage, PanelBasic, WaitSpinner } from '../ui';
+import {
+  useQueryCustomers,
+  useQueryOrders,
+  useQuerySuppliers,
+} from '../../net';
+import { ErrorMessage, PanelBasic, WaitSpinner } from '../../ui';
 import { addTooltip } from './Chart';
 import './BarChart.scss';
 

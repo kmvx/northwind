@@ -16,7 +16,7 @@ import {
 } from '../utils';
 import { useQueryEmployees } from '../net';
 
-const Employees: React.FC<{
+const EmployeesRoute: React.FC<{
   className?: string;
   reportsTo?: string;
 }> = ({ className, reportsTo }) => {
@@ -155,4 +155,4 @@ const Employees: React.FC<{
   );
 };
 
-export default Employees;
+export default EmployeesRoute;

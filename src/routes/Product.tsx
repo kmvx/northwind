@@ -27,7 +27,7 @@ const SupplierLink: React.FC<{
   );
 };
 
-const Product: React.FC = () => {
+const ProductRoute: React.FC = () => {
   const { id } = useParams();
 
   // Network data
@@ -93,4 +93,4 @@ const Product: React.FC = () => {
   );
 };
 
-export default Product;
+export default ProductRoute;
