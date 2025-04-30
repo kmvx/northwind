@@ -1,26 +1,39 @@
+import React from 'react';
 import * as ReactRouterDOM from 'react-router-dom';
 import { ErrorBoundary, type FallbackProps } from 'react-error-boundary';
 
-import {
-  AboutRoute as AboutRoute,
-  ChartD3Route,
-  ChartJSRoute,
-  CustomerRoute,
-  CustomersRoute,
-  EmployeeRoute,
-  EmployeesRoute,
-  NotFoundRoute,
-  OrderRoute,
-  OrderDetailsRoute,
-  OrderEditRoute,
-  OrdersRoute,
-  ProductRoute,
-  ProductsRoute,
-  SupplierRoute,
-  SuppliersRoute,
-} from '.';
-import { ErrorMessage } from '../ui';
+import { ErrorMessage, WaitSpinner } from '../ui';
 import Layout from '../Layout';
+import NotFoundRoute from './NotFoundRoute';
+
+const Loadable = (
+  Component: React.ComponentType<React.JSX.IntrinsicAttributes>,
+) => {
+  const LoadableComponent = (props: React.JSX.IntrinsicAttributes) => (
+    <React.Suspense fallback={<WaitSpinner />}>
+      <Component {...props} />
+    </React.Suspense>
+  );
+  return LoadableComponent;
+};
+
+const AboutRoute = Loadable(React.lazy(() => import('./AboutRoute')));
+const ChartD3Route = Loadable(React.lazy(() => import('./ChartD3Route')));
+const ChartJSRoute = Loadable(React.lazy(() => import('./ChartJSRoute')));
+const CustomerRoute = Loadable(React.lazy(() => import('./CustomerRoute')));
+const CustomersRoute = Loadable(React.lazy(() => import('./CustomersRoute')));
+const EmployeeRoute = Loadable(React.lazy(() => import('./EmployeeRoute')));
+const EmployeesRoute = Loadable(React.lazy(() => import('./EmployeesRoute')));
+const OrderRoute = Loadable(React.lazy(() => import('./OrderRoute')));
+const OrderDetailsRoute = Loadable(
+  React.lazy(() => import('./OrderDetailsRoute')),
+);
+const OrderEditRoute = Loadable(React.lazy(() => import('./OrderEditRoute')));
+const OrdersRoute = Loadable(React.lazy(() => import('./OrdersRoute')));
+const ProductRoute = Loadable(React.lazy(() => import('./ProductRoute')));
+const ProductsRoute = Loadable(React.lazy(() => import('./ProductsRoute')));
+const SupplierRoute = Loadable(React.lazy(() => import('./SupplierRoute')));
+const SuppliersRoute = Loadable(React.lazy(() => import('./SuppliersRoute')));
 
 const ErrorFallback: React.FC<FallbackProps> = ({
   error,
