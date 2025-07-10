@@ -3,6 +3,7 @@ import { NavLink } from 'react-router-dom';
 import {
   CountryFilter,
   ErrorMessage,
+  ExportDropdown,
   Flag,
   Paginate,
   WaitSpinner,
@@ -218,7 +219,7 @@ const Orders: React.FC<OrdersProps> = ({
                 ref={refTable}
                 className="table table-hover table-striped m-2"
               >
-                <thead className="sticky-top bg-white">
+                <thead className="position-sticky top-0 bg-white">
                   <tr>
                     <th scope="col">#</th>
                     {!isCustomersPage && <th scope="col">Custo&shy;mer ID</th>}
@@ -374,6 +375,7 @@ const Orders: React.FC<OrdersProps> = ({
           disabled={!hasFilter}
           onClick={onClearFilters}
         />
+        <ExportDropdown data={filteredData} name="Orders" />
       </div>
       {getContent()}
     </section>

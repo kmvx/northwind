@@ -3,6 +3,7 @@ import { NavLink } from 'react-router-dom';
 import {
   CountryFilter,
   ErrorMessage,
+  ExportDropdown,
   Flag,
   Paginate,
   PanelStretched,
@@ -133,6 +134,7 @@ const Customers: React.FC = () => {
           disabled={!hasFilter}
           onClick={onClearFilters}
         />
+        <ExportDropdown data={filteredData} name="Customers" />
       </div>
       {getContent()}
     </PanelStretched>

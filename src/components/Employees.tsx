@@ -3,6 +3,7 @@ import { NavLink } from 'react-router-dom';
 import {
   CountryFilter,
   ErrorMessage,
+  ExportDropdown,
   Flag,
   PanelStretched,
   WaitSpinner,
@@ -148,6 +149,11 @@ const Employees: React.FC<{
           value="Clear filters"
           disabled={!hasFilter}
           onClick={onClearFilters}
+        />
+        <ExportDropdown
+          data={// eslint-disable-next-line @typescript-eslint/no-unused-vars
+          filteredData?.map(({ photo, ...item }) => ({ ...item }))}
+          name="Employees"
         />
       </div>
       {getContent()}

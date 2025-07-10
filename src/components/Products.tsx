@@ -1,8 +1,10 @@
 import React from 'react';
 import { NavLink } from 'react-router-dom';
 import {
+  Discontinued,
   DiscontinuedFilterButtons,
   ErrorMessage,
+  ExportDropdown,
   Paginate,
   WaitSpinner,
 } from '../ui';
@@ -13,7 +15,6 @@ import {
   setDocumentTitle,
   getCategoryNameById,
 } from '../utils';
-import { Discontinued } from '../ui';
 import { useQueryCategories, useQueryProducts } from '../net';
 
 interface ProductsProps {
@@ -226,7 +227,7 @@ const Products: React.FC<ProductsProps> = ({ supplierId, categoryId }) => {
 
   const THead = () => {
     return (
-      <thead className="sticky-top bg-white">
+      <thead className="position-sticky top-0 bg-white">
         <tr>
           <th scope="col">#</th>
           <th scope="col">
@@ -294,6 +295,7 @@ const Products: React.FC<ProductsProps> = ({ supplierId, categoryId }) => {
           disabled={!hasFilter}
           onClick={onClearFilters}
         />
+        <ExportDropdown data={filteredData} name="Products" />
       </div>
       {getContent()}
     </section>

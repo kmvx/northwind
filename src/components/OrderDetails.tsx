@@ -75,7 +75,7 @@ const OrderDetails: React.FC<OrderDetailsProps> = ({
         ref={refTable}
         className="table table-hover table-striped m-2 w-auto"
       >
-        <thead className="sticky-top bg-white">
+        <thead className="position-sticky top-0 bg-white">
           <tr>
             <th scope="col">{isOrdersPage ? 'Product' : 'Order ID'}</th>
             <th scope="col">Unit price</th>
