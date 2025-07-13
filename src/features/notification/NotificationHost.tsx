@@ -6,8 +6,7 @@ import {
   dismissNotification,
   notificationTypes,
 } from './notification';
-
-const HIDE_DELAY = 2000; // in milliseconds
+import { HIDE_DELAY } from '../../constants';
 
 export const NotificationHost: React.FC = () => {
   const [notifications, setNotifications] = React.useState<

@@ -1,6 +1,12 @@
 import React from 'react';
 import { NavLink } from 'react-router-dom';
-import { ErrorMessage, Flag, PanelCentred, WaitSpinner } from '../ui';
+import {
+  CopyButton,
+  ErrorMessage,
+  Flag,
+  PanelCentred,
+  WaitSpinner,
+} from '../ui';
 import { joinFields, setDocumentTitle } from '../utils';
 import { useQueryCustomer } from '../net';
 import Orders from './Orders';
@@ -39,15 +45,17 @@ const Customer: React.FC<CustomerProps> = ({ id }) => {
                 )}
               </b>
             </div>
-            <div className="hstack flex-wrap">
+            <div className="hstack flex-wrap column-gap-4">
               <span className="hstack" title="Phone">
                 <i className="bi bi-telephone m-2" />
                 <b className="m-2">{data.phone}</b>
+                <CopyButton content={data.phone} />
               </span>
               {data.fax && (
                 <span className="hstack" title="Fax">
                   <i className="bi bi-printer m-2" />
                   <b className="m-2">{data.fax}</b>
+                  <CopyButton content={data.fax} />
                 </span>
               )}
             </div>

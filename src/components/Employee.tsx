@@ -1,7 +1,13 @@
 import React from 'react';
 import { NavLink } from 'react-router-dom';
 import { OrdersChart } from '../components/charts';
-import { ErrorMessage, Flag, PanelCentred, WaitSpinner } from '../ui';
+import {
+  CopyButton,
+  ErrorMessage,
+  Flag,
+  PanelCentred,
+  WaitSpinner,
+} from '../ui';
 import {
   joinFields,
   getEmployeeNameByData,
@@ -126,8 +132,9 @@ const Employee: React.FC<EmployeeProps> = ({ id }) => {
           <div className="col-md-5">
             <div className="hstack" title="Home phone">
               <i className="bi bi-telephone m-2" />
-              <span className="m-2">
-                <b>{data.homePhone}</b> <span>Home</span>
+              <span className="m-2 d-flex align-items-center gap-2">
+                <b>{data.homePhone}</b> <span>Home</span>{' '}
+                <CopyButton content={data.homePhone} />
               </span>
             </div>
             <div className="hstack">

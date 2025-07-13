@@ -1,3 +1,4 @@
+export { default as CopyButton } from './CopyButton';
 export { default as CountryFilter } from './CountryFilter';
 export { default as Discontinued } from './Discontinued';
 export { default as DiscontinuedFilterButtons } from './DiscontinuedFilterButtons';

@@ -1,5 +1,11 @@
 import React from 'react';
-import { ErrorMessage, Flag, PanelCentred, WaitSpinner } from '../ui';
+import {
+  CopyButton,
+  ErrorMessage,
+  Flag,
+  PanelCentred,
+  WaitSpinner,
+} from '../ui';
 import { joinFields, setDocumentTitle } from '../utils';
 import { useQuerySupplier } from '../net';
 import Products from '../components/Products';
@@ -40,6 +46,7 @@ const Supplier: React.FC<SupplierProps> = ({ id }) => {
             <div className="hstack" title="Phone">
               <i className="bi bi-telephone m-2" />
               <b className="m-2">{data.phone}</b>
+              <CopyButton content={data.phone} />
             </div>
           </div>
           <div className="col-md-4">

@@ -1,6 +1,6 @@
 import React from 'react';
 import { NavLink } from 'react-router-dom';
-import { Flag, PanelCentred } from '../ui';
+import { CopyButton, Flag, PanelCentred } from '../ui';
 import {
   joinFields,
   formatDateFromString,
@@ -94,14 +94,18 @@ const Order: React.FC<OrderProps> = ({ id }) => {
           </>
         )}
         {dataShipper && (
-          <div className="hstack">
+          <div className="hstack align-items-center flex-wrap column-gap-4">
             <div title="Shipper name">
               <i className="bi bi-truck m-2" />
               <b>{dataShipper.companyName}</b>
             </div>
-            <div title="Shipper telephone">
+            <div
+              title="Shipper telephone"
+              className="d-flex align-items-center"
+            >
               <i className="bi bi-telephone m-2" />
               <b>{dataShipper.phone}</b>
+              <CopyButton content={dataShipper.phone} />
             </div>
           </div>
         )}

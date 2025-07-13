@@ -6,20 +6,28 @@ exports[`ErrorMessage 1`] = `
     class="m-2 text-danger"
   >
     <div
-      class="alert alert-danger d-flex align-items-center gap-3"
+      class="alert alert-danger d-flex align-items-center align-content-stretch flex-wrap gap-3"
     >
       <i
         class="bi bi-exclamation-triangle fs-3"
       />
       <div
         class="flex-grow-1"
+        style="white-space: pre-wrap;"
         title="Test"
       >
-        <div>
-          Error: 
-          Test
-        </div>
+        Error: Test
       </div>
+      <button
+        class="btn btn-outline-primary d-inline-flex align-items-center border-0"
+        style="margin-top: -0.375rem; margin-bottom: -0.375rem;"
+        title="Copy to clipboard"
+        type="button"
+      >
+        <i
+          class="bi bi-copy"
+        />
+      </button>
     </div>
   </div>
 </div>
