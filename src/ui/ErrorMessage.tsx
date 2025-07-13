@@ -10,7 +10,8 @@ const ErrorMessage: React.FC<{
   return (
     <div className={clsx('m-2 text-danger', className)}>
       <div className="alert alert-danger d-flex align-items-center gap-3">
-        <div title={error.message}>
+        <i className="bi bi-exclamation-triangle fs-3" />
+        <div className="flex-grow-1" title={error.message}>
           <div>Error: {error.message}</div>
           {error instanceof axios.AxiosError && error?.response?.data && (
             <>

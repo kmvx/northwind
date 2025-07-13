@@ -5,6 +5,7 @@ import {
   convertToMarkdown,
   type DataType,
 } from '../utils/convertTo';
+import { notify } from '../features/notification/notification';
 
 const ExportDropdown: React.FC<{ data: DataType; name: string }> = ({
   data,
@@ -90,10 +91,10 @@ const ExportDropdown: React.FC<{ data: DataType; name: string }> = ({
 const copyTextToClipboard = async (text: string, type: string) => {
   try {
     await navigator.clipboard.writeText(text);
-    alert(`${type} text copied to clipboard!`);
+    notify.success(`${type} text copied to clipboard!`);
   } catch (err) {
     console.error(`Failed to copy ${type} text: `, err);
-    alert(`Failed to copy ${type} text to clipboard`);
+    notify.error(`Failed to copy ${type} text to clipboard`);
   }
 };
 

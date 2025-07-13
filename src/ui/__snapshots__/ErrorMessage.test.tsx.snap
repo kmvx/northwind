@@ -8,7 +8,11 @@ exports[`ErrorMessage 1`] = `
     <div
       class="alert alert-danger d-flex align-items-center gap-3"
     >
+      <i
+        class="bi bi-exclamation-triangle fs-3"
+      />
       <div
+        class="flex-grow-1"
         title="Test"
       >
         <div>
