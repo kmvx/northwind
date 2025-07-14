@@ -7,6 +7,7 @@ import {
   notificationTypes,
 } from './notification';
 import { HIDE_DELAY } from '../../constants';
+import { CopyButton } from '../../ui';
 
 export const NotificationHost: React.FC = () => {
   const [notifications, setNotifications] = React.useState<
@@ -75,6 +76,9 @@ const NotificationItem: React.FC<{ notification: NotificationMessageType }> = ({
           className={`bi ${isSuccess ? 'bi-check-circle' : 'bi-exclamation-triangle'} mx-3 fs-5`}
         />
         <div className="toast-body">{notification.message}</div>
+        {!isSuccess && (
+          <CopyButton content={notification.message} inheritColor />
+        )}
         <button
           type="button"
           className="btn-close btn-close-white me-3 m-auto"

@@ -4,7 +4,8 @@ import { HIDE_DELAY } from '../constants';
 
 const CopyButton: React.FC<{
   content: string;
-}> = ({ content }) => {
+  inheritColor?: boolean;
+}> = ({ content, inheritColor = false }) => {
   const [copied, setCopied] = React.useState(false);
 
   const handleCopy = async () => {
@@ -22,10 +23,11 @@ const CopyButton: React.FC<{
   return (
     <button
       type="button"
-      className="btn btn-outline-primary d-inline-flex align-items-center border-0"
+      className={`btn ${inheritColor ? '' : 'btn-outline-primary'} d-inline-flex align-items-center border-0`}
       style={{
         marginTop: '-0.375rem',
         marginBottom: '-0.375rem',
+        color: inheritColor ? 'inherit' : undefined,
       }}
       onClick={handleCopy}
       title="Copy to clipboard"
