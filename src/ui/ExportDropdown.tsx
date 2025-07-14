@@ -5,6 +5,7 @@ import {
   convertToMarkdown,
   type DataType,
 } from '../utils/convertTo';
+import { escapeHtml } from '../utils';
 import { notify } from '../features/notification/notification';
 
 const ExportDropdown: React.FC<{ data: DataType; name: string }> = ({
@@ -13,17 +14,17 @@ const ExportDropdown: React.FC<{ data: DataType; name: string }> = ({
 }) => {
   const handleCopyCSV = async () => {
     const text = convertToCSV(data);
-    await copyTextToClipboard(text, 'CSV');
+    await copyTextToClipboard(text, 'CSV', false);
   };
 
   const handleCopyMarkdown = async () => {
     const text = convertToMarkdown(data, name);
-    await copyTextToClipboard(text, 'Markdown');
+    await copyTextToClipboard(text, 'Markdown', true);
   };
 
   const handleCopyJSON = async () => {
     const text = convertToJSON(data);
-    await copyTextToClipboard(text, 'JSON');
+    await copyTextToClipboard(text, 'JSON', false);
   };
 
   const handleDownloadCSV = () => {
@@ -88,12 +89,27 @@ const ExportDropdown: React.FC<{ data: DataType; name: string }> = ({
   );
 };
 
-const copyTextToClipboard = async (text: string, type: string) => {
+const copyTextToClipboard = async (
+  text: string,
+  type: string,
+  isMonospace: boolean,
+) => {
   try {
-    await navigator.clipboard.writeText(text);
+    if (isMonospace && navigator.clipboard.write) {
+      const html = `<pre style="font-family: monospace">${escapeHtml(text)}</pre>`;
+
+      await navigator.clipboard.write([
+        new ClipboardItem({
+          'text/plain': new Blob([text], { type: 'text/plain' }),
+          'text/html': new Blob([html], { type: 'text/html' }),
+        }),
+      ]);
+    } else {
+      await navigator.clipboard.writeText(text);
+    }
     notify.success(`${type} text copied to clipboard!`);
   } catch (err) {
-    console.error(`Failed to copy ${type} text: `, err);
+    console.error(`Failed to copy ${type} text to clipboard: `, err);
     notify.error(`Failed to copy ${type} text to clipboard`);
   }
 };
