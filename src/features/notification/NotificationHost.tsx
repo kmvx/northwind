@@ -75,7 +75,7 @@ const NotificationItem: React.FC<{ notification: NotificationMessageType }> = ({
         <i
           className={`bi ${isSuccess ? 'bi-check-circle' : 'bi-exclamation-triangle'} mx-3 fs-5`}
         />
-        <div className="toast-body">{notification.message}</div>
+        <div className="toast-body flex-grow-1">{notification.message}</div>
         {!isSuccess && (
           <CopyButton content={notification.message} inheritColor />
         )}

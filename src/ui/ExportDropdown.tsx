@@ -95,6 +95,7 @@ const copyTextToClipboard = async (
   isMonospace: boolean,
 ) => {
   try {
+    // NOTE: navigator.clipboard isn't available if protocol isn't secure (HTTPS)
     if (isMonospace && navigator.clipboard.write) {
       const html = `<pre style="font-family: monospace">${escapeHtml(text)}</pre>`;
 
