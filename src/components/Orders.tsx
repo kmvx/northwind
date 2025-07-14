@@ -148,7 +148,7 @@ const Orders: React.FC<OrdersProps> = ({
     // Year filter
     if (yearFilter !== undefined) {
       filteredData = filteredData?.filter((item) => {
-        return new Date(item.orderDate)?.getFullYear() === yearFilter;
+        return item.orderDateObject.getFullYear() === yearFilter;
       });
     }
 
