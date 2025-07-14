@@ -6,6 +6,7 @@
   "scripts": {
     "start": "concurrently \"npm:*:watch\"",
     "dev": "vite",
+    "dev:public": "vite --host --port 8080",
     "dev:watch": "vite --clearScreen=false",
     "build": "tsc && vite build",
     "preview": "vite preview",
