@@ -1,9 +1,10 @@
 import type { ICategories, IEmployee } from './models';
 
-export function joinFields(...args: string[]) {
+export function joinFields(...args: string[]): string {
   return [...args].filter(Boolean).join(', ');
 }
-export function formatDateFromString(date: string) {
+
+export function formatDateFromString(date: string): string {
   if (!date) return 'N/A';
   const dataObject = new Date(date);
   if (isNaN(dataObject as unknown as number)) return `${dataObject}`;
@@ -11,7 +12,10 @@ export function formatDateFromString(date: string) {
     month: 'short',
   })} ${dataObject.getDate()}, ${dataObject.getFullYear()}`;
 }
-export function formatYearsOldFromDateString(dateString: string) {
+
+export function formatYearsOldFromDateString(
+  dateString: string,
+): React.ReactNode {
   if (!dateString) return <></>;
   const today = new Date();
   const birthDate = new Date(dateString);
@@ -22,6 +26,7 @@ export function formatYearsOldFromDateString(dateString: string) {
   }
   return `${age} years old`;
 }
+
 export function isStringIncludes(str: string, search: string): boolean {
   const strConverted = typeof str === 'string' ? str : '' + str;
   const searchConverted = typeof search === 'string' ? search : '' + search;
@@ -29,23 +34,31 @@ export function isStringIncludes(str: string, search: string): boolean {
     strConverted.toLowerCase().indexOf(searchConverted.toLowerCase()) !== -1
   );
 }
-export function pluralize(number: number, singular: string, plural?: string) {
+
+export function pluralize(
+  number: number,
+  singular: string,
+  plural?: string,
+): string {
   return (
     number + ' ' + (number === 1 ? singular : plural ? plural : singular + 's')
   );
 }
+
 export const setDocumentTitle = (function () {
   const initialDocumentTitle =
     typeof document !== 'undefined' ? document.title : '';
-  return function setDocumentTitle(...args: (string | undefined)[]) {
+  return function setDocumentTitle(...args: (string | undefined)[]): void {
     document.title = [...args, initialDocumentTitle]
       .filter(Boolean)
       .join(' \u2014 ');
   };
 })();
+
 export function getEmployeeNameByData(data: IEmployee) {
   return data.titleOfCourtesy + ' ' + data.lastName + ' ' + data.firstName;
 }
+
 export function getCategoryNameById(
   dataCategories?: ICategories,
   id?: number,
@@ -83,6 +96,7 @@ const countryFlagEmojiByCountryName: Record<string, string> = {
   USA: '🇺🇸',
   Venezuela: '🇻🇪',
 };
+
 export function getFlagEmojiByCountryName(country: string): string | undefined {
   if (!country) return '🇺🇳';
   const emoji = countryFlagEmojiByCountryName[country];
@@ -92,7 +106,8 @@ export function getFlagEmojiByCountryName(country: string): string | undefined {
   }
   return emoji;
 }
-export function getCountries() {
+
+export function getCountries(): string[] {
   return Object.keys(countryFlagEmojiByCountryName);
 }
 
