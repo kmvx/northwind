@@ -4,7 +4,7 @@ export function joinFields(...args: string[]): string {
   return [...args].filter(Boolean).join(', ');
 }
 
-export function formatDateFromString(date: string): string {
+export function formatDateFromString(date: string | null): string {
   if (!date) return 'N/A';
   const dataObject = new Date(date);
   if (isNaN(dataObject as unknown as number)) return `${dataObject}`;
@@ -25,6 +25,17 @@ export function formatYearsOldFromDateString(
     age--;
   }
   return `${age} years old`;
+}
+
+export function dateFromString(str: string | null): Date {
+  if (str == null) return new Date(NaN);
+
+  // If the string is in ISO format without timezone, append 'Z' to treat it as UTC
+  if (/^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}$/.test(str)) {
+    return new Date(str + 'Z');
+  }
+
+  return new Date(str);
 }
 
 export function isStringIncludes(str: string, search: string): boolean {

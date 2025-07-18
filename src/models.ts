@@ -52,7 +52,7 @@ export interface IOrder {
   shipPostalCode: string;
   shipRegion: string;
   shipVia: number;
-  shippedDate: string;
+  shippedDate: string | null;
 }
 export type IOrders = IOrder[];
 

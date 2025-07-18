@@ -21,6 +21,7 @@ import {
   pluralize,
   formatDateFromString,
   getEmployeeNameByData,
+  dateFromString,
 } from '../utils';
 import type { IEmployees, IShippers } from '../models';
 import { OrdersWorldMapChart } from '../components/charts';
@@ -99,9 +100,9 @@ const Orders: React.FC<OrdersProps> = ({
         orderDate: formatDateFromString(item.orderDate),
         shippedDate: formatDateFromString(item.shippedDate),
         requiredDate: formatDateFromString(item.requiredDate),
-        orderDateObject: new Date(item.orderDate),
-        shippedDateObject: new Date(item.shippedDate),
-        requiredDateObject: new Date(item.requiredDate),
+        orderDateObject: dateFromString(item.orderDate),
+        shippedDateObject: dateFromString(item.shippedDate),
+        requiredDateObject: dateFromString(item.requiredDate),
         freight: item.freight,
         shipName: item.shipName,
         addressLine: joinFields(

@@ -59,7 +59,8 @@ export const convertToCSV = (data: DataType): string => {
         }
 
         if (val instanceof Date) {
-          return `"${val.toISOString()}"`;
+          if (isNaN(val.getTime())) return '';
+          return val.toISOString();
         }
 
         return escapeCSV(String(val));

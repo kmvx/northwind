@@ -1,5 +1,9 @@
 import { expect, describe, it, beforeEach, afterEach, vi } from 'vitest';
-import { pluralize, formatYearsOldFromDateString } from './utils';
+import {
+  pluralize,
+  formatYearsOldFromDateString,
+  dateFromString,
+} from './utils';
 
 describe('formatYearsOldFromDateString', () => {
   beforeEach(() => {
@@ -15,6 +19,21 @@ describe('formatYearsOldFromDateString', () => {
     expect(formatYearsOldFromDateString('1980-03-01')).toBe('20 years old');
     vi.setSystemTime(new Date(2000, 5, 1));
     expect(formatYearsOldFromDateString('1980-03-01')).toBe('20 years old');
+  });
+});
+
+describe('dateFromString', () => {
+  it('Check dates', () => {
+    expect(dateFromString(null)).toStrictEqual(new Date(NaN));
+    expect(dateFromString('2025-02-03')).toStrictEqual(
+      new Date(Date.UTC(2025, 1, 3)),
+    );
+    expect(dateFromString('2025-02-03T10:02:03Z')).toStrictEqual(
+      new Date(Date.UTC(2025, 1, 3, 10, 2, 3)),
+    );
+    expect(dateFromString('2025-02-03T10:02:03')).toStrictEqual(
+      new Date(Date.UTC(2025, 1, 3, 10, 2, 3)),
+    );
   });
 });
 
